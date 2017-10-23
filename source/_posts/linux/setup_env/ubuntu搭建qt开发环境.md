@@ -1,7 +1,7 @@
 ---
 title: ubuntu搭建qt开发环境
 date: 2017-10-23 14:26:38
-categories: [linux]
+categories: [linux, 搭建环境]
 ---
 
 <!-- TOC -->
