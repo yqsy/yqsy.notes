@@ -8,6 +8,7 @@ categories: [linux, 搭建环境]
 
 - [1. iso版本](#1-iso版本)
 - [2. 设置网络](#2-设置网络)
+- [设置证书](#设置证书)
 - [3. 设置清华源](#3-设置清华源)
 - [4. 安装开发环境](#4-安装开发环境)
 
@@ -20,6 +21,21 @@ categories: [linux, 搭建环境]
 ```bash
 sudo sed -i "s/ONBOOT=no/ONBOOT=yes/g" /etc/sysconfig/network-scripts/ifcfg-ens33
 sudo systemctl restart network
+```
+
+# 设置证书
+```bash
+# 好像国内默认会选择163的了?
+yum install wget -y 
+
+wget https://raw.githubusercontent.com/yqsy/linux_script/master/id_rsa.pub
+
+mkdir /root/.ssh
+chmod 700 /root/.ssh
+touch ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+cat id_rsa.pub >>  ~/.ssh/authorized_keys
+systemctl restart sshd
 ```
 
 # 3. 设置清华源
