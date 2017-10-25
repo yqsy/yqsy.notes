@@ -9,7 +9,7 @@ categories: [linux, 搭建环境]
 - [1. iso版本](#1-iso版本)
 - [2. 设置网络](#2-设置网络)
 - [设置证书](#设置证书)
-- [3. 设置清华源](#3-设置清华源)
+- [3. 设置清华源(默认163了!!)](#3-设置清华源默认163了)
 - [4. 安装开发环境](#4-安装开发环境)
 
 <!-- /TOC -->
@@ -38,7 +38,7 @@ cat id_rsa.pub >>  ~/.ssh/authorized_keys
 systemctl restart sshd
 ```
 
-# 3. 设置清华源
+# 3. 设置清华源(默认163了!!)
 * https://mirrors.tuna.tsinghua.edu.cn/help/centos/
 
 ```bash
