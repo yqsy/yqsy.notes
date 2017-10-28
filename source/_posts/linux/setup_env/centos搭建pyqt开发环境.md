@@ -56,6 +56,7 @@ sudo yum makecache
 ```bash
 sudo yum update -y
 sudo yum install vim -y
+sudo yum install net-tools -y
 yum -y groups install "GNOME Desktop" 
 
 echo "exec gnome-session" >> ~/.xinitrc
