@@ -6,12 +6,13 @@ categories: [linux, 搭建环境]
 
 <!-- TOC -->
 
-- [1. 设置1080p](#1-%E8%AE%BE%E7%BD%AE1080p)
-- [2. 设置清华源](#2-%E8%AE%BE%E7%BD%AE%E6%B8%85%E5%8D%8E%E6%BA%90)
-- [3. 安装开发环境](#3-%E5%AE%89%E8%A3%85%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
+- [1. 设置1080p](#1-设置1080p)
+- [2. 设置清华源](#2-设置清华源)
+- [3. 安装开发环境](#3-安装开发环境)
 
 <!-- /TOC -->
 
+<a id="markdown-1-设置1080p" name="1-设置1080p"></a>
 # 1. 设置1080p
 * http://blog.csdn.net/u013122625/article/details/52967831
 
@@ -21,6 +22,7 @@ xrandr --addmode Virtual1 "1920x1080_60.00"
 ```
 
 
+<a id="markdown-2-设置清华源" name="2-设置清华源"></a>
 # 2. 设置清华源
 * https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 
@@ -31,6 +33,7 @@ sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
 sudo apt-get update
 ```
 
+<a id="markdown-3-安装开发环境" name="3-安装开发环境"></a>
 # 3. 安装开发环境
 * http://1csh1.github.io/2017/06/21/ubuntu16.04-install-wiznote/ (编译说明)
 

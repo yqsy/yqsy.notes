@@ -6,24 +6,27 @@ categories: [linux, 搭建环境]
 
 <!-- TOC -->
 
-- [1. iso版本](#1-iso%E7%89%88%E6%9C%AC)
-- [2. 设置网络](#2-%E8%AE%BE%E7%BD%AE%E7%BD%91%E7%BB%9C)
-- [设置证书](#%E8%AE%BE%E7%BD%AE%E8%AF%81%E4%B9%A6)
-- [3. 设置清华源(默认163了!!)](#3-%E8%AE%BE%E7%BD%AE%E6%B8%85%E5%8D%8E%E6%BA%90%E9%BB%98%E8%AE%A4163%E4%BA%86)
-- [4. 安装开发环境](#4-%E5%AE%89%E8%A3%85%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83)
+- [1. iso版本](#1-iso版本)
+- [2. 设置网络](#2-设置网络)
+- [3. 设置证书](#3-设置证书)
+- [4. 设置清华源](#4-设置清华源)
+- [5. 安装开发环境](#5-安装开发环境)
 
 <!-- /TOC -->
 
+<a id="markdown-1-iso版本" name="1-iso版本"></a>
 # 1. iso版本
 安装的是`CentOS-7-x86_64-Minimal-1611.iso`
 
+<a id="markdown-2-设置网络" name="2-设置网络"></a>
 # 2. 设置网络
 ```bash
 sudo sed -i "s/ONBOOT=no/ONBOOT=yes/g" /etc/sysconfig/network-scripts/ifcfg-ens33
 sudo systemctl restart network
 ```
 
-# 设置证书
+<a id="markdown-3-设置证书" name="3-设置证书"></a>
+# 3. 设置证书
 ```bash
 # 好像国内默认会选择163的了?
 yum install wget -y 
@@ -38,7 +41,8 @@ cat id_rsa.pub >>  ~/.ssh/authorized_keys
 systemctl restart sshd
 ```
 
-# 3. 设置清华源(默认163了!!)
+<a id="markdown-4-设置清华源" name="4-设置清华源"></a>
+# 4. 设置清华源
 * https://mirrors.tuna.tsinghua.edu.cn/help/centos/
 
 ```bash
@@ -52,7 +56,9 @@ sudo yum makecache
 ```
 
 
-# 4. 安装开发环境
+<a id="markdown-5-安装开发环境" name="5-安装开发环境"></a>
+# 5. 安装开发环境
+
 ```bash
 sudo yum update -y
 sudo yum install vim -y

@@ -3,9 +3,15 @@ title: git docker alias
 date: 2017-10-23 14:26:38
 categories: [linux, 技巧]
 ---
+<!-- TOC -->
 
+- [1. git](#1-git)
+- [2. docker](#2-docker)
 
-# git
+<!-- /TOC -->
+
+<a id="markdown-1-git" name="1-git"></a>
+# 1. git
 * https://stackoverflow.com/questions/2553786/how-do-i-alias-commands-in-git
 
 windows修改`C:\Program Files\Git\etc\bash.bashrc`
@@ -28,7 +34,8 @@ alias glog='git log'
 alias glogp='git log --pretty=format:"%h %s" --graph'
 ```
 
-# docker
+<a id="markdown-2-docker" name="2-docker"></a>
+# 2. docker
 
 * https://github.com/tcnksm/docker-alias/blob/master/zshrc
 * https://kartar.net/2014/03/useful-docker-bash-functions-and-aliases/
