@@ -82,7 +82,7 @@ index_with_subtitle: false
 menu:
   home: / || home
   #about: /about/ || user
-  #archives: /archives/ || archive
+  archives: /archives/ || archive
   #tags: /tags/ || tags
   categories: /categories/ || th
   #schedule: /schedule/ || calendar
