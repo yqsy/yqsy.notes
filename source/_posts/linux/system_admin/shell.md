@@ -18,6 +18,7 @@ categories: [linux, 系统管理]
 - [6. 标注输入输出](#6-标注输入输出)
 - [7. sed的常见语法](#7-sed的常见语法)
 - [8. xargs/expr/exec](#8-xargsexprexec)
+- [9. sort,wc,uniq](#9-sortwcuniq)
 
 <!-- /TOC -->
 
@@ -235,3 +236,26 @@ find . -name '*.gif' -exec file {} \;
 ```
 
 exec命令时shell内置的,他会用其后的程序的进程来取代你当前的shell进程,当在shell窗口中运行exec cat时,按下ctrl-d或ctrl-c时,shell窗口就会小时,因为没有任何子进程了
+
+<a id="markdown-9-sortwcuniq" name="9-sortwcuniq"></a>
+# 9. sort,wc,uniq
+
+```bash
+# 个人账号进行排序
+cat /etc/passwd | sort
+
+# 第三栏排序
+cat /etc/passwd | sort -t ':' -k 3
+
+# 利用last,将输出的数据仅取账号,并加以排序
+last | cut -d ' ' -f1 | sort
+
+# 使用last将账号列出,仅取出账号栏,进行排序后仅取出一位
+last | cut -d ' ' -f1 | sort | uniq
+
+# 知道每个人的登录总次数
+last | cut -d ' ' -f1 | sort | uniq -c
+
+# /etc/man_db.conf 里面到底有多少相关字,行,字符数
+cat /etc/man_db.conf | wc
+```
