@@ -6,29 +6,56 @@ categories: [linux, 系统管理]
 
 <!-- TOC -->
 
-- [1. 使用场景时](#1-使用场景时)
-- [2. 各种符号含义](#2-各种符号含义)
-- [3. 运算符号](#3-运算符号)
-    - [3.1. 文件类型运算符](#31-文件类型运算符)
-    - [3.2. 文件权限运算符](#32-文件权限运算符)
-    - [3.3. 比较数字](#33-比较数字)
-- [4. 常用语句](#4-常用语句)
-- [5. sed的常见语法](#5-sed的常见语法)
-- [6. xargs/expr/exec](#6-xargsexprexec)
+- [1. 特性](#1-特性)
+    - [1.1. 快捷键](#11-快捷键)
+- [2. 使用场景时](#2-使用场景时)
+- [3. 各种符号含义](#3-各种符号含义)
+- [4. 运算符号](#4-运算符号)
+    - [4.1. 文件类型运算符](#41-文件类型运算符)
+    - [4.2. 文件权限运算符](#42-文件权限运算符)
+    - [4.3. 比较数字](#43-比较数字)
+- [5. 常用语句](#5-常用语句)
+- [6. 标注输入输出](#6-标注输入输出)
+- [7. sed的常见语法](#7-sed的常见语法)
+- [8. xargs/expr/exec](#8-xargsexprexec)
 
 <!-- /TOC -->
 
 
-<a id="markdown-1-使用场景时" name="1-使用场景时"></a>
-# 1. 使用场景时
+<a id="markdown-1-特性" name="1-特性"></a>
+# 1. 特性
+`/bin/bash`时Linux默认的shell,时GNU计划中重要的工具软件之一
+
+* history可查看输入历史,`~/.bash_history`
+* tab命令补全
+* 命令别名设置(alias),例如` alias lm='ls -al'`
+* 工作控制,前景背景控制 (job control, foreground, background)
+* 程序化脚本(shell script)
+* 万用字符: (Wildcard)
+
+<a id="markdown-11-快捷键" name="11-快捷键"></a>
+## 1.1. 快捷键
+
+* ctrl+u 向前删除字符串
+* ctrl+k 向后删除字符串
+* ctrl+a 光标移动到最前面
+* ctrl+e 光标移动到最后面
+* ctrl+s vim画面锁死  strl+q恢复
+* ctrl+c 终止目前的命令
+* ctrl+d 输入结束(eof),例如邮件结束的时候
+* ctrl+m enter
+* ctrl+z 暂停目前的命令
+
+<a id="markdown-2-使用场景时" name="2-使用场景时"></a>
+# 2. 使用场景时
 
 请记住shell脚本的强项: 强控简单的文件和命令,当你发现你的脚本写得有点繁琐,特别时涉及复杂的字符串或数学处理时,或许你就该实时Python,Perl或awk之类的脚本语言
 
 * https://stackoverflow.com/questions/209470/can-i-use-python-as-a-bash-replacement (使用python替代shell)
 * http://plumbum.readthedocs.io/en/latest/ (库)
 
-<a id="markdown-2-各种符号含义" name="2-各种符号含义"></a>
-# 2. 各种符号含义
+<a id="markdown-3-各种符号含义" name="3-各种符号含义"></a>
+# 3. 各种符号含义
 
 符号|含义
 -|-
@@ -44,11 +71,11 @@ $?|退出码
 * 引号中的任何东西都会被当成一个参数
 
 
-<a id="markdown-3-运算符号" name="3-运算符号"></a>
-# 3. 运算符号
+<a id="markdown-4-运算符号" name="4-运算符号"></a>
+# 4. 运算符号
 
-<a id="markdown-31-文件类型运算符" name="31-文件类型运算符"></a>
-## 3.1. 文件类型运算符
+<a id="markdown-41-文件类型运算符" name="41-文件类型运算符"></a>
+## 4.1. 文件类型运算符
 
 运算符|用于测试
 -|-
@@ -61,8 +88,8 @@ $?|退出码
 -S|套接字
 
 
-<a id="markdown-32-文件权限运算符" name="32-文件权限运算符"></a>
-## 3.2. 文件权限运算符
+<a id="markdown-42-文件权限运算符" name="42-文件权限运算符"></a>
+## 4.2. 文件权限运算符
 
 运算符|用于测试
 -|-
@@ -73,8 +100,8 @@ $?|退出码
 -g|Setgid
 -k|Sticky
 
-<a id="markdown-33-比较数字" name="33-比较数字"></a>
-## 3.3. 比较数字
+<a id="markdown-43-比较数字" name="43-比较数字"></a>
+## 4.3. 比较数字
 
 运算符|当参数一与参数二相比,....时,返回true
 -|-
@@ -85,8 +112,8 @@ $?|退出码
 -le|更小或相等
 -ge|更大或相等
  
-<a id="markdown-4-常用语句" name="4-常用语句"></a>
-# 4. 常用语句
+<a id="markdown-5-常用语句" name="5-常用语句"></a>
+# 5. 常用语句
 
 ```bash
 # 条件判断
@@ -153,8 +180,32 @@ rm -f $FILE
 ```
 
 
-<a id="markdown-5-sed的常见语法" name="5-sed的常见语法"></a>
-# 5. sed的常见语法
+<a id="markdown-6-标注输入输出" name="6-标注输入输出"></a>
+# 6. 标注输入输出
+
+按`ctrl-d`终止当前终端的标准输入并终止命令.`ctrl-c`终止当前进程的运行.
+
+标准输入和标注输出通常简写为`stdin`和`stdout`,标准错误输出`stderr`
+
+重定向
+```bash
+
+# 如果文件不存在,会创建文件,如果文件已经存在,shell会清空文件内容
+command > file
+
+# 不想文件内容被清空
+command >> file
+
+# 流ID 1是标准输出,2是标准错误输出
+# 重定向标准错误输出至标准输出
+ls /ffffffff > f 2>&1
+
+# 标准输入重定向
+head < /proc/cpuinfo
+```
+
+<a id="markdown-7-sed的常见语法" name="7-sed的常见语法"></a>
+# 7. sed的常见语法
 
 ```bash
 
@@ -171,8 +222,8 @@ sed 's/:/%/g' /etc/passwd
 sed 3,6d /etc/passwd
 ```
 
-<a id="markdown-6-xargsexprexec" name="6-xargsexprexec"></a>
-# 6. xargs/expr/exec
+<a id="markdown-8-xargsexprexec" name="8-xargsexprexec"></a>
+# 8. xargs/expr/exec
 当把海量的文件当作一个命令的参数时,该命令或者shell可能会告诉你缓冲不足以容纳这些参数,解决这个问题,可用`xargs`,它能对自身输入流的每个文件名逐个地执行命令
 
 ```bash
