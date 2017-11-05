@@ -1,0 +1,32 @@
+---
+title: nodejs
+date: 2017-11-05 21:52:06
+categories: [微服务]
+---
+
+
+<!-- TOC -->
+
+- [1. 简介](#1-简介)
+- [2. 应用场景](#2-应用场景)
+
+<!-- /TOC -->
+
+<a id="markdown-1-简介" name="1-简介"></a>
+# 1. 简介
+
+* https://nodejs.org/en/ (官网)
+
+
+Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一个`事件驱动`且`异步非阻塞I/O`的模型使其轻量且搞笑,Node.js的包管理器NPM使全球最大的开源库生态系统
+
+<a id="markdown-2-应用场景" name="2-应用场景"></a>
+# 2. 应用场景
+
+* I/O密集型Web应用  
+ 开发I/O密集型应用是Node.js的强项,它充分利用了事件驱动与异步非阻塞技术,能支持大量的并发链接,从而提高了整个系统的吞吐率.不乏优秀的web框架,Express,将基于Node.js的web应用开发过程变得更加简单与高效`http://expressjs.com`
+* web聊天室  
+ Node.js是为`实时性`而生的,Web聊天室正符合了这类实时性要求,使用Node.js集成Socket.IO可轻松搭建一个`Web Socket`服务器,`http://socket.io/`,开发聊天室教程:`http://socket.io/get-started/chat/`
+* 方面开发命令行工具  
+* HTTP代理服务器  
+  类似于`Nginx`,`Apache`
