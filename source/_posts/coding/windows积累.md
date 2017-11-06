@@ -7,7 +7,7 @@ categories: [coding]
 <!-- TOC -->
 
 - [1. 常用](#1-常用)
-- [2. 穿墙应用](#2-穿墙应用)
+- [2. 穿墙应用或国内源](#2-穿墙应用或国内源)
 
 <!-- /TOC -->
 
@@ -45,8 +45,8 @@ dxdiag
 http://www.fixedbyvonnie.com/2013/12/how-to-open-full-screen-remote-desktop-session-secondary-monitor-in-windows/#.WUi7XeuGOHs
 ```
 
-<a id="markdown-2-穿墙应用" name="2-穿墙应用"></a>
-# 2. 穿墙应用
+<a id="markdown-2-穿墙应用或国内源" name="2-穿墙应用或国内源"></a>
+# 2. 穿墙应用或国内源
 
 ```bash
 # git(只能代理https,ssh的无效)
@@ -65,4 +65,8 @@ apm config set https_proxy "http://127.0.0.1:1080"
 
 # go get
 env `https_proxy` http://127.0.0.1:1080
+
+# nodejs npm (使用cnpm替换npm)
+npm install cnpm -g --registry=https://registry.npm.taobao.org
+
 ```
