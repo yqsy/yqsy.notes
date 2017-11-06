@@ -17,7 +17,7 @@ categories: [微服务]
 # 1. 简介
 
 * https://nodejs.org/en/ (官网)
-
+* https://www.zhihu.com/question/19653241 (优势劣势)
 
 Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一个`事件驱动`且`异步非阻塞I/O`的模型使其轻量且搞笑,Node.js的包管理器NPM使全球最大的开源库生态系统
 
