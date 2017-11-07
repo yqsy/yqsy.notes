@@ -39,3 +39,13 @@ categories: [网络相关]
 * 16位窗口大小(window size): 是TCP`流量控制`的一个手段,指的是接收通告窗口(Receiver Window,RWND).它告诉对方本端的TCP接收缓冲区还能容纳多少字节的数据,这样对方就可以控制发送数据的速度
 * 16位校验和(TCP checksum): 由发送端填充,接收端对TCP报文段执行CRC算法以校验TCP报文段在整个传输过程中是否损坏
 * 16位紧急指针(urgent pointer): 是一个正的偏移量,它和序号字段的值相加表示最后一个紧急数据的下一字节的序号
+
+
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171107_215803.png)
+
+* kind2: 通信时,双方用该选项来协商最大报文段长度(Max Segment Size, MSS),TCP模块通常将MSS设置为(MTU-40)字节,避免本机发生IP分片,对以太网而言,MSS值是1460(1500-40)字节
+* kind3: tcp头部,接收通告窗口大小时用16位表示,最大为65535字节,但实际上TCP模块允许的接收通告窗口远远不止这个数(为了提高吞吐量)`RFC 1323`
+* kind4: 选择性确认(Selective Acknowledgement,SACK)选项,TCP模块会重传被确认的TCP报文段后续的所有报文段,这样原先已经正确传输的TCP报文段也可能重复发送,从而降低了TCP的性能.SACK技术使TCP模块只重新发送丢失的TCP报文段,`cat /proc/sys/net/ipv4/tcp_sack`查看是否开启
+* kind5: SACK实际工作的选项
+* kind8: 事件戳选项,该选项提供了较为准确的计算通信双方之间的回路事件(Round Trip Time,RTT)的方法`cat /proc/sys/net/ipv4/tcp_timestamps`
+
