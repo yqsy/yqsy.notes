@@ -8,6 +8,7 @@ categories: [网络相关]
 
 - [1. TCP和UDP在内核缓冲区上的区别](#1-tcp和udp在内核缓冲区上的区别)
 - [2. TCP头部](#2-tcp头部)
+- [3. 链接建立与终止](#3-链接建立与终止)
 
 <!-- /TOC -->
 
@@ -49,3 +50,9 @@ categories: [网络相关]
 * kind5: SACK实际工作的选项
 * kind8: 事件戳选项,该选项提供了较为准确的计算通信双方之间的回路事件(Round Trip Time,RTT)的方法`cat /proc/sys/net/ipv4/tcp_timestamps`
 
+<a id="markdown-3-链接建立与终止" name="3-链接建立与终止"></a>
+# 3. 链接建立与终止
+
+* https://www.zhihu.com/question/24853633 (为什么需要3次握手)
+
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171107_222407.png)
