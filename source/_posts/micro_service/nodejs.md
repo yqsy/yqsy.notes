@@ -27,6 +27,7 @@ Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一�
 
 * I/O密集型Web应用  
  开发I/O密集型应用是Node.js的强项,它充分利用了事件驱动与异步非阻塞技术,能支持大量的并发链接,从而提高了整个系统的吞吐率.不乏优秀的web框架,Express,将基于Node.js的web应用开发过程变得更加简单与高效`http://expressjs.com`
+ 
 * web聊天室  
  Node.js是为`实时性`而生的,Web聊天室正符合了这类实时性要求,使用Node.js集成Socket.IO可轻松搭建一个`Web Socket`服务器,`http://socket.io/`,开发聊天室教程:`http://socket.io/get-started/chat/`
 * 方面开发命令行工具  
