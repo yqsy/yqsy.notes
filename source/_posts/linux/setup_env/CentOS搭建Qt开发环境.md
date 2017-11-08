@@ -1,5 +1,5 @@
 ---
-title: CentOS搭建pyqt开发环境
+title: CentOS搭建Qt开发环境
 date: 2017-10-23 14:26:38
 categories: [linux, 搭建环境]
 ---

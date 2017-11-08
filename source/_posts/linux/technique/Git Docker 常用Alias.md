@@ -1,5 +1,5 @@
 ---
-title: Git Docker alias
+title: Git Docker 常用Alias
 date: 2017-10-23 14:26:38
 categories: [linux, 技巧]
 ---
