@@ -1,5 +1,5 @@
 ---
-title: wifidog搭建
+title: WiFiDog搭建
 date: 2017-10-29 11:37:38
 categories: [linux, 搭建环境]
 ---
