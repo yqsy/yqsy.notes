@@ -8,6 +8,7 @@ categories: [网络相关]
 
 - [1. 主机字节序和网络字节序](#1-主机字节序和网络字节序)
 - [2. 常用socket函数](#2-常用socket函数)
+- [3. 高级I/O函数](#3-高级io函数)
 
 <!-- /TOC -->
 
@@ -56,4 +57,16 @@ socket选项
 * getservbyport 根据端口号获取某个服务的完整信息
 * getaddrinfo 既能通过主机名获得IP地址,也能通过服务名获得端口号
 * getnameinfo 通过socket地址同事获得以字符串表示的主机名和服务名
+
+<a id="markdown-3-高级io函数" name="3-高级io函数"></a>
+# 3. 高级I/O函数
+
+* pipe 函数可以创建一个管道,以实现进程间通信
+* dup/dup2 创建新的文件描述符,和原有文件描述符指向相同文件,管道或者网络连接https://github.com/yqsy/linux_socket_test/blob/master/dup_cgi.cpp
+* readv和writev 从文件描述符读到分散的内存块中/将多块分散的内存数据一并写入文件描述符中
+* sendfile 在两个文件描述符之间直接传递数据,从而避免了内核缓冲区和用户缓冲区之间的数据拷贝,效率很高,这被称为零拷贝
+* mmap和munmap 共享内存
+* splice 在两个文件描述符之间移动数据
+* tee 在两个管道文件描述符之间复制数据
+* fcntl 对文件描述符的各种控制操作
 
