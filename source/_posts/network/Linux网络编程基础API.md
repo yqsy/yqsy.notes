@@ -44,6 +44,7 @@ https://github.com/yqsy/linux_socket_test/blob/master/check_byte_order.cpp
 socket选项
 * getsockopt  
 * setsockopt
+* man 7 socket 获得选项说明
 
 ![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_151310.png)
 
