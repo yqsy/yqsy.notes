@@ -9,7 +9,7 @@ categories: [微服务]
 
 - [1. 简介](#1-简介)
 - [2. 应用场景](#2-应用场景)
-- [使用Node.js实现反向代理](#使用nodejs实现反向代理)
+- [3. 使用Node.js实现反向代理](#3-使用nodejs实现反向代理)
 
 <!-- /TOC -->
 
@@ -34,8 +34,8 @@ Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一�
 * HTTP代理服务器  
   类似于`Nginx`,`Apache`
 
-<a id="markdown-使用nodejs实现反向代理" name="使用nodejs实现反向代理"></a>
-# 使用Node.js实现反向代理
+<a id="markdown-3-使用nodejs实现反向代理" name="3-使用nodejs实现反向代理"></a>
+# 3. 使用Node.js实现反向代理
 
 反向代理通常有以下几种应用场景:
 * 使静态资源与动态资源分离
