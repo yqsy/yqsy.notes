@@ -15,6 +15,7 @@ categories: [网络相关]
     - [4.3. epoll](#43-epoll)
         - [4.3.1. LT(Level Trigger)电平触发和ET(Edge Trigger)边沿触发](#431-ltlevel-trigger电平触发和etedge-trigger边沿触发)
     - [4.4. 三者区别](#44-三者区别)
+- [5. 信号](#5-信号)
 
 <!-- /TOC -->
 
@@ -118,3 +119,23 @@ ET模式在很大程度上降低了同一个epoll事件被重复触发的次数,
 ## 4.4. 三者区别
 
 ![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_204839.png)
+
+<a id="markdown-5-信号" name="5-信号"></a>
+# 5. 信号
+
+* https://linux.die.net/Bash-Beginners-Guide/sect_12_01.html
+
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_222023.png)
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_222030.png)
+
+
+```c++
+// 设置信号处理函数
+// https://linux.die.net/man/2/signal
+sighandler_t signal(int signum, sighandler_t handler);
+
+// 更健壮
+// https://linux.die.net/man/2/sigaction
+int sigaction(int signum, const struct sigaction *act,
+              struct sigaction *oldact);
+```
