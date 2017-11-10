@@ -105,6 +105,13 @@ Proactor模式将所有I/O操作交给主线程和内核来处理,工作线程�
 * 同步: 虽然效率相对较低,实时性较差,但逻辑简单
 * 异步: 相对复杂,难于调试和扩展,不适合于大量的并发
 
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171110_164935.png)
+
+* http://www.kircher-schwanninger.de/michael/publications/lf.pdf
+* https://www.zhihu.com/question/29751072/answer/45496897
+
+在IO线程面异步,把数据塞进一个同步队列,然后demultiplexing,一堆线程同步地处理数据.相比一个线程一个链接的模式,省去了很多线程维护开销,在进队列/出队列的时候,免不了会有race condition
+
 <a id="markdown-411-半同步半反应堆" name="411-半同步半反应堆"></a>
 ### 4.1.1. 半同步/半反应堆
 
