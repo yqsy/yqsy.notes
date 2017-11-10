@@ -73,3 +73,15 @@ Proactor模式将所有I/O操作交给主线程和内核来处理,工作线程�
 
 <a id="markdown-33-模拟proactor模式" name="33-模拟proactor模式"></a>
 ## 3.3. 模拟Proactor模式
+
+使用同步I/O模型模拟出的Proactor模式的工作流程如下:
+
+* 1) 主线程往epoll内核事件表中注册socket上的读就绪事件
+* 2) 主线程调用epoll_wait等待socket上有数据可读
+* 3) 当socket上有数据可读时,epoll_wait通知主线程,主线程从socket循环读取数据,知道没有更多数据可读,然后将读取到的数据封装成一个请求对象并插入请求队列
+* 4) 睡眠在请求队列上的某个工作线程被唤醒,它获得请求对象并处理客户请求,然后往epoll内核事件表中注册socket上的写就绪事件
+* 5) 主线程调用epoll_wait等待socket可写
+* 6) 当socket可写,epoll_wait通知主线程,主线程往socket上写入服务器处理客户请求的结果
+
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171110_141917.png)
+
