@@ -13,8 +13,8 @@ categories: [网络相关]
     - [3.2. Proactor模式](#32-proactor模式)
     - [3.3. 模拟Proactor模式](#33-模拟proactor模式)
 - [4. 两种高效的并发模式](#4-两种高效的并发模式)
-    - [4.1. 半同步/半异步模式 half-sync_half-async](#41-半同步半异步模式-half-sync_half-async)
-        - [4.1.1. 半同步/半反应堆(half-sync_half-reactive)](#411-半同步半反应堆half-sync_half-reactive)
+    - [4.1. 半同步/半异步模式](#41-半同步半异步模式)
+        - [4.1.1. 半同步/半反应堆](#411-半同步半反应堆)
         - [4.1.2. 高效的半同步/半异步模式](#412-高效的半同步半异步模式)
     - [4.2. 领导者/追随者模式](#42-领导者追随者模式)
 
@@ -95,8 +95,8 @@ Proactor模式将所有I/O操作交给主线程和内核来处理,工作线程�
 <a id="markdown-4-两种高效的并发模式" name="4-两种高效的并发模式"></a>
 # 4. 两种高效的并发模式
 
-<a id="markdown-41-半同步半异步模式-half-sync_half-async" name="41-半同步半异步模式-half-sync_half-async"></a>
-## 4.1. 半同步/半异步模式 half-sync_half-async
+<a id="markdown-41-半同步半异步模式" name="41-半同步半异步模式"></a>
+## 4.1. 半同步/半异步模式
 
 `同步`指的是程序完全按照代码序列的顺序执行,`异步`指的是程序的执行需要由系统事件来驱动.常见的系统事件包括中断,信号等.
 
@@ -105,10 +105,10 @@ Proactor模式将所有I/O操作交给主线程和内核来处理,工作线程�
 * 同步: 虽然效率相对较低,实时性较差,但逻辑简单
 * 异步: 相对复杂,难于调试和扩展,不适合于大量的并发
 
-<a id="markdown-411-半同步半反应堆half-sync_half-reactive" name="411-半同步半反应堆half-sync_half-reactive"></a>
-### 4.1.1. 半同步/半反应堆(half-sync_half-reactive)
+<a id="markdown-411-半同步半反应堆" name="411-半同步半反应堆"></a>
+### 4.1.1. 半同步/半反应堆
 
-![](http://ouxarji35.bkt.clouddn.com/0.36861945177339583.png)
+![](http://ouxarji35.bkt.clouddn.com/snipaste_20171110_154909.png)
 
 主线程插入请求队列中的任务是就绪的连接socket,事件处理模式是Reactor:它要求工作线程自己从socket上读取客户请求和往socket写入服务器应答.
 
