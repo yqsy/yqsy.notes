@@ -38,8 +38,18 @@ categories: [coding]
 <a id="markdown-2-windows写linuxc-c代码" name="2-windows写linuxc-c代码"></a>
 # 2. Windows写LinuxC /C++代码
 
-```bash
+使用工具
+* https://www.jetbrains.com/clion/ (太重量级了)
+* https://code.visualstudio.com/insiders/ (轻巧些)
+* understand (看代码用)
 
+参考
+* https://code.visualstudio.com/docs/languages/cpp
+
+`Ctrl+Shift+P`将头文件目录设置成linux的头文件
+
+
+```bash
 # linux
 # 拷贝头文件
 cd /usr/include/c++
@@ -90,7 +100,7 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
 
 
-可以`排除.gitignore`中的文件以及`.git`文件夹,还有删除多余的文件
+可以`排除.gitignore`中的文件以及`.git`文件夹,还有`删除多余的文件`
 ```bash
 rsync -av ./ --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test
 ```
