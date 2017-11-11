@@ -48,16 +48,17 @@ categories: [coding]
 
 `Ctrl+Shift+P`将头文件目录设置成linux的头文件
 
+* D:/reference/refer/usr/include
+* D:/reference/refer/usr/include/c++/4.8.2
 
 ```bash
 # linux
 # 拷贝头文件
-cd /usr/include/c++
-tar -cvzf 4.8.2.tgz 4.8.2
+tar -cvzf /tmp/include.tgz /usr/include
 
 # windows
-scp root@192.168.198.130:/usr/include/c++/4.8.2.tgz /d/reference/refer/4.8.2
-tar -xvzf 4.8.2.tgz
+scp root@192.168.198.130:/tmp/include.tgz /d/reference/refer/
+tar -xvzf include.tgz
 ```
 
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
