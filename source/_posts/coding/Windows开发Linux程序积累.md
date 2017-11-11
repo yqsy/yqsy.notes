@@ -29,9 +29,9 @@ categories: [coding]
 
 * Windows类Linux操作环境
 * 如何将代码从Windows sync 到Linux之上
-* 源代码文件从`CRLF`转换成`LF`
-* 某些语言,tab转换成空格(在这里不重要)
-* 某些语言,注意编码(在这里不重要)
+* 源代码文件从`CRLF`转换成`LF`(git + ide搭配控制好)
+* 某些语言,tab转换成空格(ide自动做到)
+* 某些语言,注意编码(只有`c/c++`需要注意,不要写中文把)
 
 <a id="markdown-2-windows类linux操作环境" name="2-windows类linux操作环境"></a>
 # 2. Windows类Linux操作环境
