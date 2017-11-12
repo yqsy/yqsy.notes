@@ -124,6 +124,7 @@ ET模式在很大程度上降低了同一个epoll事件被重复触发的次数,
 # 5. 信号
 
 * https://linux.die.net/Bash-Beginners-Guide/sect_12_01.html
+* http://man7.org/linux/man-pages/man7/signal.7.html
 
 ![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_222023.png)
 ![](http://ouxarji35.bkt.clouddn.com/snipaste_20171109_222030.png)
