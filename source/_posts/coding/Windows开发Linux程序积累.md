@@ -110,10 +110,10 @@ inotifywait
 ```bash
 
 inotifywait -mrq . | while read file ; do
-    echo '111';
+    echo '111'
 done
 
 inotifywait -mrq . | while read file ; do
-    rsync -av . --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test;
+    rsync -av . --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test
 done
 ```
