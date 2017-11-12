@@ -16,7 +16,7 @@ categories: [coding]
     - [3.5. MYSYS2](#35-mysys2)
 - [4. 代码同步](#4-代码同步)
     - [4.1. beyond compare](#41-beyond-compare)
-    - [4.2. rsync](#42-rsync)
+    - [4.2. rsync+inotifywait](#42-rsyncinotifywait)
 
 <!-- /TOC -->
 
@@ -95,13 +95,25 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 ## 4.1. beyond compare
 文件夹同步-镜像功能,使用sftp协议,缺点是需要手动点击同步,比较繁琐
 
-<a id="markdown-42-rsync" name="42-rsync"></a>
-## 4.2. rsync
+<a id="markdown-42-rsyncinotifywait" name="42-rsyncinotifywait"></a>
+## 4.2. rsync+inotifywait
 
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
-
+* https://github.com/thekid/inotify-win
 
 可以`排除.gitignore`中的文件以及`.git`文件夹,还有`删除多余的文件`
 ```bash
 rsync -av ./ --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test
+```
+
+inotifywait
+```bash
+
+inotifywait -mrq . | while read file ; do
+    echo '111';
+done
+
+inotifywait -mrq . | while read file ; do
+    rsync -av . --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test;
+done
 ```
