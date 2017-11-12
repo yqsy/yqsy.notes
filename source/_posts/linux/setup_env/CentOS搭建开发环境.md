@@ -1,5 +1,5 @@
 ---
-title: CentOS搭建Qt开发环境
+title: CentOS搭建开发环境
 date: 2017-10-23 14:26:38
 categories: [linux, 搭建环境]
 ---
@@ -29,7 +29,7 @@ sudo systemctl restart network
 # 3. 设置证书
 ```bash
 # 好像国内默认会选择163的了?
-yum install wget -y 
+sudo yum install wget -y 
 
 wget https://raw.githubusercontent.com/yqsy/linux_script/master/id_rsa.pub
 
@@ -52,7 +52,7 @@ sudo mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
 # 拷贝网页的
 
 # 更新缓存
-sudo yum makecache
+sudo sudo yum makecache
 ```
 
 
@@ -63,15 +63,15 @@ sudo yum makecache
 sudo yum update -y
 sudo yum install vim -y
 sudo yum install net-tools -y
-yum -y groups install "GNOME Desktop" 
+sudo yum -y groups install "GNOME Desktop" 
 
 echo "exec gnome-session" >> ~/.xinitrc
 # 启动GNOME
 startx
 
 # 安装python3.5.3
-yum groupinstall 'Development Tools' -y
-yum install zlib-devel bzip2-devel openssl-devel ncurese-devel -y
+sudo yum groupinstall 'Development Tools' -y
+sudo yum install zlib-devel bzip2-devel openssl-devel ncurese-devel -y
 
 wget https://www.python.org/ftp/python/3.5.3/Python-3.5.3.tgz
 tar -xvzf Python-3.5.3.tgz
@@ -83,6 +83,18 @@ sudo make install
 # 添加环境变量(启动python需要)
 echo 'LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH' >> ~/.bashrc
+
+# cgdb
+sudo yum install ncurses-devel ncurses -y
+sudo yum install texinfo -y
+sudo yum install readline-devel -y
+
+wget https://cgdb.me/files/cgdb-0.7.0.tar.gz
+tar -xvzf cgdb-0.7.0.tar.gz
+cd cgdb-0.7.0
+./configure --prefix=/usr/local
+make
+sudo make install
 
 # 安装pyqt5
 pip3 install pyqt5
