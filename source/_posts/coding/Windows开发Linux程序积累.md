@@ -61,6 +61,14 @@ scp root@192.168.198.130:/tmp/include.tgz /d/reference/refer/
 tar -xvzf include.tgz
 ```
 
+```bash
+# rsync同步
+# 记住: 如果源头是文件夹那么就会拷贝文件夹
+
+rsync -avh root@192.168.198.130:/usr/include /D/reference/refer/usr/
+```
+
+
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
 # 3. Windows类Linux操作环境
 
