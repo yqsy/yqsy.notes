@@ -7,6 +7,11 @@ categories: [网络相关]
 
 - [1. I/O框架库的作用](#1-io框架库的作用)
 - [2. 安装](#2-安装)
+- [3. 文档](#3-文档)
+- [4. 应用层面分析](#4-应用层面分析)
+    - [4.1. 主体对象event_base](#41-主体对象event_base)
+    - [4.2. 信号event](#42-信号event)
+    - [4.3. 定时器event](#43-定时器event)
 
 <!-- /TOC -->
 
@@ -22,3 +27,33 @@ categories: [网络相关]
 ```bash
 yum install libevent-devel -y
 ```
+
+<a id="markdown-3-文档" name="3-文档"></a>
+# 3. 文档
+* http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/event_8h.html#func-members
+
+<a id="markdown-4-应用层面分析" name="4-应用层面分析"></a>
+# 4. 应用层面分析
+
+
+<a id="markdown-41-主体对象event_base" name="41-主体对象event_base"></a>
+## 4.1. 主体对象event_base
+
+* 申请 `event_init`
+* 释放 `event_base_free`
+* 执行event loop `event_base_dispatch`
+* 退出event loop `event_base_loopexit`
+
+<a id="markdown-42-信号event" name="42-信号event"></a>
+## 4.2. 信号event
+
+* 申请 `evsignal_new`
+* 释放 `event_free`
+* 添加 `event_add(signal_event, NULL);`
+
+<a id="markdown-43-定时器event" name="43-定时器event"></a>
+## 4.3. 定时器event
+
+* 申请 `evtimer_new`
+* 释放 `event_free`
+* 添加 `event_add(timeout_event, &tv);`
