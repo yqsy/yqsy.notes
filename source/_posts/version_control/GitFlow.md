@@ -1,7 +1,7 @@
 ---
 title: GitFlow
 date: 2017-11-05 12:23:39
-categories: [微服务]
+categories: [版本管理]
 ---
 
 <!-- TOC -->
