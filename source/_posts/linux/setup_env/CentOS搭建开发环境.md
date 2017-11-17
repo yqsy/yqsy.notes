@@ -33,8 +33,8 @@ sudo yum install wget -y
 
 wget https://raw.githubusercontent.com/yqsy/linux_script/master/id_rsa.pub
 
-mkdir /root/.ssh
-chmod 700 /root/.ssh
+mkdir ~/.ssh
+chmod 700 ~/.ssh
 touch ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 cat id_rsa.pub >>  ~/.ssh/authorized_keys
