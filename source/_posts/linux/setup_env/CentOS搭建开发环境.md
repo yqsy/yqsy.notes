@@ -63,6 +63,8 @@ sudo sudo yum makecache
 sudo yum update -y
 sudo yum install vim -y
 sudo yum install net-tools -y
+sudo yum install telnet -y
+sudo yum install tcpdump -y
 sudo yum -y groups install "GNOME Desktop" 
 
 echo "exec gnome-session" >> ~/.xinitrc
