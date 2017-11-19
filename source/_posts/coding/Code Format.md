@@ -15,6 +15,17 @@ categories: [coding]
 # 1. C/C++/Java/JavaScript/Objective-C/Protobuf
 
 * https://clang.llvm.org/docs/ClangFormat.html
+* https://stackoverflow.com/questions/28896909/how-to-call-clang-format-over-a-cpp-project-folder
+
+```bash
+
+# 创建模板
+clang-format -style=llvm -dump-config > .clang-format
+
+# 格式化并替换
+find . -name '*.h' | xargs clang-format -i
+find . -name '*.cpp' | xargs clang-format -i
+```
 
 
 <a id="markdown-2-python" name="2-python"></a>
