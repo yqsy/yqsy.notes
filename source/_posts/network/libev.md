@@ -7,6 +7,7 @@ categories: [网络相关]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
+- [2. 安装](#2-安装)
 
 <!-- /TOC -->
 
@@ -14,5 +15,13 @@ categories: [网络相关]
 <a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 * http://software.schmorp.de/pkg/libev.html
-* http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod
+* http://cvs.schmorp.de/libev/ev.pod
 * http://cvs.schmorp.de/libev/README
+* https://github.com/enki/libev
+
+<a id="markdown-2-安装" name="2-安装"></a>
+# 2. 安装
+
+```bash
+sudo yum install libev-devel -y
+```
