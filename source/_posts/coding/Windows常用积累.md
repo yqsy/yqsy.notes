@@ -8,6 +8,7 @@ categories: [coding]
 
 - [1. 常用](#1-常用)
 - [2. 穿墙应用或国内源](#2-穿墙应用或国内源)
+- [3. Freecommander技巧](#3-freecommander技巧)
 
 <!-- /TOC -->
 
@@ -70,3 +71,18 @@ env `https_proxy` http://127.0.0.1:1080
 npm install cnpm -g --registry=https://registry.npm.taobao.org
 
 ```
+
+<a id="markdown-3-freecommander技巧" name="3-freecommander技巧"></a>
+# 3. Freecommander技巧
+
+定义快捷键:
+* Ctrl + Alt + P -> git push
+* Ctrl + Alt + F -> git fetch
+* Ctrl + Alt + L -> git log
+* Ctrl + Alt + D -> git diff
+
+设置:
+* 程序或文件夹: C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe
+* 安装文件夹: C:\Program Files\TortoiseGit\bin
+* 参数: /command:push /path:%ActivSel%
+
