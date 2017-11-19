@@ -9,16 +9,17 @@ categories: [linux, 系统管理]
 - [1. 特性](#1-特性)
     - [1.1. 快捷键](#11-快捷键)
 - [2. 使用场景](#2-使用场景)
-- [3. 各种符号含义](#3-各种符号含义)
-- [4. 运算符号](#4-运算符号)
-    - [4.1. 文件类型运算符](#41-文件类型运算符)
-    - [4.2. 文件权限运算符](#42-文件权限运算符)
-    - [4.3. 比较数字](#43-比较数字)
-- [5. 常用语句](#5-常用语句)
-- [6. 标注输入输出](#6-标注输入输出)
-- [7. sed的常见语法](#7-sed的常见语法)
-- [8. xargs/expr/exec](#8-xargsexprexec)
-- [9. sort,wc,uniq](#9-sortwcuniq)
+- [3. 竖杠的含义](#3-竖杠的含义)
+- [4. 各种符号含义](#4-各种符号含义)
+- [5. 运算符号](#5-运算符号)
+    - [5.1. 文件类型运算符](#51-文件类型运算符)
+    - [5.2. 文件权限运算符](#52-文件权限运算符)
+    - [5.3. 比较数字](#53-比较数字)
+- [6. 常用语句](#6-常用语句)
+- [7. 标注输入输出](#7-标注输入输出)
+- [8. sed的常见语法](#8-sed的常见语法)
+- [9. xargs/expr/exec](#9-xargsexprexec)
+- [10. sort,wc,uniq](#10-sortwcuniq)
 
 <!-- /TOC -->
 
@@ -55,8 +56,15 @@ categories: [linux, 系统管理]
 * https://stackoverflow.com/questions/209470/can-i-use-python-as-a-bash-replacement (使用python替代shell)
 * http://plumbum.readthedocs.io/en/latest/ (库)
 
-<a id="markdown-3-各种符号含义" name="3-各种符号含义"></a>
-# 3. 各种符号含义
+<a id="markdown-3-竖杠的含义" name="3-竖杠的含义"></a>
+# 3. 竖杠的含义
+
+* http://www.linfo.org/vertical_bar_character.html
+* http://www.linfo.org/pipe.html
+
+
+<a id="markdown-4-各种符号含义" name="4-各种符号含义"></a>
+# 4. 各种符号含义
 
 符号|含义
 -|-
@@ -72,11 +80,11 @@ $?|退出码
 * 引号中的任何东西都会被当成一个参数
 
 
-<a id="markdown-4-运算符号" name="4-运算符号"></a>
-# 4. 运算符号
+<a id="markdown-5-运算符号" name="5-运算符号"></a>
+# 5. 运算符号
 
-<a id="markdown-41-文件类型运算符" name="41-文件类型运算符"></a>
-## 4.1. 文件类型运算符
+<a id="markdown-51-文件类型运算符" name="51-文件类型运算符"></a>
+## 5.1. 文件类型运算符
 
 运算符|用于测试
 -|-
@@ -89,8 +97,8 @@ $?|退出码
 -S|套接字
 
 
-<a id="markdown-42-文件权限运算符" name="42-文件权限运算符"></a>
-## 4.2. 文件权限运算符
+<a id="markdown-52-文件权限运算符" name="52-文件权限运算符"></a>
+## 5.2. 文件权限运算符
 
 运算符|用于测试
 -|-
@@ -101,8 +109,8 @@ $?|退出码
 -g|Setgid
 -k|Sticky
 
-<a id="markdown-43-比较数字" name="43-比较数字"></a>
-## 4.3. 比较数字
+<a id="markdown-53-比较数字" name="53-比较数字"></a>
+## 5.3. 比较数字
 
 运算符|当参数一与参数二相比,....时,返回true
 -|-
@@ -113,8 +121,8 @@ $?|退出码
 -le|更小或相等
 -ge|更大或相等
  
-<a id="markdown-5-常用语句" name="5-常用语句"></a>
-# 5. 常用语句
+<a id="markdown-6-常用语句" name="6-常用语句"></a>
+# 6. 常用语句
 
 ```bash
 # 条件判断
@@ -181,8 +189,8 @@ rm -f $FILE
 ```
 
 
-<a id="markdown-6-标注输入输出" name="6-标注输入输出"></a>
-# 6. 标注输入输出
+<a id="markdown-7-标注输入输出" name="7-标注输入输出"></a>
+# 7. 标注输入输出
 
 按`ctrl-d`终止当前终端的标准输入并终止命令.`ctrl-c`终止当前进程的运行.
 
@@ -205,8 +213,8 @@ ls /ffffffff > f 2>&1
 head < /proc/cpuinfo
 ```
 
-<a id="markdown-7-sed的常见语法" name="7-sed的常见语法"></a>
-# 7. sed的常见语法
+<a id="markdown-8-sed的常见语法" name="8-sed的常见语法"></a>
+# 8. sed的常见语法
 
 ```bash
 
@@ -223,8 +231,8 @@ sed 's/:/%/g' /etc/passwd
 sed 3,6d /etc/passwd
 ```
 
-<a id="markdown-8-xargsexprexec" name="8-xargsexprexec"></a>
-# 8. xargs/expr/exec
+<a id="markdown-9-xargsexprexec" name="9-xargsexprexec"></a>
+# 9. xargs/expr/exec
 当把海量的文件当作一个命令的参数时,该命令或者shell可能会告诉你缓冲不足以容纳这些参数,解决这个问题,可用`xargs`,它能对自身输入流的每个文件名逐个地执行命令
 
 ```bash
@@ -237,8 +245,8 @@ find . -name '*.gif' -exec file {} \;
 
 exec命令时shell内置的,他会用其后的程序的进程来取代你当前的shell进程,当在shell窗口中运行exec cat时,按下ctrl-d或ctrl-c时,shell窗口就会小时,因为没有任何子进程了
 
-<a id="markdown-9-sortwcuniq" name="9-sortwcuniq"></a>
-# 9. sort,wc,uniq
+<a id="markdown-10-sortwcuniq" name="10-sortwcuniq"></a>
+# 10. sort,wc,uniq
 
 ```bash
 # 个人账号进行排序
