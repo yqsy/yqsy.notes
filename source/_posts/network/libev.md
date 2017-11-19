@@ -14,3 +14,5 @@ categories: [网络相关]
 <a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 * http://software.schmorp.de/pkg/libev.html
+* http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod
+* http://cvs.schmorp.de/libev/README
