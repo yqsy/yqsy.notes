@@ -9,6 +9,9 @@ categories: [coding]
 - [1. 常用](#1-常用)
 - [2. 穿墙应用或国内源](#2-穿墙应用或国内源)
 - [3. Freecommander技巧](#3-freecommander技巧)
+    - [3.1. git](#31-git)
+    - [3.2. 比较](#32-比较)
+    - [3.3. everything](#33-everything)
 
 <!-- /TOC -->
 
@@ -75,14 +78,34 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 <a id="markdown-3-freecommander技巧" name="3-freecommander技巧"></a>
 # 3. Freecommander技巧
 
+<a id="markdown-31-git" name="31-git"></a>
+## 3.1. git
 定义快捷键:
 * Ctrl + Alt + P -> git push
-* Ctrl + Alt + F -> git fetch
 * Ctrl + Alt + L -> git log
 * Ctrl + Alt + D -> git diff
+* Ctrl + Alt + C -> git commit
 
 设置:
 * 程序或文件夹: C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe
 * 安装文件夹: C:\Program Files\TortoiseGit\bin
 * 参数: /command:push /path:%ActivSel%
 
+
+<a id="markdown-32-比较" name="32-比较"></a>
+## 3.2. 比较
+
+设置:
+* 程序或文件夹: C:\Program Files\Beyond Compare 4\BCompare.exe
+* 安装文件夹: C:\Program Files\Beyond Compare 4
+* 参数: %LeftSel% %RightSel%
+
+<a id="markdown-33-everything" name="33-everything"></a>
+## 3.3. everything
+定义快捷键:
+* Ctrl + Alt + F -> 搜索active 目录
+
+设置:
+* 程序或文件夹: C:\Program Files\Everything\Everything.exe
+* 安装文件夹: C:\Program Files\Everything
+* 参数: -filename %ActivDir%
