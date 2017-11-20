@@ -23,8 +23,7 @@ categories: [coding]
 clang-format -style=llvm -dump-config > .clang-format
 
 # 格式化并替换
-find . -name '*.h' | xargs clang-format -i
-find . -name '*.cpp' | xargs clang-format -i
+find . -name '*.h' -type f -print0 | xargs -0 clang-format -i
 ```
 
 

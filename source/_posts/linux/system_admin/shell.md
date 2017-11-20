@@ -19,6 +19,7 @@ categories: [linux, 系统管理]
 - [7. 标注输入输出](#7-标注输入输出)
 - [8. sed的常见语法](#8-sed的常见语法)
 - [9. xargs/expr/exec](#9-xargsexprexec)
+    - [9.1. xargs和exec在使用中的不同](#91-xargs和exec在使用中的不同)
 - [10. sort,wc,uniq](#10-sortwcuniq)
 
 <!-- /TOC -->
@@ -234,6 +235,27 @@ sed 3,6d /etc/passwd
 <a id="markdown-9-xargsexprexec" name="9-xargsexprexec"></a>
 # 9. xargs/expr/exec
 当把海量的文件当作一个命令的参数时,该命令或者shell可能会告诉你缓冲不足以容纳这些参数,解决这个问题,可用`xargs`,它能对自身输入流的每个文件名逐个地执行命令
+
+<a id="markdown-91-xargs和exec在使用中的不同" name="91-xargs和exec在使用中的不同"></a>
+## 9.1. xargs和exec在使用中的不同
+
+* https://en.wikipedia.org/wiki/Xargs
+* https://www.endpoint.com/blog/2010/07/28/efficiency-of-find-exec-vs-find-xargs
+
+```bash
+
+# 下面两句在文件多时会出错Argument list too long
+rm /path/*
+rm $(find /path -type f)
+
+# xargs本质上就是管道, 一个输出作为另一个命令的输入, 参数全部传
+# xargs用时一定要注意加print0和xargs -0,防止文件名有空格
+find . -name '*.cpp' -type f -print0 | xargs -0 file
+
+# 或者直接使用-exec,参数是一个一个传
+# $0是脚本名 {}是find出的单个文件名
+find . -name '*.h' -type f -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+```
 
 ```bash
 # 验证.gif是否是真的gif
