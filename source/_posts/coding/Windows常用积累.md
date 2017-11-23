@@ -12,6 +12,7 @@ categories: [coding]
     - [3.1. git](#31-git)
     - [3.2. 比较](#32-比较)
     - [3.3. everything](#33-everything)
+- [4. visual code 积累](#4-visual-code-积累)
 
 <!-- /TOC -->
 
@@ -112,3 +113,21 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 * 程序或文件夹: C:\Program Files\Everything\Everything.exe
 * 安装文件夹: C:\Program Files\Everything
 * 参数: -filename %ActivDir%
+
+<a id="markdown-4-visual-code-积累" name="4-visual-code-积累"></a>
+# 4. visual code 积累
+
+* https://code.visualstudio.com/insiders (多个目录)
+
+插件:
+* c/c++
+* Clang-Format
+* Python
+* Markdown TOC
+* Material Icon Theme
+* Markdown PDF
+
+折叠技巧:
+* https://stackoverflow.com/questions/30067767/how-do-i-collapse-sections-of-code-in-visual-studio-code-for-windows
+* ctrl+k,ctrl+0 
+* ctrl+k,ctrl+j
