@@ -86,7 +86,7 @@ sudo make install
 echo 'LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH' >> ~/.bashrc
 
-# cgdb
+# cgdb(可用gdb --tui替代吧)
 sudo yum install ncurses-devel ncurses -y
 sudo yum install texinfo -y
 sudo yum install readline-devel -y
