@@ -47,6 +47,9 @@ dxdiag
 
 # mstsc full screen on second monitor
 http://www.fixedbyvonnie.com/2013/12/how-to-open-full-screen-remote-desktop-session-secondary-monitor-in-windows/#.WUi7XeuGOHs
+
+# git bahs 在conenum以管理员启动
+"%ConEmuDrive%\Program Files (x86)\Git\bin\sh.exe" --login -i -new_console:a
 ```
 
 <a id="markdown-2-穿墙应用或国内源" name="2-穿墙应用或国内源"></a>
