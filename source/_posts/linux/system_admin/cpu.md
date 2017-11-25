@@ -20,5 +20,6 @@ grep 'processor' /proc/cpuinfo
 # 2. 查看cpu信息
 ```
 cat /proc/cpuinfo
+
 lscpu
 ```
