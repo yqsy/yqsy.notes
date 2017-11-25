@@ -14,9 +14,10 @@ categories: [coding]
     - [3.3. MSYS](#33-msys)
     - [3.4. MinGW-w64](#34-mingw-w64)
     - [3.5. MYSYS2](#35-mysys2)
-- [4. 代码同步](#4-代码同步)
-    - [4.1. beyond compare](#41-beyond-compare)
-    - [4.2. rsync+inotifywait](#42-rsyncinotifywait)
+- [4. windows g++ 编译器选择](#4-windows-g-编译器选择)
+- [5. 代码同步](#5-代码同步)
+    - [5.1. beyond compare](#51-beyond-compare)
+    - [5.2. rsync+inotifywait](#52-rsyncinotifywait)
 
 <!-- /TOC -->
 
@@ -96,15 +97,19 @@ Minimalist GNU for Windows,用于进行Windows应用开发的GNU工具链(开发
 
 fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 
-<a id="markdown-4-代码同步" name="4-代码同步"></a>
-# 4. 代码同步
+<a id="markdown-4-windows-g-编译器选择" name="4-windows-g-编译器选择"></a>
+# 4. windows g++ 编译器选择
+* https://www.zhihu.com/question/39952667
 
-<a id="markdown-41-beyond-compare" name="41-beyond-compare"></a>
-## 4.1. beyond compare
+<a id="markdown-5-代码同步" name="5-代码同步"></a>
+# 5. 代码同步
+
+<a id="markdown-51-beyond-compare" name="51-beyond-compare"></a>
+## 5.1. beyond compare
 文件夹同步-镜像功能,使用sftp协议,缺点是需要手动点击同步,比较繁琐
 
-<a id="markdown-42-rsyncinotifywait" name="42-rsyncinotifywait"></a>
-## 4.2. rsync+inotifywait
+<a id="markdown-52-rsyncinotifywait" name="52-rsyncinotifywait"></a>
+## 5.2. rsync+inotifywait
 
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
 * https://github.com/thekid/inotify-win
