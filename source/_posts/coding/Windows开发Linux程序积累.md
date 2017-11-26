@@ -126,7 +126,8 @@ inotifywait -mrq . | while read file ; do
     echo '111'
 done
 
-inotifywait -mrq . | while read file ; do
-    rsync -av . --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test
+inotifywait -mrq . --exclude '.git' | while read file ; do
+    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete root@192.168.2.153:/root/reference/linux_socket_test
+    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete pi@192.168.2.127:/home/pi/my/linux_socket_test
 done
 ```
