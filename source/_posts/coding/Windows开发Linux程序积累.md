@@ -113,7 +113,7 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
 * https://github.com/thekid/inotify-win
-
+* http://blog.phpdr.net/windows%E4%B8%8Binotifywait%E5%92%8Crsync%E5%85%A8%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5.html (直接下载的,如果没有就手动编译一个版本吧,这么小也不可能有毒)
 可以`排除.gitignore`中的文件以及`.git`文件夹,还有`删除多余的文件`
 ```bash
 rsync -av ./ --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test
