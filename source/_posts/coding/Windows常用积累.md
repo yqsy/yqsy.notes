@@ -131,3 +131,5 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 * https://stackoverflow.com/questions/30067767/how-do-i-collapse-sections-of-code-in-visual-studio-code-for-windows
 * ctrl+k,ctrl+0 
 * ctrl+k,ctrl+j
+
+修改的设置:
