@@ -108,6 +108,11 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 ## 5.1. beyond compare
 文件夹同步-镜像功能,使用sftp协议,缺点是需要手动点击同步,比较繁琐
 
+```bash
+# 目的文件夹格式
+sftp://root@vm1://root/reference/linux_socket_test
+```
+
 <a id="markdown-52-rsyncinotifywait" name="52-rsyncinotifywait"></a>
 ## 5.2. rsync+inotifywait
 
