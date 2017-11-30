@@ -20,7 +20,10 @@ categories: [网络相关]
 # 1. 文档
 * http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/event_8h.html#func-members
 * http://www.wangafu.net/~nickm/libevent-book/
-
+* http://www.wangafu.net/~nickm/libevent-book/Ref4_event.html (常量看这个)
+* http://www.wangafu.net/~nickm/libevent-book/Ref6_bufferevent.html (buffer event)
+* http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/buffer_8h.html (bufferevent 声明查看这个)
+* site:http://www.wangafu.net/~nickm/libevent-2.0/doxygen (这样搜索函数)
 
 <a id="markdown-2-io框架库的作用" name="2-io框架库的作用"></a>
 # 2. I/O框架库的作用
