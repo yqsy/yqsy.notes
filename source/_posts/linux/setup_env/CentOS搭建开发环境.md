@@ -69,6 +69,7 @@ sudo yum install epel-release -y
 sudo yum install pv -y
 sudo yum install boost-devel -y
 sudo yum install strace -y
+sudo yum install clang -y
 
 sudo yum -y groups install "GNOME Desktop" 
 
