@@ -455,7 +455,9 @@ REDIS_ZSET|有序集合对象
 
 <a id="markdown-73-不同类型值对象的type命令输出" name="73-不同类型值对象的type命令输出"></a>
 ## 7.3. 不同类型值对象的TYPE命令输出
+
 对象|对象type属性的值|TYPE命令的输出
+-|-|-
 字符串对象|REDIS_STRING|"string"
 列表对象|REDIS_LIST|"list"
 哈希对象|REDIS_HASH|"hash"
