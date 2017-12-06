@@ -131,8 +131,8 @@ inotifywait -mrq . | while read file ; do
     echo '111'
 done
 
-inotifywait -mrq . --exclude '.git' | while read file ; do
-    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force root@192.168.2.153:/root/reference/linux_socket_test
-    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force pi@192.168.2.127:/home/pi/my/linux_socket_test
+inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug' | while read file ; do
+    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force root@vm1:/root/reference/linux_socket_test
+    echo {$file}
 done
 ```
