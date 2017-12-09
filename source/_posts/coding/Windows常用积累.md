@@ -122,6 +122,7 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 插件:
 * c/c++
 * Clang-Format
+* c/c++ Clang Command Adapter
 * Python
 * Markdown TOC
 * Material Icon Theme

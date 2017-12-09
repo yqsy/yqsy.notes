@@ -135,4 +135,6 @@ inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug' | while read
     rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force root@vm1:/root/reference/linux_socket_test
     echo {$file}
 done
+
+# --delete-excluded 看情况加不加,会清除中间文件
 ```
