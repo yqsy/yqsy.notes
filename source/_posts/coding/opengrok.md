@@ -74,6 +74,14 @@ mklink /J libev D:\reference\refer\libev
 mklink /J shadowsocks-libev D:\reference\refer\shadowsocks-libev
 mklink /J shadowsocks D:\reference\refer\shadowsocks
 mklink /J linux_include D:\reference\refer\usr\include
+mklink /J asio D:\reference\refer\asio
+mklink /J WebBench D:\reference\refer\WebBench
+mklink /J redis D:\reference\refer\redis
+mklink /J protobuf D:\reference\refer\protobuf
+mklink /J nginx D:\reference\refer\nginx
+mklink /J libzmq D:\reference\refer\libzmq
+mklink /J memcached D:\reference\refer\memcached
+mklink /J leveldb D:\reference\refer\leveldb
 
 java -jar  D:/tools/opengrok/opengrok-1.1-rc17/lib/opengrok.jar -P -S -v -s D:/reference/opengrok_projects -d D:/tools/opengrok/opengrok-1.1-rc17/data -W D:/tools/opengrok/opengrok-1.1-rc17/data/configuration.xml
 ```
