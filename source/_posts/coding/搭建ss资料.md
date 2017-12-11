@@ -22,6 +22,8 @@ categories: [coding]
 * https://blog.chionlab.moe/2016/01/27/optimize-shadowsocks-on-openwrt/ (openwrt优化)
 * https://www.zhihu.com/question/32229915?from=profile_question_card (无污染dns)
 * https://github.com/yqsy/linux_script (我自己的搭建过程mt)
+* https://www.zhihu.com/question/36258781/answer/98944369 (各种方案)
+
 
 <a id="markdown-11-客户端" name="11-客户端"></a>
 ## 1.1. 客户端

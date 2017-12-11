@@ -1,5 +1,5 @@
 ---
-title: opengrok.md
+title: opengrok
 date: 2017-12-10 12:03:28
 categories: [coding]
 ---

@@ -20,3 +20,5 @@ categories: [other]
 * https://www.zhihu.com/question/49629610/answer/126092240 (内网穿透)
 * https://www.zhihu.com/question/49629610/answer/190228044 (内网穿透)
 * http://zhuanlan.zhihu.com/p/30351943 (原理介绍) 
+* https://www.zhihu.com/question/36106420/answer/65939201 (局域网视频网站)
+
