@@ -29,7 +29,7 @@ pic ttcp.pic | groff | ps2eps > ttcp.eps
 epstopdf ttcp.eps
 ```
 
-* https://github.com/chenshuo/recipes/blob/master/tpc/ttcp.pic
+https://github.com/chenshuo/recipes/blob/master/tpc/ttcp.pic
 ```
 .PS
 C: box invis "client"
