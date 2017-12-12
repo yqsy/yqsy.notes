@@ -86,7 +86,7 @@ mklink /J leveldb D:\reference\refer\leveldb
 mklink /J ace D:\reference\refer\ACE-src-6.4.6\ACE_wrappers
 mklink /J brpc D:\reference\refer\brpc
 mklink /J rabbitmq-server D:\reference\refer\rabbitmq-server
-
+mklink /J libgo D:\reference\refer\libgo
 
 java -jar  D:/tools/opengrok/opengrok-1.1-rc17/lib/opengrok.jar -P -S -v -s D:/reference/opengrok_projects -d D:/tools/opengrok/opengrok-1.1-rc17/data -W D:/tools/opengrok/opengrok-1.1-rc17/data/configuration.xml
 ```

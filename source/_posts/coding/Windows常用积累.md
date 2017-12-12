@@ -134,3 +134,6 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 * ctrl+k,ctrl+j
 
 修改的设置:
+
+* https://code.visualstudio.com/docs/languages/cpp (c++ auto complete)
+* "editor.formatOnSave": true,
