@@ -28,24 +28,28 @@ sudo systemctl restart network
 <a id="markdown-3-设置证书" name="3-设置证书"></a>
 # 3. 设置证书
 ```bash
-# 好像国内默认会选择163的了?
-sudo yum install wget -y 
-
-wget https://raw.githubusercontent.com/yqsy/linux_script/master/id_rsa.pub
-
+curl -O https://raw.githubusercontent.com/yqsy/linux_script/master/id_rsa.pub
 mkdir ~/.ssh
 chmod 700 ~/.ssh
 touch ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 cat id_rsa.pub >>  ~/.ssh/authorized_keys
+rm id_rsa.pub -f
+
+# 禁止密码
+sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
 systemctl restart sshd
 ```
 
 <a id="markdown-4-设置清华源" name="4-设置清华源"></a>
 # 4. 设置清华源
 * https://mirrors.tuna.tsinghua.edu.cn/help/centos/
-
+* https://docs.oracle.com/cd/E37670_01/E37355/html/ol_creating_yum_repo.html
 ```bash
+
+# 查看源(是国内就不用设置了)
+yum repolist
+
 # 备份
 sudo mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
 
@@ -60,6 +64,10 @@ sudo sudo yum makecache
 # 5. 安装开发环境
 
 ```bash
+
+# 关闭iptables
+sudo systemctl stop firewalld.service && sudo systemctl disable firewalld.service
+
 sudo yum update -y
 sudo yum install vim -y
 sudo yum install net-tools -y

@@ -51,6 +51,7 @@ categories: [coding]
 
 * D:/reference/refer/usr/include
 * D:/reference/refer/usr/include/c++/4.8.2
+* D:/reference/refer/usr/local/include
 
 ```bash
 # linux
@@ -58,7 +59,7 @@ categories: [coding]
 tar -cvzf /tmp/include.tgz /usr/include
 
 # windows
-scp root@192.168.198.130:/tmp/include.tgz /d/reference/refer/
+scp root@vm1:/tmp/include.tgz /d/reference/refer/
 tar -xvzf include.tgz
 ```
 
@@ -66,9 +67,9 @@ tar -xvzf include.tgz
 # rsync同步
 # 记住: 如果源头是文件夹那么就会拷贝文件夹
 
-rsync -avh root@192.168.198.130:/usr/include /D/reference/refer/usr/
+rsync -avh --force root@vm1:/usr/include /D/reference/refer/usr/
+rsync -avh --force root@vm1:/usr/local/include /D/reference/refer/usr/local/
 ```
-
 
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
 # 3. Windows类Linux操作环境
@@ -119,6 +120,7 @@ sftp://root@vm1://root/reference/linux_socket_test
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
 * https://github.com/thekid/inotify-win
 * http://blog.phpdr.net/windows%E4%B8%8Binotifywait%E5%92%8Crsync%E5%85%A8%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5.html (直接下载的,如果没有就手动编译一个版本吧,这么小也不可能有毒)
+* https://www.computerhope.com/unix/rsync.htm
 可以`排除.gitignore`中的文件以及`.git`文件夹,还有`删除多余的文件`
 ```bash
 rsync -av ./ --filter=':- .gitignore' --cvs-exclude --delete root@192.168.198.130:/root/reference/linux_socket_test

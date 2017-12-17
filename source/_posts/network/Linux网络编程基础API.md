@@ -115,6 +115,12 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout);
 
 ET模式在很大程度上降低了同一个epoll事件被重复触发的次数,因此效率要比LT模式高.
 
+(一般都是使用Level trigger)
+* 没有benchmarks对比电平触发LT和边沿触发ET谁更快
+* Edge trigger works best for writing and accepting (省了很多麻烦(write要主动关闭事件监听), (accept文件描述符不够时会死循环))
+* Level trigger works best for reading data (不会造成饥饿)
+* Current Linux kernel doesn't support mix LT/ET on socket
+
 <a id="markdown-44-三者区别" name="44-三者区别"></a>
 ## 4.4. 三者区别
 
