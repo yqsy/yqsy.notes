@@ -22,6 +22,9 @@ categories: [coding]
 # 创建模板
 clang-format -style=llvm -dump-config > .clang-format
 
+# 左大括号换行
+BreakBeforeBraces: Allman
+
 # 格式化并替换
 find . -name '*.h' -type f -print0 | xargs -0 clang-format -i
 ```
