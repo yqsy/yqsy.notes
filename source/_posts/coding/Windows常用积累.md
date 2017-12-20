@@ -86,6 +86,7 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 ## 3.1. git
 定义快捷键:
 * Ctrl + Alt + P -> git push
+* Ctrl + Alt + U -> git pull
 * Ctrl + Alt + L -> git log
 * Ctrl + Alt + D -> git diff
 * Ctrl + Alt + C -> git commit
