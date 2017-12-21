@@ -46,29 +46,62 @@ categories: [coding]
 
 参考
 * https://code.visualstudio.com/docs/languages/cpp
+* https://stackoverflow.com/questions/17939930/finding-out-what-the-gcc-include-path-is (得知头文件路径)
 
 `Ctrl+Shift+P`将头文件目录设置成linux的头文件
 
-* D:/reference/refer/usr/include
-* D:/reference/refer/usr/include/c++/4.8.2
-* D:/reference/refer/usr/local/include
+```
+"name": "Win32",
+"includePath": [
+    "${workspaceRoot}",
+    "C:/work/source/refer/usr/include/c++/4.8.5",
+    "C:/work/source/refer/usr/include/c++/4.8.5/x86_64-redhat-linux",
+    "C:/work/source/refer/usr/include/c++/4.8.5/backward",
+    "C:/work/source/refer/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
+    "C:/work/source/refer/usr/include",
+    "C:/work/source/refer/muduo"
+],
+```
 
 ```bash
+# 得知头文件搜索路径
+`gcc -print-prog-name=cc1` -v
+`gcc -print-prog-name=cc1plus` -v
+
+# c
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
+/usr/local/include
+/usr/include
+
+# c++
+/usr/include/c++/4.8.5
+/usr/include/c++/4.8.5/x86_64-redhat-linux
+/usr/include/c++/4.8.5/backward
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
+/usr/local/include
+/usr/include
+
 # linux
 # 拷贝头文件
 tar -cvzf /tmp/include.tgz /usr/include
+tar -cvzf /tmp/lib_gcc_include.tgz /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
 
 # windows
-scp root@vm1:/tmp/include.tgz /d/reference/refer/
+scp root@vm1:/tmp/include.tgz C:/work/source/refer
 tar -xvzf include.tgz
+
+scp root@vm1:/tmp/lib_gcc_include.tgz C:/work/source/refer
+tar -xvzf lib_gcc_include.tgz
 ```
 
 ```bash
 # rsync同步
 # 记住: 如果源头是文件夹那么就会拷贝文件夹
 
-rsync -avh --force root@vm1:/usr/include /D/reference/refer/usr/
-rsync -avh --force root@vm1:/usr/local/include /D/reference/refer/usr/local/
+rsync -avh --force root@vm1:/usr/include C:/work/source/refer
+
+# TODO
+# /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
 ```
 
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
