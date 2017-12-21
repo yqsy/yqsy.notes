@@ -69,28 +69,33 @@ categories: [coding]
 `gcc -print-prog-name=cc1plus` -v
 
 # c
-/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
 /usr/local/include
 /usr/include
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
+
 
 # c++
+/usr/local/include
+/usr/include
 /usr/include/c++/4.8.5
 /usr/include/c++/4.8.5/x86_64-redhat-linux
 /usr/include/c++/4.8.5/backward
 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
-/usr/local/include
-/usr/include
 
 # linux
 # 拷贝头文件
 tar -cvzf /tmp/include.tgz /usr/include
 tar -cvzf /tmp/lib_gcc_include.tgz /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
 
+
 # windows
-scp root@vm1:/tmp/include.tgz C:/work/source/refer
+
+dstpath=C:/work/source/refer
+
+scp root@vm1:/tmp/include.tgz $dstpath
 tar -xvzf include.tgz
 
-scp root@vm1:/tmp/lib_gcc_include.tgz C:/work/source/refer
+scp root@vm1:/tmp/lib_gcc_include.tgz $dstpath
 tar -xvzf lib_gcc_include.tgz
 ```
 
@@ -98,7 +103,10 @@ tar -xvzf lib_gcc_include.tgz
 # rsync同步
 # 记住: 如果源头是文件夹那么就会拷贝文件夹
 
-rsync -avh --force root@vm1:/usr/include C:/work/source/refer
+# TODO
+# dstpath=D:/reference/refer
+
+# rsync -avh --force root@vm1:/usr/include C:/work/source/refer
 
 # TODO
 # /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
