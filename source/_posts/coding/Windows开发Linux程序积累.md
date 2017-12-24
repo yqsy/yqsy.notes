@@ -59,6 +59,7 @@ categories: [coding]
     "C:/work/source/refer/usr/include/c++/4.8.5/backward",
     "C:/work/source/refer/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
     "C:/work/source/refer/usr/include",
+    "C:/work/source/refer/usr/local/include",
     "C:/work/source/refer/muduo"
 ],
 ```
@@ -86,30 +87,35 @@ categories: [coding]
 # 拷贝头文件
 tar -cvzf /tmp/include.tgz /usr/include
 tar -cvzf /tmp/lib_gcc_include.tgz /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
-
+tar -cvzf /tmp/usr_local_include.tgz /usr/local/include
 
 # windows
 
-dstpath=C:/work/source/refer
+dstpath=/c/work/source/refer
 
 scp root@vm1:/tmp/include.tgz $dstpath
 tar -xvzf include.tgz
 
 scp root@vm1:/tmp/lib_gcc_include.tgz $dstpath
 tar -xvzf lib_gcc_include.tgz
+
+scp root@vm1:/tmp/usr_local_include.tgz $dstpath
+tar -xvzf usr_local_include.tgz
 ```
 
 ```bash
 # rsync同步
 # 记住: 如果源头是文件夹那么就会拷贝文件夹
 
-# TODO
-# dstpath=D:/reference/refer
+dstpath=/d/reference/refer
 
-# rsync -avh --force root@vm1:/usr/include C:/work/source/refer
+rsync -avh --force root@vm1:/usr/include $dstpath
 
-# TODO
-# /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include
+mkdir -p $dstpath/usr/lib/gcc/x86_64-redhat-linux/4.8.5
+rsync -avh --force root@vm1:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include $dstpath/usr/lib/gcc/x86_64-redhat-linux/4.8.5
+
+mkdir -p $dstpath/usr/local
+rsync -avh --force root@vm1:/usr/local/include $dstpath/usr/local
 ```
 
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
