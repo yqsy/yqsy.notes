@@ -69,6 +69,11 @@ git clean -fxd
 
 # 清理未被忽视/文件夹
 git clean -fd
+
+# 删除已经提交但是ignore的文件 (漏掉了.cache?)
+git ls-files -ci --exclude-standard
+
+git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
 ```
 
 说明|指令
