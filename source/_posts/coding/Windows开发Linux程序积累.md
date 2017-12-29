@@ -107,7 +107,7 @@ tar -xvzf usr_local_include.tgz
 # rsync同步
 # 记住: 如果源头是文件夹那么就会拷贝文件夹
 
-dstpath=/d/reference/refer
+dstpath=/c/work/source/refer
 
 rsync -avh --force root@vm1:/usr/include $dstpath
 
