@@ -137,6 +137,7 @@ cd /opt/muduo-1.0.9
 wget https://github.com/chenshuo/muduo/archive/v1.0.9.tar.gz
 tar -xvzf v1.0.9.tar.gz
 cd muduo-1.0.9
+sed -i 's/# -DMUDUO_STD_STRING/-DMUDUO_STD_STRING/g'  CMakeLists.txt
 BUILD_TYPE=release ./build.sh -j2
 BUILD_TYPE=release ./build.sh install
 ```

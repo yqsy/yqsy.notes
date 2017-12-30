@@ -105,6 +105,7 @@ sudo yum install ncurses-devel ncurses -y
 sudo yum install texinfo -y
 sudo yum install readline-devel -y
 
+cd /opt
 wget https://cgdb.me/files/cgdb-0.7.0.tar.gz
 tar -xvzf cgdb-0.7.0.tar.gz
 cd cgdb-0.7.0
