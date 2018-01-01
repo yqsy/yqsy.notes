@@ -109,13 +109,18 @@ tar -xvzf usr_local_include.tgz
 
 dstpath=/c/work/source/refer
 
-rsync -avh --force root@vm1:/usr/include $dstpath/usr
+rsync -azvh --force root@vm1:/usr/include $dstpath/usr
 
 mkdir -p $dstpath/usr/lib/gcc/x86_64-redhat-linux/4.8.5
-rsync -avh --force root@vm1:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include $dstpath/usr/lib/gcc/x86_64-redhat-linux/4.8.5
+rsync -avzh --force root@vm1:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include $dstpath/usr/lib/gcc/x86_64-redhat-linux/4.8.5
 
 mkdir -p $dstpath/usr/local
-rsync -avh --force root@vm1:/usr/local/include $dstpath/usr/local
+rsync -azvh --force root@vm1:/usr/local/include $dstpath/usr/local
+
+# -a, --archive               archive mode;
+# -v, --verbose               increase verbosity
+# -h, --human-readable        output numbers in a human-readable format
+# -z, --compress              compress file data during the transfer
 ```
 
 <a id="markdown-3-windows类linux操作环境" name="3-windows类linux操作环境"></a>
