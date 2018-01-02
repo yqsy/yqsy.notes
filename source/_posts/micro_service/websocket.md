@@ -14,6 +14,7 @@ categories: [微服务]
 
 <a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
+
 * http://zhuanlan.zhihu.com/p/31894363
 * http://www.52im.net/thread-1266-1-1.html
 * https://en.wikipedia.org/wiki/WebSocket

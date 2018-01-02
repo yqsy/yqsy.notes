@@ -23,6 +23,11 @@ categories: [编程语言]
 * https://conan.io/
 * http://docs.conan.io/en/latest/introduction.html (文档)
 * https://bintray.com/conan/conan-transit (从原conan转移的)
+* https://en.wikipedia.org/wiki/List_of_software_package_management_systems (操作系统包管理)
+* https://en.wikipedia.org/wiki/Binary_repository_manager (二进制包管理)
+* http://mall.csdn.net/product/1237 (jfrog)
+* https://jfrog.com/
+
 
 <a id="markdown-2-实践" name="2-实践"></a>
 # 2. 实践
