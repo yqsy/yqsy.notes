@@ -16,3 +16,4 @@ categories: [编程语言]
 * http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000
 * http://www.jianshu.com/p/1256e2643923 (21分钟入门uml)
 * http://www.jianshu.com/p/e92a52770832 
+* http://blog.csdn.net/tianhai110/article/details/6339565 (几种关系的总结)

@@ -127,6 +127,7 @@ rsync -azvh --force root@vm1:/usr/local/include $dstpath/usr/local
 # 3. Windows类Linux操作环境
 
 * https://www.zhihu.com/question/22137175
+* https://www.zhihu.com/question/39952667 (怎么选择mingw mingw-w64 tdm-gcc)
 
 <a id="markdown-31-cygwin" name="31-cygwin"></a>
 ## 3.1. Cygwin

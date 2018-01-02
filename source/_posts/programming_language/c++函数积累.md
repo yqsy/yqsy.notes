@@ -6,24 +6,30 @@ categories: [编程语言]
 
 <!-- TOC -->
 
-- [1. split](#1-split)
-    - [1.1. 字符分割(c++11)](#11-字符分割c11)
-    - [1.2. 字符分割(c++98)](#12-字符分割c98)
-    - [1.3. 字符串分割(c++11)](#13-字符串分割c11)
-- [2. 指定位置寻找有分割符号的字符串](#2-指定位置寻找有分割符号的字符串)
-- [3. Trim(中文有问题把?)](#3-trim中文有问题把)
-- [4. 替换一个字符串](#4-替换一个字符串)
-- [5. 替换所有字符串](#5-替换所有字符串)
-- [6. 判断double是否相等](#6-判断double是否相等)
+- [1. 其他](#1-其他)
+- [2. split](#2-split)
+    - [2.1. 字符分割(c++11)](#21-字符分割c11)
+    - [2.2. 字符分割(c++98)](#22-字符分割c98)
+    - [2.3. 字符串分割(c++11)](#23-字符串分割c11)
+- [3. 指定位置寻找有分割符号的字符串](#3-指定位置寻找有分割符号的字符串)
+- [4. Trim(中文有问题把?)](#4-trim中文有问题把)
+- [5. 替换一个字符串](#5-替换一个字符串)
+- [6. 替换所有字符串](#6-替换所有字符串)
+- [7. 判断double是否相等](#7-判断double是否相等)
 
 <!-- /TOC -->
 
 
-<a id="markdown-1-split" name="1-split"></a>
-# 1. split
+<a id="markdown-1-其他" name="1-其他"></a>
+# 1. 其他 
 
-<a id="markdown-11-字符分割c11" name="11-字符分割c11"></a>
-## 1.1. 字符分割(c++11)
+* http://www.gingerbill.org/article/defer-in-cpp.html (defer)
+
+<a id="markdown-2-split" name="2-split"></a>
+# 2. split
+
+<a id="markdown-21-字符分割c11" name="21-字符分割c11"></a>
+## 2.1. 字符分割(c++11)
 ```c++
 std::vector<std::string> split(const std::string &str, char c) {
   std::vector<std::string> vec;
@@ -42,8 +48,8 @@ std::vector<std::string> split(const std::string &str, char c) {
 }
 ```
 
-<a id="markdown-12-字符分割c98" name="12-字符分割c98"></a>
-## 1.2. 字符分割(c++98)
+<a id="markdown-22-字符分割c98" name="22-字符分割c98"></a>
+## 2.2. 字符分割(c++98)
 ```c++
 const std::vector<std::string> split(const std::string &str, char c) {
   std::vector<std::string> vec;
@@ -63,8 +69,8 @@ const std::vector<std::string> split(const std::string &str, char c) {
 }
 ```
 
-<a id="markdown-13-字符串分割c11" name="13-字符串分割c11"></a>
-## 1.3. 字符串分割(c++11)
+<a id="markdown-23-字符串分割c11" name="23-字符串分割c11"></a>
+## 2.3. 字符串分割(c++11)
 
 ```c++
 std::vector<std::string> split(const std::string &str,
@@ -92,8 +98,8 @@ std::vector<std::string> split(const std::string &str,
 }
 ```
 
-<a id="markdown-2-指定位置寻找有分割符号的字符串" name="2-指定位置寻找有分割符号的字符串"></a>
-# 2. 指定位置寻找有分割符号的字符串
+<a id="markdown-3-指定位置寻找有分割符号的字符串" name="3-指定位置寻找有分割符号的字符串"></a>
+# 3. 指定位置寻找有分割符号的字符串
 ```c++
 bool GetSplitStringPosition(const std::string &str, const std::string &separate,
                             int position, std::string *out) {
@@ -137,8 +143,8 @@ bool GetSplitStringPosition(const std::string &str, const std::string &separate,
 }
 ```
 
-<a id="markdown-3-trim中文有问题把" name="3-trim中文有问题把"></a>
-# 3. Trim(中文有问题把?)
+<a id="markdown-4-trim中文有问题把" name="4-trim中文有问题把"></a>
+# 4. Trim(中文有问题把?)
 * http://www.cplusplus.com/reference/cctype/isspace/
 ```c++
 std::string trim(const std::string &str) {
@@ -151,8 +157,8 @@ std::string trim(const std::string &str) {
 }
 ```
 
-<a id="markdown-4-替换一个字符串" name="4-替换一个字符串"></a>
-# 4. 替换一个字符串
+<a id="markdown-5-替换一个字符串" name="5-替换一个字符串"></a>
+# 5. 替换一个字符串
 
 ```c++
 bool replace(std::string *str, const std::string &from, const std::string &to) {
@@ -164,8 +170,8 @@ bool replace(std::string *str, const std::string &from, const std::string &to) {
 }
 ```
 
-<a id="markdown-5-替换所有字符串" name="5-替换所有字符串"></a>
-# 5. 替换所有字符串
+<a id="markdown-6-替换所有字符串" name="6-替换所有字符串"></a>
+# 6. 替换所有字符串
 
 ```c++
 std::string ReplaceAll(std::string str, const std::string &from,
@@ -179,8 +185,8 @@ std::string ReplaceAll(std::string str, const std::string &from,
 }
 ```
 
-<a id="markdown-6-判断double是否相等" name="6-判断double是否相等"></a>
-# 6. 判断double是否相等
+<a id="markdown-7-判断double是否相等" name="7-判断double是否相等"></a>
+# 7. 判断double是否相等
 
 ```c++
 bool DoubleEquals(double a, double b, double epsilon /*= 0.000001*/) {
