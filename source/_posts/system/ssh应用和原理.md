@@ -6,30 +6,38 @@ categories: [系统底层]
 
 <!-- TOC -->
 
-- [1. 日常碰到的场景](#1-日常碰到的场景)
-- [2. SSH简介](#2-ssh简介)
-    - [2.1. SSH Transport Layer Protocol](#21-ssh-transport-layer-protocol)
-        - [2.1.1. based on tcp](#211-based-on-tcp)
-        - [2.1.2. Encryption](#212-encryption)
-        - [2.1.3. Data Integrity](#213-data-integrity)
-        - [2.1.4. Key Exchange](#214-key-exchange)
-    - [2.2. User Authentication Protocol](#22-user-authentication-protocol)
-    - [2.3. Connection Protocol](#23-connection-protocol)
-- [3. 中间人攻击](#3-中间人攻击)
-- [4. host key](#4-host-key)
-- [5. SSL和SSH](#5-ssl和ssh)
-- [6. TLS/SSL](#6-tlsssl)
+- [1. 资料](#1-资料)
+- [2. 日常碰到的场景](#2-日常碰到的场景)
+- [3. SSH简介](#3-ssh简介)
+    - [3.1. SSH Transport Layer Protocol](#31-ssh-transport-layer-protocol)
+        - [3.1.1. based on tcp](#311-based-on-tcp)
+        - [3.1.2. Encryption](#312-encryption)
+        - [3.1.3. Data Integrity](#313-data-integrity)
+        - [3.1.4. Key Exchange](#314-key-exchange)
+    - [3.2. User Authentication Protocol](#32-user-authentication-protocol)
+    - [3.3. Connection Protocol](#33-connection-protocol)
+- [4. 中间人攻击](#4-中间人攻击)
+- [5. host key](#5-host-key)
+- [6. SSL和SSH](#6-ssl和ssh)
+- [7. TLS/SSL](#7-tlsssl)
 
 <!-- /TOC -->
 
-<a id="markdown-1-日常碰到的场景" name="1-日常碰到的场景"></a>
-# 1. 日常碰到的场景
+<a id="markdown-1-资料" name="1-资料"></a>
+# 1. 资料
+
+* http://blog.csdn.net/is0501xql/article/details/8158327 (SSL协议详解)
+* http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html (SSH 阮一峰)
+
+
+<a id="markdown-2-日常碰到的场景" name="2-日常碰到的场景"></a>
+# 2. 日常碰到的场景
 * ssh登陆回话时,服务器的公钥保存在本机
 * ssh登陆使用Public Key作为身份校验,私钥存在本机
 * https (ssl/tls)
 
-<a id="markdown-2-ssh简介" name="2-ssh简介"></a>
-# 2. SSH简介
+<a id="markdown-3-ssh简介" name="3-ssh简介"></a>
+# 3. SSH简介
 * https://en.wikipedia.org/wiki/Secure_Shell
 * https://tools.ietf.org/html/rfc4251
 
@@ -43,14 +51,14 @@ authenticates the client-side user to the server. It runs over the transport lay
 multiplexes the encrypted tunnel into several logical channels. It runs over the user authentication protocol.
 
 
-<a id="markdown-21-ssh-transport-layer-protocol" name="21-ssh-transport-layer-protocol"></a>
-## 2.1. SSH Transport Layer Protocol
+<a id="markdown-31-ssh-transport-layer-protocol" name="31-ssh-transport-layer-protocol"></a>
+## 3.1. SSH Transport Layer Protocol
 * https://tools.ietf.org/html/rfc4253
 
 The SSH transport layer is a secure, low level transport protocol. It provides strong encryption(强加密), cryptographic host authentication(密码主机认证), and integrity protection(完整性保护).
 
-<a id="markdown-211-based-on-tcp" name="211-based-on-tcp"></a>
-### 2.1.1. based on tcp
+<a id="markdown-311-based-on-tcp" name="311-based-on-tcp"></a>
+### 3.1.1. based on tcp
 
 When used over TCP/IP, the server normally listens for connections onport 22.
 ```
@@ -58,8 +66,8 @@ $ telnet xx.xx.xx.xx
 SSH-2.0-OpenSSH_6.6.1
 ```
 
-<a id="markdown-212-encryption" name="212-encryption"></a>
-### 2.1.2. Encryption
+<a id="markdown-312-encryption" name="312-encryption"></a>
+### 3.1.2. Encryption
 `An encryption algorithm and a key will be negotiated during the key exchange.` When encryption is in effect, the packet length, padding length, payload, and padding fields of each packet MUST be encrypted with the given algorithm.
 
 一般采用对称加密算法加密数据吧,通过key exchange协商加密算法.
@@ -83,8 +91,8 @@ idea-cbc|	OPTIONAL|	IDEA in CBC mode
 cast128-cbc	|OPTIONAL	|CAST-128 in CBC mode
 none	|OPTIONAL|	no encryption; NOT RECOMMENDED
 
-<a id="markdown-213-data-integrity" name="213-data-integrity"></a>
-### 2.1.3. Data Integrity
+<a id="markdown-313-data-integrity" name="313-data-integrity"></a>
+### 3.1.3. Data Integrity
 
 消息码认证算法 消息认证码（带密钥的Hash函数）:密码学中，通信实体双方使用的一种验证机制，保证消息数据完整性的一种工具。构造方法由M.Bellare提出，安全性依赖于Hash函数，故也称带密钥的Hash函数。消息认证码是基于密钥和消息摘要所获得的一个值，`可用于数据源发认证和完整性校验`。 在发送数据之前，`发送方首先使用通信双方协商好的散列函数计算其摘要值`。在双方共享的会话密钥作用下，由摘要值获得消息验证码。之后，`它和数据一起被发送`。接收方收到报文后，首先利用会话密钥还原摘要值，同时利用散列函数在本地计算所收到数据的摘要值，并将这两个数据进行比对。若两者相等，则报文通过认证
 
@@ -101,8 +109,8 @@ hmac-md5-96	|OPTIONAL|	first 96 bits of HMAC-MD5 (digest length = 12, key length
 none|	OPTIONAL	|no MAC; NOT RECOMMENDED
 
 
-<a id="markdown-214-key-exchange" name="214-key-exchange"></a>
-### 2.1.4. Key Exchange
+<a id="markdown-314-key-exchange" name="314-key-exchange"></a>
+### 3.1.4. Key Exchange
 * https://en.wikipedia.org/wiki/Key_exchange
 * https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
 
@@ -114,21 +122,21 @@ diffie-hellman
 
 这个机制的巧妙在于需要安全通信的双方可以用这个方法确定对称密钥。然后可以用这个密钥进行加密和解密。但是注意，这个密钥交换协议/算法只能用于密钥的交换，而不能进行消息的加密和解密。双方确定要用的密钥后，要使用其他对称密钥操作加密算法实际加密和解密消息。
 
-<a id="markdown-22-user-authentication-protocol" name="22-user-authentication-protocol"></a>
-## 2.2. User Authentication Protocol
+<a id="markdown-32-user-authentication-protocol" name="32-user-authentication-protocol"></a>
+## 3.2. User Authentication Protocol
 有证书和密码验证
 * https://tools.ietf.org/html/rfc4252
 * http://blog.chinaunix.net/uid-21854925-id-3082425.html
 * http://blog.csdn.net/brandohero/article/details/8475244
 
 
-<a id="markdown-23-connection-protocol" name="23-connection-protocol"></a>
-## 2.3. Connection Protocol
+<a id="markdown-33-connection-protocol" name="33-connection-protocol"></a>
+## 3.3. Connection Protocol
 * https://tools.ietf.org/html/rfc4254
 
 
-<a id="markdown-3-中间人攻击" name="3-中间人攻击"></a>
-# 3. 中间人攻击
+<a id="markdown-4-中间人攻击" name="4-中间人攻击"></a>
+# 4. 中间人攻击
 * https://tlanyan.me/ssh-shadowsocks-prevent-man-in-middle-attack/
 * https://www.zhihu.com/question/20744215
 
@@ -136,8 +144,8 @@ TLS的握手依赖于“公开密钥加密算法（也叫非对称算法）”�
 
 自己理解: 想要抵御中间人攻击的话,只能让第三方证明了.
 
-<a id="markdown-4-host-key" name="4-host-key"></a>
-# 4. host key
+<a id="markdown-5-host-key" name="5-host-key"></a>
+# 5. host key
 存储在`known_hosts`
 
 The server host key is used during key exchange to verify that the client is really talking to the correct server. For this to be possible, `the client must have a priori knowledge of the server's public host key.`
@@ -160,13 +168,13 @@ Implementations SHOULD try to make the best effort to check host keys. An exampl
 没啥好的办法防范中间人攻击
 
 
-<a id="markdown-5-ssl和ssh" name="5-ssl和ssh"></a>
-# 5. SSL和SSH
+<a id="markdown-6-ssl和ssh" name="6-ssl和ssh"></a>
+# 6. SSL和SSH
 * https://security.stackexchange.com/questions/1599/what-is-the-difference-between-ssl-vs-ssh-which-is-more-secure
 
 
-<a id="markdown-6-tlsssl" name="6-tlsssl"></a>
-# 6. TLS/SSL
+<a id="markdown-7-tlsssl" name="7-tlsssl"></a>
+# 7. TLS/SSL
 
 * https://en.wikipedia.org/wiki/Transport_Layer_Security
 * https://segmentfault.com/a/1190000000476876

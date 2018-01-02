@@ -13,3 +13,4 @@ categories: [编程语言]
 # 1. 资源
 
 * http://www.oschina.net/translate/open-sourcing-a-python-project-the-right-way (以正确的方式开源python)
+* https://www.zhihu.com/question/19900260 (使用python会降低程序员的能力吗)

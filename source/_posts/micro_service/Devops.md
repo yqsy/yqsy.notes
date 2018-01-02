@@ -27,3 +27,5 @@ categories: [微服务]
 * https://www.jianshu.com/p/47287f203637 (初学者入门)
 * http://guide.daocloud.io/dcs/daocloud-services-9152664.html (dao cloud)
 * http://skyseraph.com/2016/07/18/Tools/Jenkins%20Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E5%8C%85%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA/ (jenkins gitlab持续集成)
+* https://www.zhihu.com/question/20069286 (大公司怎么环境部署和代码分发)
+* https://www.zhihu.com/question/24263552 (软件升级更新是个怎么样的过程)
