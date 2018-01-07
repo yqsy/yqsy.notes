@@ -171,12 +171,17 @@ sftp://root@vm1://root/reference/linux_socket_test
 ## 5.2. rsync+inotifywait
 
 inotifywait
-* https://github.com/thekid/inotify-win
-* http://blog.phpdr.net/windows%E4%B8%8Binotifywait%E5%92%8Crsync%E5%85%A8%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5.html (直接下载的,如果没有就手动编译一个版本吧,这么小也不可能有毒)
+* https://github.com/thekid/inotify-win (c# .net 4.0编译)
+* https://github.com/yqsy/inotify-win/files/1609484/inotifywait.zip
+
+```bash
+# 编译
+csc.exe /t:exe /out:inotifywait.exe src\*.cs
+```
 
 rsync
 * https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows/
-* https://www.computerhope.com/unix/rsync.htm
+* https://www.computerhope.com/unix/rsync.htm (用法)
 
 可以`排除.gitignore`中的文件以及`.git`文件夹,还有`删除多余的文件`
 ```bash
@@ -196,7 +201,7 @@ done
 # done
 
 # 建议用这种写法
-while inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug'; do
+while inotifywait -r . --exclude '.git|.idea|.vscode|cmake-build-debug'; do
     rsync -avh . --filter=':- .gitignore' --cvs-exclude  --force root@vm1:/root/reference/linux_socket_test
 done
 # --delete-excluded 看情况加不加,会清除中间文件
