@@ -12,6 +12,7 @@ categories: [编程语言]
 - [3. 配置文件](#3-配置文件)
 - [4. Boost](#4-boost)
 - [5. muduo](#5-muduo)
+- [6. glibc](#6-glibc)
 
 <!-- /TOC -->
 
@@ -145,4 +146,11 @@ cd muduo-1.0.9
 sed -i 's/# -DMUDUO_STD_STRING/-DMUDUO_STD_STRING/g'  CMakeLists.txt
 BUILD_TYPE=release ./build.sh -j2
 BUILD_TYPE=release ./build.sh install
+```
+
+<a id="markdown-6-glibc" name="6-glibc"></a>
+# 6. glibc
+可以让visual code 找到头文件
+```
+yum install glibc-devel.i686 -y
 ```

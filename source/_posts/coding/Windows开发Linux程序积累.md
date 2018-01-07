@@ -190,10 +190,15 @@ inotifywait -mrq . | while read file ; do
     echo '111'
 done
 
-inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug' | while read file ; do
-    rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force root@vm1:/root/reference/linux_socket_test
-    echo {$file}
-done
+# inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug' | while read file ; do
+#     rsync -avh . --filter=':- .gitignore' --cvs-exclude --delete-excluded --force root@vm1:/root/reference/linux_socket_test
+#     echo {$file}
+# done
 
+# 建议用这种写法
+while inotifywait -mrq . --exclude '.git|.idea|.vscode|cmake-build-debug'; do
+    rsync -avh . --filter=':- .gitignore' --cvs-exclude  --force root@vm1:/root/reference/linux_socket_test
+done
 # --delete-excluded 看情况加不加,会清除中间文件
+
 ```
