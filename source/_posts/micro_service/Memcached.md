@@ -20,6 +20,7 @@ categories: [微服务]
 * https://hub.docker.com/_/memcached/ (docker)
 * https://github.com/docker-library/memcached/blob/master/alpine/Dockerfile (docker file)
 * https://www.tutorialspoint.com/memcached/memcached_set_data.htm (turtoial)
+
 <a id="markdown-2-搭建" name="2-搭建"></a>
 # 2. 搭建
 
@@ -42,3 +43,24 @@ docker run --name my-memcache -p 11211:11211 -d memcached
    365 ./stats.c
     87 ./daemon.c
 ```
+
+存储
+* set (强行设置)
+* add (如果有key,则返回NOT_STORED)
+* replace (替换value)
+* append (字符串追加)
+* prepend (前向追加)
+* CAS (Check-And-Set)
+
+检索数据
+* get 
+* gets
+* incr 自增
+* decr 自减
+
+统计数据
+* stats
+* stats items
+* stats slabs
+* stats sizes
+* flush_all
