@@ -9,6 +9,7 @@ categories: [微服务]
 - [1. 资源](#1-资源)
 - [2. 搭建](#2-搭建)
 - [3. 代码阅读整理](#3-代码阅读整理)
+- [4. 接口/使用](#4-接口使用)
 
 <!-- /TOC -->
 
@@ -43,6 +44,43 @@ docker run --name my-memcache -p 11211:11211 -d memcached
    365 ./stats.c
     87 ./daemon.c
 ```
+
+* 使用的是libevent
+* 多线程(pthread_create)
+
+```
+main
+void thread_init(int nthreads, struct event_base *main_base)
+static void create_worker(void *(*func)(void *), void *arg) 
+pthread_create
+
+线程跑的函数是
+worker_libevent
+
+LIBEVENT_THREAD 作为函数
+
+用这个struct event_base *base;作为参数
+
+event_base_loop(me->base, 0); 让线程跑event loop!
+
+threads[0].base = main_base;  为什么只设置了线程数组的第1个元素的base???
+
+可得知threads[0]跑的是main函数栈上面的 event_base, 其余的会用event_init再次创建
+
+而且注意!! 诡异的是,线程数组第1个元素不会去pthread_create,也不知道这根线程是做啥的?
+
+setsockopt
+* SO_SNDBUF 给发送缓冲区扩容 https://www.zhihu.com/question/67833119/answer/257061904 (没必要别设置)
+* SO_REUSEADDR 
+* SO_KEEPALIVE (缺省120分钟?) https://www.zhihu.com/search?type=content&q=SO_KEEPALIVE
+* SO_LINGER (延迟关闭时间,应该不需要)
+* TCP_NODELAY 
+```
+
+
+
+<a id="markdown-4-接口使用" name="4-接口使用"></a>
+# 4. 接口/使用
 
 存储
 * set (强行设置)
