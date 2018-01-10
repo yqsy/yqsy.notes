@@ -73,6 +73,9 @@ git config --global user.name "yqsy"
 # 8. 清理文件夹
 
 ```bash
+# 回退修改但没有commit的内容
+git reset --hard
+
 # 清理忽视/未被忽视/文件夹
 git clean -fxd
 
