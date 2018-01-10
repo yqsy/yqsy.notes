@@ -69,6 +69,14 @@ threads[0].base = main_base;  为什么只设置了线程数组的第1个元素�
 
 而且注意!! 诡异的是,线程数组第1个元素不会去pthread_create,也不知道这根线程是做啥的?
 
+每根线程在接受到read之后跑的是thread_libevent_process (listen的read事件)
+
+client的read回调函数应该是event_handler -> drive_machine
+
+conn 是连接,有多种不同的状态
+
+连接是用queue管理的
+
 setsockopt
 * SO_SNDBUF 给发送缓冲区扩容 https://www.zhihu.com/question/67833119/answer/257061904 (没必要别设置)
 * SO_REUSEADDR 
