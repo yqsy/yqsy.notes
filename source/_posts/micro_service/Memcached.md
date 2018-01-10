@@ -21,6 +21,7 @@ categories: [微服务]
 * https://hub.docker.com/_/memcached/ (docker)
 * https://github.com/docker-library/memcached/blob/master/alpine/Dockerfile (docker file)
 * https://www.tutorialspoint.com/memcached/memcached_set_data.htm (turtoial)
+* https://github.com/memcached/memcached/blob/master/doc/protocol.txt (协议)
 
 <a id="markdown-2-搭建" name="2-搭建"></a>
 # 2. 搭建
@@ -46,36 +47,147 @@ docker run --name my-memcache -p 11211:11211 -d memcached
 ```
 
 * 使用的是libevent
-* 多线程(pthread_create)
+* 多线程(pthread_create),多线程需要加参数编译
+* hash 算法: http://burtleburtle.net/bob/hash/doobs.html
+* slab 内存处理机制,避免大量的初始化和清理操作
 
 ```
+第一根线程是复用主线程的    main_base = event_init();, 其余线程都会创建新的event_base (可能是把主线程当数组的第一根线程了)
+    threads[0].base = main_base;
+
+
+每一根线程都会有各自的单向pipe
+    pipe(fds)
+
+        threads[i].notify_receive_fd = fds[0];
+        threads[i].notify_send_fd = fds[1];
+
+
+除开第一根线程都会pthread_create (入口是worker_libevent)  event_base_loop(me->base, 0);
+for (i = 1; i < nthreads; i++) {
+        create_worker(worker_libevent, &threads[i]);
+    }
+
+
+typedef struct {
+    pthread_t thread_id;        /* unique ID of this thread */
+    struct event_base *base;    /* libevent handle this thread uses */
+    struct event notify_event;  /* listen event for notify pipe */
+    int notify_receive_fd;      /* receiving end of notify pipe */  ****   管道读会走到函数 thread_libevent_process, 其实只是接收信号, 用来conn_new的.
+    int notify_send_fd;         /* sending end of notify pipe */    ************ 关于谁会写这个管道看下文调用栈
+    CQ  new_conn_queue;         /* queue of new connections to handle */  ** 每根线程的新的连接
+} LIBEVENT_THREAD;
+
+
+pipe写入调用栈1:
+dispatch_conn_new (简单的roundbin 交给各个线程处理)
+server_socket  (bind listen) !!!udp才走这个栈, tcp 会走 conn_new(sfd, 状态:conn_listening, main_base (第一根线程)), 注册event_handler 事件到main_base (监听)
+创建了一个listen链表,全局变量listen_conn指向链表头部
 main
-void thread_init(int nthreads, struct event_base *main_base)
-static void create_worker(void *(*func)(void *), void *arg) 
-pthread_create
 
-线程跑的函数是
-worker_libevent
 
-LIBEVENT_THREAD 作为函数
+pipe写入调用栈2:
+dispatch_conn_new
+drive_machine
+event_handler
 
-用这个struct event_base *base;作为参数
 
-event_base_loop(me->base, 0); 让线程跑event loop!
+主线程处理listen fd的可读事件 每根线程都负责thread_libevent_process创建新的连接,以及event_handler处理client的send
 
-threads[0].base = main_base;  为什么只设置了线程数组的第1个元素的base???
 
-可得知threads[0]跑的是main函数栈上面的 event_base, 其余的会用event_init再次创建
+这是一个双向链表
+typedef struct conn_queue CQ;
+struct conn_queue {
+    CQ_ITEM *head;
+    CQ_ITEM *tail;
+    pthread_mutex_t lock;
+    pthread_cond_t  cond;
+};
 
-而且注意!! 诡异的是,线程数组第1个元素不会去pthread_create,也不知道这根线程是做啥的?
+链接队列
 
-每根线程在接受到read之后跑的是thread_libevent_process (listen的read事件)
+单向链表
+typedef struct conn_queue_item CQ_ITEM;
+struct conn_queue_item {
+    int     sfd;
+    int     init_state;
+    int     event_flags;
+    int     read_buffer_size;
+    int     is_udp;
+    CQ_ITEM *next;
+};
 
-client的read回调函数应该是event_handler -> drive_machine
 
-conn 是连接,有多种不同的状态
+连接
+struct conn {
+    int    sfd;
+    int    state;
+    struct event event;
+    short  ev_flags;
+    short  which;   /** which events were just triggered */
 
-连接是用queue管理的
+    char   *rbuf;   /** buffer to read commands into */
+    char   *rcurr;  /** but if we parsed some already, this is where we stopped */
+    int    rsize;   /** total allocated size of rbuf */
+    int    rbytes;  /** how much data, starting from rcur, do we have unparsed */
+
+    char   *wbuf;
+    char   *wcurr;
+    int    wsize;
+    int    wbytes;
+    int    write_and_go; /** which state to go into after finishing current write */
+    void   *write_and_free; /** free this memory after finishing writing */
+
+    char   *ritem;  /** when we read in an item's value, it goes here */
+    int    rlbytes;
+
+    /* data for the nread state */
+
+    /**
+     * item is used to hold an item structure created after reading the command
+     * line of set/add/replace commands, but before we finished reading the actual
+     * data. The data is read into ITEM_data(item) to avoid extra copying.
+     */
+
+    void   *item;     /* for commands set/add/replace  */
+    int    item_comm; /* which one is it: set/add/replace */
+
+    /* data for the swallow state */
+    int    sbytes;    /* how many bytes to swallow */
+
+    /* data for the mwrite state */
+    struct iovec *iov;
+    int    iovsize;   /* number of elements allocated in iov[] */
+    int    iovused;   /* number of elements used in iov[] */
+
+    struct msghdr *msglist;
+    int    msgsize;   /* number of elements allocated in msglist[] */
+    int    msgused;   /* number of elements used in msglist[] */
+    int    msgcurr;   /* element in msglist[] being transmitted now */
+    int    msgbytes;  /* number of bytes in current msg */
+
+    item   **ilist;   /* list of items to write out */
+    int    isize;
+    item   **icurr;
+    int    ileft;
+
+    char   **suffixlist;
+    int    suffixsize;
+    char   **suffixcurr;
+    int    suffixleft;
+
+    /* data for UDP clients */
+    bool   udp;       /* is this is a UDP "connection" */
+    int    request_id; /* Incoming UDP request ID, if this is a UDP "connection" */
+    struct sockaddr request_addr; /* Who sent the most recent request */
+    socklen_t request_addr_size;
+    unsigned char *hdrbuf; /* udp packet headers */
+    int    hdrsize;   /* number of headers' worth of space is allocated */
+
+    int    binary;    /* are we in binary mode */
+    bool   noreply;   /* True if the reply should not be sent. */
+    conn   *next;     /* Used for generating a list of conn structures */
+};
 
 setsockopt
 * SO_SNDBUF 给发送缓冲区扩容 https://www.zhihu.com/question/67833119/answer/257061904 (没必要别设置)

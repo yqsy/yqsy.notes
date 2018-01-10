@@ -69,3 +69,40 @@ git rebase --onto remotes/svn/trunk --root master
 
 * http://blog.ploeh.dk/2013/10/07/verifying-every-single-commit-in-a-git-branch/ (参考这个)
 
+
+仅作参考吧,因为这种脚本可能在我程序员生涯里只会跑一次同是也是最后一次
+```bash
+shopt -s extglob
+
+SRC=./cache
+DEST=C:/back/other/svn/3源代码区/107Cache服务器/from-git
+
+git --git-dir=cache/.git --work-tree=cache checkout master
+
+COMMITS=$(git --git-dir=cache/.git --work-tree=cache log --oneline  --reverse | cut -d " " -f 1)
+
+git --git-dir=cache/.git --work-tree=cache reset --hard
+git --git-dir=cache/.git --work-tree=cache clean -fxd
+
+for COMMIT in $COMMITS
+do
+    git --git-dir=cache/.git --work-tree=cache checkout $COMMIT
+
+    MSG=$(git --git-dir=cache/.git --work-tree=cache log --format=%B -n 1 ${COMMIT})
+
+    echo rm -rf $DEST/!(.svn|.|..)
+    rm -rf $DEST/!(.svn|.|..)
+
+    tar --exclude .git --ignore-failed-read -C $SRC -cf - . | tar --ignore-failed-read -C $DEST -xf -
+
+    pushd .
+    cd $DEST
+    svn st > /tmp/1 && iconv -f GBK -t UTF-8 /tmp/1 > /tmp/2 && cat /tmp/2 | grep -a '^!' | awk '{print $2}' | sed 's/\\/\//g' | xargs svn delete --force
+    svn add . --force
+    svn commit . -m "${MSG}"
+    popd
+
+done
+
+git --git-dir=cache/.git --work-tree=cache checkout master
+```
