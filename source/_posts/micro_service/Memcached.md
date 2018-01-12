@@ -23,6 +23,7 @@ categories: [微服务]
 * https://www.tutorialspoint.com/memcached/memcached_set_data.htm (turtoial)
 * https://github.com/memcached/memcached/blob/master/doc/protocol.txt (协议)
 
+
 <a id="markdown-2-搭建" name="2-搭建"></a>
 # 2. 搭建
 
@@ -46,8 +47,10 @@ docker run --name my-memcache -p 11211:11211 -d memcached
     87 ./daemon.c
 ```
 
+* daemon运行 (这个知识点没深入研究过)
 * 使用的是libevent
-* 多线程(pthread_create),多线程需要加参数编译
+* 多线程(pthread_create),多线程需要加参数编译(Round-robin)
+* 有锁生产者消费者队列 (pthread_mutex_lock)
 * hash 算法: http://burtleburtle.net/bob/hash/doobs.html
 * slab 内存处理机制,避免大量的初始化和清理操作
 
@@ -65,8 +68,8 @@ docker run --name my-memcache -p 11211:11211 -d memcached
 
 除开第一根线程都会pthread_create (入口是worker_libevent)  event_base_loop(me->base, 0);
 for (i = 1; i < nthreads; i++) {
-        create_worker(worker_libevent, &threads[i]);
-    }
+    create_worker(worker_libevent, &threads[i]);
+}
 
 
 typedef struct {
@@ -79,21 +82,17 @@ typedef struct {
 } LIBEVENT_THREAD;
 
 
-pipe写入调用栈1:
-dispatch_conn_new (简单的roundbin 交给各个线程处理)
-server_socket  (bind listen) !!!udp才走这个栈, tcp 会走 conn_new(sfd, 状态:conn_listening, main_base (第一根线程)), 注册event_handler 事件到main_base (监听)
-创建了一个listen链表,全局变量listen_conn指向链表头部
-main
 
+总结:
+主线程创建listen fd ,并用conn_new监听可读事件到达主线程执行的event loop,一旦有新的连接进来,accept,通过dispatch_conn_new 以Round-robin 负载均衡手段将
+连接CQ_ITEM(包含fd) push到各个线程的消费队列里,并write至管道,通知到相应线程.相应线程触发conn_new,注册监听事件至event_handler
 
-pipe写入调用栈2:
-dispatch_conn_new
-drive_machine
-event_handler
+关键流程 (listenfd和clientfd)conn_new->(注册)event_handler->drive_machin根据状态来处理相应事件
 
+conn_new函数调用确定初始化状态
 
-主线程处理listen fd的可读事件 每根线程都负责thread_libevent_process创建新的连接,以及event_handler处理client的send
-
+* conn_listening , 作为Listen套接字,其套接字收到可读信号,都要处理accept
+* conn_read , 每根线程得到初始化的套接字时的初始化状态 try_read_command(读已有的缓冲区数据) -> process_command
 
 这是一个双向链表
 typedef struct conn_queue CQ;

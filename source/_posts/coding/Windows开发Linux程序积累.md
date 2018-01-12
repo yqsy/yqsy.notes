@@ -15,9 +15,10 @@ categories: [coding]
     - [3.4. MinGW-w64](#34-mingw-w64)
     - [3.5. MYSYS2](#35-mysys2)
 - [4. windows g++ 编译器选择](#4-windows-g-编译器选择)
-- [5. 代码同步](#5-代码同步)
-    - [5.1. beyond compare](#51-beyond-compare)
-    - [5.2. rsync+inotifywait](#52-rsyncinotifywait)
+- [5. 调试](#5-调试)
+- [6. 代码同步](#6-代码同步)
+    - [6.1. beyond compare](#61-beyond-compare)
+    - [6.2. rsync+inotifywait](#62-rsyncinotifywait)
 
 <!-- /TOC -->
 
@@ -155,11 +156,20 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 # 4. windows g++ 编译器选择
 * https://www.zhihu.com/question/39952667
 
-<a id="markdown-5-代码同步" name="5-代码同步"></a>
-# 5. 代码同步
 
-<a id="markdown-51-beyond-compare" name="51-beyond-compare"></a>
-## 5.1. beyond compare
+<a id="markdown-5-调试" name="5-调试"></a>
+# 5. 调试
+
+* https://zhuanlan.zhihu.com/p/32843449?group_id=934863168711348224 (韦易笑的)
+* http://blog.csdn.net/shyanyang/article/details/37349135 (emacs gdb多窗口布局)
+* https://gdbgui.com/downloads.html (游览器调试)
+* https://sourceware.org/gdb/wiki/GDB%20Front%20Ends (全部工具)
+
+<a id="markdown-6-代码同步" name="6-代码同步"></a>
+# 6. 代码同步
+
+<a id="markdown-61-beyond-compare" name="61-beyond-compare"></a>
+## 6.1. beyond compare
 文件夹同步-镜像功能,使用sftp协议,缺点是需要手动点击同步,比较繁琐
 
 ```bash
@@ -167,8 +177,8 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 sftp://root@vm1://root/reference/linux_socket_test
 ```
 
-<a id="markdown-52-rsyncinotifywait" name="52-rsyncinotifywait"></a>
-## 5.2. rsync+inotifywait
+<a id="markdown-62-rsyncinotifywait" name="62-rsyncinotifywait"></a>
+## 6.2. rsync+inotifywait
 
 inotifywait
 * https://github.com/thekid/inotify-win (c# .net 4.0编译)
