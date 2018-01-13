@@ -8,8 +8,15 @@ categories: [微服务]
 
 - [1. 资源](#1-资源)
 - [2. 搭建](#2-搭建)
-- [3. 代码阅读整理](#3-代码阅读整理)
-- [4. 接口/使用](#4-接口使用)
+- [3. 搭建调试版本](#3-搭建调试版本)
+- [4. 代码阅读整理](#4-代码阅读整理)
+- [5. 接口/使用](#5-接口使用)
+- [6. 数据结构选择](#6-数据结构选择)
+    - [6.1. Naive key-value (天真的)](#61-naive-key-value-天真的)
+    - [6.2. Minimalize critical section](#62-minimalize-critical-section)
+    - [6.3. Condensed,save memory](#63-condensedsave-memory)
+    - [6.4. Sharded, further reduce contention](#64-sharded-further-reduce-contention)
+- [7. 内存分配器选择](#7-内存分配器选择)
 
 <!-- /TOC -->
 
@@ -17,176 +24,174 @@ categories: [微服务]
 # 1. 资源
 
 * https://memcached.org/
-* https://github.com/memcached/memcached (推荐看1.2.8版本)
+* https://github.com/memcached/memcached
 * https://hub.docker.com/_/memcached/ (docker)
 * https://github.com/docker-library/memcached/blob/master/alpine/Dockerfile (docker file)
 * https://www.tutorialspoint.com/memcached/memcached_set_data.htm (turtoial)
 * https://github.com/memcached/memcached/blob/master/doc/protocol.txt (协议)
-
+* https://github.com/memcached/memcached/wiki/Install (安装手册)
+* https://www.zhihu.com/question/19719997/answer/81930332 (作为mysql缓存)
+* https://www.zhihu.com/question/27738066/answer/45475986 (作为mysql缓存)
 
 <a id="markdown-2-搭建" name="2-搭建"></a>
 # 2. 搭建
 
 ```bash
-
 docker run --name my-memcache -p 11211:11211 -d memcached
-
 ```
 
-<a id="markdown-3-代码阅读整理" name="3-代码阅读整理"></a>
-# 3. 代码阅读整理
+<a id="markdown-3-搭建调试版本" name="3-搭建调试版本"></a>
+# 3. 搭建调试版本
 
-```
-  5857 total
-  3104 ./memcached.c
-   694 ./thread.c
-   624 ./assoc.c
-   546 ./items.c
-   437 ./slabs.c
-   365 ./stats.c
-    87 ./daemon.c
+```bash
+cd /opt
+git clone https://github.com/memcached/memcached.git
+cd memcached
+git checkout tags/1.5.4
 ```
 
-* daemon运行 (这个知识点没深入研究过)
+```bash
+tar -cvzf memcached.tgz  memcached
+scp memcached.tgz root@vm1:/opt/
+```
+
+* https://stackoverflow.com/questions/9725278/cant-turn-off-gcc-optimizer-makefile-from-automake (automake编译关优化)
+
+```bash
+yum install libevent-devel -y
+yum install perl-CPAN -y
+cpan 
+install Test::More
+
+cd /opt
+tar -xvzf memcached.tgz
+cd memcached
+./autogen.sh
+./configure  CFLAGS="-g -O0"
+make && make test && sudo make install
+gdbgui --host 0.0.0.0 --args "memcached -u root"
+```
+
+
+<a id="markdown-4-代码阅读整理" name="4-代码阅读整理"></a>
+# 4. 代码阅读整理
+
+```
+ 19827 total
+  7757 ./memcached.c
+  2029 ./testapp.c
+  1812 ./items.c
+  1268 ./slabs.c
+   856 ./extstore.c
+   822 ./logger.c
+   808 ./thread.c
+   692 ./crawler.c
+   459 ./storage.c
+   431 ./jenkins_hash.c
+   375 ./stats.c
+   343 ./crc32c.c
+   307 ./assoc.c
+   267 ./slab_automove_extstore.c
+   196 ./util.c
+   190 ./sasl_defs.c
+   180 ./bipbuffer.c
+   155 ./cache.c
+   152 ./slab_automove.c
+   149 ./itoa_ljust.c
+   124 ./murmur3_hash.c
+   113 ./linux_priv.c
+   102 ./timedrun.c
+    89 ./daemon.c
+    44 ./solaris_priv.c
+    32 ./sizes.c
+    28 ./openbsd_priv.c
+    26 ./globals.c
+    21 ./hash.c
+```
+
+* daemon运行 fork -> 终结父进程 -> setsid创建新session使当前进程成为该session的头进程 -> 改变工作目录至/ ->重定向输入输出至/dev/null
 * 使用的是libevent
-* 多线程(pthread_create),多线程需要加参数编译(Round-robin)
+* 多线程(pthread_create),多线程需要加参数编译(Round-robin 链接)
 * 有锁生产者消费者队列 (pthread_mutex_lock)
-* hash 算法: http://burtleburtle.net/bob/hash/doobs.html
-* slab 内存处理机制,避免大量的初始化和清理操作
+* hash 算法: http://burtleburtle.net/bob/hash/doobs.html ?? 是这个吗
+* hash 算法: MurmurHash3_x86_32 还有 jenkins_hash
+* slab 内存处理机制,避免大量的初始化和清理操作 https://en.wikipedia.org/wiki/Slab_allocation
+* LRU replacement algorithm
+
+缺点:
+
+* 无安全验证
+* 没有持久化
 
 ```
-第一根线程是复用主线程的    main_base = event_init();, 其余线程都会创建新的event_base (可能是把主线程当数组的第一根线程了)
-    threads[0].base = main_base;
+日志线程:
+main -> logger_init -> start_logger_thread -> pthread_create -> logger_thread (轮询 + sleep) -> logger_thread_read  (fwrite)
 
+记录日志:
+LOGGER_LOG -> logger_log -> bipbuf_push
 
-每一根线程都会有各自的单向pipe
-    pipe(fds)
+工作线程池:
+main->memcached_thread_init
+创建线程池, 注册pipe读回调 thread_libevent_process -> conn_new-> 注册 clientfd event_handler -> drive_machine
+线程池启动函数为 worker_libevent ,跑 event_base_loop 
 
-        threads[i].notify_receive_fd = fds[0];
-        threads[i].notify_send_fd = fds[1];
+主线程监听:
+main->server_sockets- > server_socket -> conn_new (状态conn_listening) -> 注册listenfd event_handler -> drive_machine -> 
+accept dispatch_conn_new (round robin指定线程处理 push到其线程的消息队列client fd,并通过pipe知会) 切换状态 conn_new_cmd
 
+来事件时:
+set tutorialspoint 0 900 9
+memcached
 
-除开第一根线程都会pthread_create (入口是worker_libevent)  event_base_loop(me->base, 0);
-for (i = 1; i < nthreads; i++) {
-    create_worker(worker_libevent, &threads[i]);
-}
+conn_new_cmd -> conn_waiting -> conn_read 调用底层read -> case READ_DATA_RECEIVED -> 切换状态conn_parse_cmd -> 
+process_command -> process_update_command (set) -> item_alloc -> 切换状态 conn_nread (这时候已经读完了第一句) -> complete_nread (读设置的值) ->
+-> complete_nread_ascii -> store_item (关键哈希以及存储) -> out_string(c, "STORED"); -> 切换状态conn_write -> conn_mwrite (复用) -> transmit -> 
+sendmsg
 
+接收缓冲区:
+以n^2不断递增缓冲区大小realloc  https://www.zhihu.com/question/45323220/answer/98683629
 
-typedef struct {
-    pthread_t thread_id;        /* unique ID of this thread */
-    struct event_base *base;    /* libevent handle this thread uses */
-    struct event notify_event;  /* listen event for notify pipe */
-    int notify_receive_fd;      /* receiving end of notify pipe */  ****   管道读会走到函数 thread_libevent_process, 其实只是接收信号, 用来conn_new的.
-    int notify_send_fd;         /* sending end of notify pipe */    ************ 关于谁会写这个管道看下文调用栈
-    CQ  new_conn_queue;         /* queue of new connections to handle */  ** 每根线程的新的连接
-} LIBEVENT_THREAD;
+set锁力度:
+只锁指针本身Minimalize critical section
+static pthread_mutex_t *item_locks; 保护每个hash表
+static item** primary_hashtable = 0; 全局的hash表
 
+hash碰撞:
+assoc_insert 开链法
 
+对象最大可以存储为多大:
+echo -e 'set tutorialspoint 0 900 1048576\r\n' > /tmp/111
+dd if=/dev/zero bs=1M count=1 >> /tmp/111
+cat /tmp/111 | nc localhost 11211
+settings.item_size_max 最大为1024 * 1024 字节 (1M)
 
-总结:
-主线程创建listen fd ,并用conn_new监听可读事件到达主线程执行的event loop,一旦有新的连接进来,accept,通过dispatch_conn_new 以Round-robin 负载均衡手段将
-连接CQ_ITEM(包含fd) push到各个线程的消费队列里,并write至管道,通知到相应线程.相应线程触发conn_new,注册监听事件至event_handler
+关键存储(48字节):
+typedef struct _stritem {
+    /* Protected by LRU locks */
+    struct _stritem *next;
+    struct _stritem *prev;
+    /* Rest are protected by an item lock */
+    struct _stritem *h_next;    /* hash chain next */
+    rel_time_t      time;       /* least recent access */
+    rel_time_t      exptime;    /* expire time */
+    int             nbytes;     /* size of data */
+    unsigned short  refcount;
+    uint8_t         nsuffix;    /* length of flags-and-length string */
+    uint8_t         it_flags;   /* ITEM_* above */
+    uint8_t         slabs_clsid;/* which slab class we're in */
+    uint8_t         nkey;       /* key length, w/terminating null and padding */
+    /* this odd type prevents type-punning issues when we do
+     * the little shuffle to save space when not using CAS. */
+    union {
+        uint64_t cas;
+        char end;
+    } data[];
+    /* if it_flags & ITEM_CAS we have 8 bytes CAS */
+    /* then null-terminated key */
+    /* then " flags length\r\n" (no terminating null) */
+    /* then data with terminating \r\n (no terminating null; it's binary!) */
+} item;
 
-关键流程 (listenfd和clientfd)conn_new->(注册)event_handler->drive_machin根据状态来处理相应事件
-
-conn_new函数调用确定初始化状态
-
-* conn_listening , 作为Listen套接字,其套接字收到可读信号,都要处理accept
-* conn_read , 每根线程得到初始化的套接字时的初始化状态 try_read_command(读已有的缓冲区数据) -> process_command
-
-这是一个双向链表
-typedef struct conn_queue CQ;
-struct conn_queue {
-    CQ_ITEM *head;
-    CQ_ITEM *tail;
-    pthread_mutex_t lock;
-    pthread_cond_t  cond;
-};
-
-链接队列
-
-单向链表
-typedef struct conn_queue_item CQ_ITEM;
-struct conn_queue_item {
-    int     sfd;
-    int     init_state;
-    int     event_flags;
-    int     read_buffer_size;
-    int     is_udp;
-    CQ_ITEM *next;
-};
-
-
-连接
-struct conn {
-    int    sfd;
-    int    state;
-    struct event event;
-    short  ev_flags;
-    short  which;   /** which events were just triggered */
-
-    char   *rbuf;   /** buffer to read commands into */
-    char   *rcurr;  /** but if we parsed some already, this is where we stopped */
-    int    rsize;   /** total allocated size of rbuf */
-    int    rbytes;  /** how much data, starting from rcur, do we have unparsed */
-
-    char   *wbuf;
-    char   *wcurr;
-    int    wsize;
-    int    wbytes;
-    int    write_and_go; /** which state to go into after finishing current write */
-    void   *write_and_free; /** free this memory after finishing writing */
-
-    char   *ritem;  /** when we read in an item's value, it goes here */
-    int    rlbytes;
-
-    /* data for the nread state */
-
-    /**
-     * item is used to hold an item structure created after reading the command
-     * line of set/add/replace commands, but before we finished reading the actual
-     * data. The data is read into ITEM_data(item) to avoid extra copying.
-     */
-
-    void   *item;     /* for commands set/add/replace  */
-    int    item_comm; /* which one is it: set/add/replace */
-
-    /* data for the swallow state */
-    int    sbytes;    /* how many bytes to swallow */
-
-    /* data for the mwrite state */
-    struct iovec *iov;
-    int    iovsize;   /* number of elements allocated in iov[] */
-    int    iovused;   /* number of elements used in iov[] */
-
-    struct msghdr *msglist;
-    int    msgsize;   /* number of elements allocated in msglist[] */
-    int    msgused;   /* number of elements used in msglist[] */
-    int    msgcurr;   /* element in msglist[] being transmitted now */
-    int    msgbytes;  /* number of bytes in current msg */
-
-    item   **ilist;   /* list of items to write out */
-    int    isize;
-    item   **icurr;
-    int    ileft;
-
-    char   **suffixlist;
-    int    suffixsize;
-    char   **suffixcurr;
-    int    suffixleft;
-
-    /* data for UDP clients */
-    bool   udp;       /* is this is a UDP "connection" */
-    int    request_id; /* Incoming UDP request ID, if this is a UDP "connection" */
-    struct sockaddr request_addr; /* Who sent the most recent request */
-    socklen_t request_addr_size;
-    unsigned char *hdrbuf; /* udp packet headers */
-    int    hdrsize;   /* number of headers' worth of space is allocated */
-
-    int    binary;    /* are we in binary mode */
-    bool   noreply;   /* True if the reply should not be sent. */
-    conn   *next;     /* Used for generating a list of conn structures */
-};
 
 setsockopt
 * SO_SNDBUF 给发送缓冲区扩容 https://www.zhihu.com/question/67833119/answer/257061904 (没必要别设置)
@@ -197,9 +202,8 @@ setsockopt
 ```
 
 
-
-<a id="markdown-4-接口使用" name="4-接口使用"></a>
-# 4. 接口/使用
+<a id="markdown-5-接口使用" name="5-接口使用"></a>
+# 5. 接口/使用
 
 存储
 * set (强行设置)
@@ -221,3 +225,98 @@ setsockopt
 * stats slabs
 * stats sizes
 * flush_all
+
+
+<a id="markdown-6-数据结构选择" name="6-数据结构选择"></a>
+# 6. 数据结构选择
+
+<a id="markdown-61-naive-key-value-天真的" name="61-naive-key-value-天真的"></a>
+## 6.1. Naive key-value (天真的)
+* hash_map<string, value*> (临界区保护整个读写过程)
+* hash_map<string, unique_ptr<value>> (不需要删除)
+* hash_map<string, value> // 右值
+
+
+临界区内系统调用
+```
+hash_map<string,value*> theMap;
+
+string key = xxx;
+lock();
+value* val = theMap.get(key);
+send(val); # 这个系统调用会消耗大量的时间 (10ms)
+unlock();
+```
+
+临界区内只是拷贝内存
+```
+string key = xxx;
+value val;
+lock();
+val = *theMap.get(key); # 内存拷贝缩小了一个数量级,100us
+unlock();
+send(val);
+```
+
+<a id="markdown-62-minimalize-critical-section" name="62-minimalize-critical-section"></a>
+## 6.2. Minimalize critical section
+* hash_map<string, shared_ptr<value>>
+
+
+临界区拷贝指针
+set值时生成新的对象
+```
+typedef shared_ptr<const value> ValuePtr; # 注意是const的
+hash_map<string,ValuePtr> theMap;
+ValuePtr val;
+lock();
+val = theMap.get(key); # 指针拷贝时间更短,<1us
+unlock();
+send(*val);
+```
+
+<a id="markdown-63-condensedsave-memory" name="63-condensedsave-memory"></a>
+## 6.3. Condensed,save memory
+* hash_map<shared_ptr<item>> (key value放一起 节省空间) (自己实现比较函数)
+
+```
+unordered_set<shared_ptr<const Item>, Hash, Equal>
+```
+
+<a id="markdown-64-sharded-further-reduce-contention" name="64-sharded-further-reduce-contention"></a>
+## 6.4. Sharded, further reduce contention
+* 上千个hash_map,每个hash_map都有自己的锁,避免全局锁争用(多线程)
+
+```
+struct Shard 
+{
+    mutex mu_;
+    hash_map<...> map_;
+};
+
+
+int x = key.hash() % 1024;
+ValuePtr val;
+shards[x].mu_.lock();
+val = shards[x].map_.get(key);
+shard[x].mu_.unlock();
+
+
+Shard shards[1024];
+```
+
+
+属于半定制的,使用了标准库的hash map和shared ptr,而memcached是全定制的
+
+基本开销是120N,memcached是48N
+
+
+<a id="markdown-7-内存分配器选择" name="7-内存分配器选择"></a>
+# 7. 内存分配器选择
+
+* ptmalloc glibc
+* tcmalloc
+
+工具:
+* perf record (生成分析文件)
+* perf report (查看时间分配报告)

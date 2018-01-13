@@ -165,6 +165,16 @@ fork了Cygwin,对于不喜欢庞大的Cygwin的用户而言,推荐试试mysys2
 * https://gdbgui.com/downloads.html (游览器调试)
 * https://sourceware.org/gdb/wiki/GDB%20Front%20Ends (全部工具)
 
+
+
+```bash
+# 安装gdb gui
+yum install epel-release -y
+yum install python-pip -y
+pip install gdbgui -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade
+gdbgui --host 0.0.0.0 xxx
+```
+
 <a id="markdown-6-代码同步" name="6-代码同步"></a>
 # 6. 代码同步
 
