@@ -20,3 +20,5 @@ categories: [微服务]
 * http://my-netdata.io/ (my-netdata.io)
 * https://www.zabbix.com/
 * https://www.nagios.org/
+* https://github.com/nicolargo/glances (知乎上看到的工具,目测超好用)
+* http://glances.readthedocs.io/en/stable/aoa/cpu.html (glance说明文档)

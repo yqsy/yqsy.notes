@@ -17,6 +17,8 @@ categories: [微服务]
     - [6.3. Condensed,save memory](#63-condensedsave-memory)
     - [6.4. Sharded, further reduce contention](#64-sharded-further-reduce-contention)
 - [7. 内存分配器选择](#7-内存分配器选择)
+- [8. 单元测试](#8-单元测试)
+- [9. 性能bench](#9-性能bench)
 
 <!-- /TOC -->
 
@@ -318,5 +320,48 @@ Shard shards[1024];
 * tcmalloc
 
 工具:
-* perf record (生成分析文件)
+* perf record (性能热点 生成分析文件)
 * perf report (查看时间分配报告)
+* google-pprof (cpu profile 可以生成pdf, 新版本in go)
+* gperftools (内存profile,旧版本)
+
+
+<a id="markdown-8-单元测试" name="8-单元测试"></a>
+# 8. 单元测试
+
+```bash
+prove t/getset.t
+```
+
+<a id="markdown-9-性能bench" name="9-性能bench"></a>
+# 9. 性能bench
+
+muduo bench.cc代码分析
+```
+可配参数:
+* threads   Number of worker threads
+* clients   Number of concurrent clients
+* requests  Number of requests per clients
+* keys      Number of keys per clients
+
+每个thread都在跑event loop, 将clients以round-robin的方式负载均衡放至到各个event loop中
+每个client非阻塞方式send recv达到requests数值
+
+QPS计算:
+全部client都连接上作为开始,全部client请求应答到requests数值并shutdown时作为结束. (使用的是CountDownLatch,条件变量包装)
+1.0 * clients * requests / seconds
+```
+
+```bash
+# 默认get,-s set
+# 因为memcached默认是4线程,所以bench工具也开了4根线程(我机器8核心)
+
+# (原生)只有13w
+./memcached_bench -p 11211 -i 127.0.0.1 -t 4 -c 10 -r 10000
+
+# (原生)有40w
+./memcached_bench -p 11211 -i 127.0.0.1 -t 4 -c 100 -r 100000
+
+# (with muduo)有43w
+./memcached_bench -p 11211 -i 127.0.0.1 -t 4 -c 100 -r 100000
+```

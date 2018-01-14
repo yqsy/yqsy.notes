@@ -137,12 +137,26 @@ yum install boost-devel -y
 
 * https://github.com/chenshuo/muduo-tutorial
 
+1.0.9版本 (c++98)
 ```
 mkdir -p /opt/muduo-1.0.9
 cd /opt/muduo-1.0.9
 wget https://github.com/chenshuo/muduo/archive/v1.0.9.tar.gz
 tar -xvzf v1.0.9.tar.gz
 cd muduo-1.0.9
+sed -i 's/# -DMUDUO_STD_STRING/-DMUDUO_STD_STRING/g'  CMakeLists.txt
+BUILD_TYPE=release ./build.sh -j2
+BUILD_TYPE=release ./build.sh install
+```
+
+11版本
+```
+rm -rf /opt/muduo-1.0.9/
+mkdir -p /opt/muduo
+cd /opt/muduo
+git clone https://github.com/chenshuo/muduo
+cd muduo
+git checkout -b cpp11 origin/cpp11
 sed -i 's/# -DMUDUO_STD_STRING/-DMUDUO_STD_STRING/g'  CMakeLists.txt
 BUILD_TYPE=release ./build.sh -j2
 BUILD_TYPE=release ./build.sh install

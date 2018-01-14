@@ -100,7 +100,7 @@ sudo make install
 echo 'LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH' >> ~/.bashrc
 
-# cgdb(可用gdb --tui替代吧)
+# cgdb(可用gdb --tui替代吧, 用gdbgui替代)
 sudo yum install ncurses-devel ncurses -y
 sudo yum install texinfo -y
 sudo yum install readline-devel -y
@@ -112,6 +112,9 @@ cd cgdb-0.7.0
 ./configure --prefix=/usr/local
 make
 sudo make install
+
+# pi源
+https://mirrors.tuna.tsinghua.edu.cn/help/pypi/
 
 # 安装pyqt5
 pip3 install pyqt5
