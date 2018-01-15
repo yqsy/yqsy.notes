@@ -6,16 +6,21 @@ categories: [编程语言]
 
 <!-- TOC -->
 
-- [1. 我的问题](#1-我的问题)
-- [2. 命令](#2-命令)
-- [3. 问题解决](#3-问题解决)
+- [1. 资料](#1-资料)
+- [2. 我的问题](#2-我的问题)
+- [3. 命令](#3-命令)
+- [4. 问题解决](#4-问题解决)
 
 <!-- /TOC -->
 
 
+<a id="markdown-1-资料" name="1-资料"></a>
+# 1. 资料
 
-<a id="markdown-1-我的问题" name="1-我的问题"></a>
-# 1. 我的问题
+* https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html (选项说明)
+
+<a id="markdown-2-我的问题" name="2-我的问题"></a>
+# 2. 我的问题
 
 使用muduo时,依赖如下:
 
@@ -33,8 +38,8 @@ add_executable(memcached server.cpp)
 target_link_libraries(memcached muduo_inspect muduo_http muduo_net muduo_base pthread)
 ```
 
-<a id="markdown-2-命令" name="2-命令"></a>
-# 2. 命令
+<a id="markdown-3-命令" name="3-命令"></a>
+# 3. 命令
 
 
 ```
@@ -43,8 +48,8 @@ nm xxx.a
 
 ```
 
-<a id="markdown-3-问题解决" name="3-问题解决"></a>
-# 3. 问题解决
+<a id="markdown-4-问题解决" name="4-问题解决"></a>
+# 4. 问题解决
 
 关键还是在cmake,cmake工程自动分析了依赖
 
