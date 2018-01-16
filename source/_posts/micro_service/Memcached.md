@@ -16,9 +16,10 @@ categories: [微服务]
     - [6.2. Minimalize critical section](#62-minimalize-critical-section)
     - [6.3. Condensed,save memory](#63-condensedsave-memory)
     - [6.4. Sharded, further reduce contention](#64-sharded-further-reduce-contention)
-- [7. 内存分配器选择](#7-内存分配器选择)
-- [8. 单元测试](#8-单元测试)
-- [9. 性能bench](#9-性能bench)
+- [7. 实际数据结构](#7-实际数据结构)
+- [8. 内存分配器选择](#8-内存分配器选择)
+- [9. 单元测试](#9-单元测试)
+- [10. 性能bench](#10-性能bench)
 
 <!-- /TOC -->
 
@@ -312,9 +313,38 @@ Shard shards[1024];
 
 基本开销是120N,memcached是48N
 
+<a id="markdown-7-实际数据结构" name="7-实际数据结构"></a>
+# 7. 实际数据结构
 
-<a id="markdown-7-内存分配器选择" name="7-内存分配器选择"></a>
-# 7. 内存分配器选择
+muduo-memcached
+```
+  int            keylen_;
+  const uint32_t flags_;
+  const int      rel_exptime_;
+  const int      valuelen_;
+  int            receivedBytes_;
+  uint64_t       cas_;
+  size_t         hash_;
+  char*          data_;             // 存放key + value
+```
+
+观察输入输出:
+```
+# 存
+set x 0 20 10\r\n
+helloworld\r\n
+STORED\r\n
+
+# 取
+get x\r\n
+VALUE x 0 10\r\n
+helloworld\r\n
+END\r\n
+```
+
+
+<a id="markdown-8-内存分配器选择" name="8-内存分配器选择"></a>
+# 8. 内存分配器选择
 
 * ptmalloc glibc
 * tcmalloc
@@ -326,15 +356,15 @@ Shard shards[1024];
 * gperftools (内存profile,旧版本)
 
 
-<a id="markdown-8-单元测试" name="8-单元测试"></a>
-# 8. 单元测试
+<a id="markdown-9-单元测试" name="9-单元测试"></a>
+# 9. 单元测试
 
 ```bash
 prove t/getset.t
 ```
 
-<a id="markdown-9-性能bench" name="9-性能bench"></a>
-# 9. 性能bench
+<a id="markdown-10-性能bench" name="10-性能bench"></a>
+# 10. 性能bench
 
 muduo bench.cc代码分析
 ```

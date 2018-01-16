@@ -21,6 +21,7 @@ categories: [linux, 系统管理]
 - [9. xargs/expr/exec](#9-xargsexprexec)
     - [9.1. xargs和exec在使用中的不同](#91-xargs和exec在使用中的不同)
 - [10. sort,wc,uniq](#10-sortwcuniq)
+- [11. 转义符](#11-转义符)
 
 <!-- /TOC -->
 
@@ -311,3 +312,21 @@ last | cut -d ' ' -f1 | sort | uniq -c
 # /etc/man_db.conf 里面到底有多少相关字,行,字符数
 cat /etc/man_db.conf | wc
 ```
+
+
+<a id="markdown-11-转义符" name="11-转义符"></a>
+# 11. 转义符
+
+我差点天真地以为http协议或者是memcached协议的\r\n是4个字节的了  
+其实是转义符啦  
+
+* telnet按回车是CRLF
+* netcat按回车是LF
+* netcat 这样配置是CRLF nc -C localhost 11211
+* echo 可以这样搭配(不过马上就退出)echo -ne 'set x 0 900 1 x\r\nget x\r\n' | nc localhost 11211
+
+输入方法:
+* http://ascii-table.com/control-chars.php (输入转义符号的表)
+* http://www.asciitable.com/ (ascii表)
+
+实在不行的话用tcpdump搞清楚
