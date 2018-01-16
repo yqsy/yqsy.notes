@@ -29,6 +29,17 @@ categories: [微服务]
 * https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/ (到这里安装?清华源?不对)
 * https://www.docker-cn.com/registry-mirror (中国官方的源)
 
+
+```bash
+# 改变源
+
+mkdir -p /etc/docker
+echo \
+"{
+  \"registry-mirrors\": [\"https://registry.docker-cn.com\"]
+}" > /etc/docker/daemon.json
+```
+
 ```bash
 yum install docker -y
 systemctl start docker
@@ -36,3 +47,4 @@ systemctl enable docker
 
 systemctl status docker
 ```
+
