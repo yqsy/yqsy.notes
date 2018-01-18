@@ -318,13 +318,13 @@ Shard shards[1024];
 
 muduo-memcached
 ```
-  int            keylen_;
-  const uint32_t flags_;
-  const int      rel_exptime_;
-  const int      valuelen_;
-  int            receivedBytes_;
+  int            keylen_;           // key 长度
+  const uint32_t flags_;            
+  const int      rel_exptime_;      
+  const int      valuelen_;         // value长度
+  int            receivedBytes_;    // 通过这个构造data_直至完整收到()
   uint64_t       cas_;
-  size_t         hash_;
+  size_t         hash_;             // key产生的hash值 最大值为18446744073709551615 or 0xffffffffffffffff
   char*          data_;             // 存放key + value
 ```
 
