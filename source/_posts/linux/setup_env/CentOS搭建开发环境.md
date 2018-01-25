@@ -121,8 +121,5 @@ pip3 install pyqt5
 
 git clone git@gitlab.com:yqsy021/spx_client_test.git
 
-# 安装fish
-yum install fish -y
-chsh -s /usr/bin/fish
 
 ```

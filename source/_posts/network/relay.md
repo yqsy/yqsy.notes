@@ -17,6 +17,7 @@ categories: [网络相关]
 
 * https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot (tcp relay)
 * http://blog.csdn.net/chenjh213/article/details/49795521 (中文介绍)
+* switchysharp (chrome代理插件)
 
 <a id="markdown-2-实践" name="2-实践"></a>
 # 2. 实践

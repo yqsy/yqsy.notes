@@ -13,6 +13,7 @@ categories: [coding]
     - [3.2. 比较](#32-比较)
     - [3.3. everything](#33-everything)
 - [4. visual code 积累](#4-visual-code-积累)
+- [5. putty配置](#5-putty配置)
 
 <!-- /TOC -->
 
@@ -138,3 +139,9 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 
 * https://code.visualstudio.com/docs/languages/cpp (c++ auto complete)
 * "editor.formatOnSave": true,
+
+<a id="markdown-5-putty配置" name="5-putty配置"></a>
+# 5. putty配置
+
+* window-appearance-font (默认字体难看)
+* Terminal-Features-Disable remote-controlled window title changing (不修改标题)

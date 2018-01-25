@@ -22,6 +22,7 @@ categories: [linux, 系统管理]
     - [9.1. xargs和exec在使用中的不同](#91-xargs和exec在使用中的不同)
 - [10. sort,wc,uniq](#10-sortwcuniq)
 - [11. 转义符](#11-转义符)
+- [12. 高级bash](#12-高级bash)
 
 <!-- /TOC -->
 
@@ -330,3 +331,44 @@ cat /etc/man_db.conf | wc
 * http://www.asciitable.com/ (ascii表)
 
 实在不行的话用tcpdump搞清楚
+
+
+<a id="markdown-12-高级bash" name="12-高级bash"></a>
+# 12. 高级bash
+
+* https://www.zhihu.com/question/21418449 (zsh韦易笑)
+* https://www.zhihu.com/question/29977255 (zsh)
+* https://github.com/zsh-users/antigen (插件管理)
+* https://www.howtoforge.com/tutorial/how-to-setup-zsh-and-oh-my-zsh-on-linux/ (如何安装oh-my-zsh)
+* https://github.com/arialdomartini/oh-my-git/issues/10 (putty zsh符号显示不全解决方法)
+* https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/fonts (putty 字体 windows可用的吧)
+* https://github.com/powerline/fonts (powerline 字体)
+* https://github.com/robbyrussell/oh-my-zsh/wiki/Themes (所有主题)
+
+```bash
+# 安装fish
+yum install fish -y
+chsh -s /usr/bin/fish
+```
+
+```bash
+# 安装zsh
+yum install zsh -y
+chsh -s /bin/zsh
+
+# 插件管理
+mkdir -p $HOME/.local/bin
+curl -L git.io/antigen > $HOME/.local/bin/antigen.zsh
+
+# 直接用韦易笑的脚本
+curl -L https://raw.githubusercontent.com/skywind3000/vim/1245870515f82b55894fe14adacef20c8ef13dbf/etc/zshrc.zsh > ~/.zshrc
+```
+
+oh-my-zsh
+```bash
+# oh-my-zsh
+echo $SHELL
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+source ~/.zshrc
+```
