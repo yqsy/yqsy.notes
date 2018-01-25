@@ -8,6 +8,7 @@ categories: [微服务]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
+- [2. 实践](#2-实践)
 
 <!-- /TOC -->
 
@@ -15,3 +16,14 @@ categories: [微服务]
 # 1. 资料
 
 * https://www.cnblogs.com/sailrancho/p/4784763.html (lograte)
+* https://superuser.com/questions/291368/log-rotation-of-stdout (standout 配合lograte)
+* https://httpd.apache.org/docs/2.4/programs/rotatelogs.html (工具)
+
+<a id="markdown-2-实践" name="2-实践"></a>
+# 2. 实践     
+```bash
+yum install httpd -y
+
+nohup ./frps -c ./frps.ini | rotatelogs /var/log/frp.log-%Y%m%d 86400 &
+
+```

@@ -142,6 +142,8 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 
 <a id="markdown-5-putty配置" name="5-putty配置"></a>
 # 5. putty配置
+0.70版本
 
 * window-appearance-font (默认字体难看)
 * Terminal-Features-Disable remote-controlled window title changing (不修改标题)
+* Connection-Data-Terminal-type string linux (home end 键)
