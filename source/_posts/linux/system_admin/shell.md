@@ -361,7 +361,7 @@ mkdir -p $HOME/.local/bin
 curl -L git.io/antigen > $HOME/.local/bin/antigen.zsh
 
 # 直接用韦易笑的脚本
-curl -L https://raw.githubusercontent.com/skywind3000/vim/1245870515f82b55894fe14adacef20c8ef13dbf/etc/zshrc.zsh > ~/.zshrc
+curl -L https://raw.githubusercontent.com/yqsy/vim/master/etc/zshrc.zsh > ~/.zshrc
 ```
 
 oh-my-zsh
