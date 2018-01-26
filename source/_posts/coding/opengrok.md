@@ -9,7 +9,7 @@ categories: [coding]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
-- [2. 我的实践](#2-我的实践)
+- [2. windows搭建实践](#2-windows搭建实践)
 
 <!-- /TOC -->
 
@@ -26,8 +26,8 @@ categories: [coding]
 * http://mazhuang.org/2016/12/14/rtfsc-with-opengrok/ (多项目)
 
 
-<a id="markdown-2-我的实践" name="2-我的实践"></a>
-# 2. 我的实践
+<a id="markdown-2-windows搭建实践" name="2-windows搭建实践"></a>
+# 2. windows搭建实践
 
 ```bash
 # jre
@@ -90,3 +90,4 @@ mklink /J libgo D:\reference\refer\libgo
 
 java -jar  D:/tools/opengrok/opengrok-1.1-rc17/lib/opengrok.jar -P -S -v -s D:/reference/opengrok_projects -d D:/tools/opengrok/opengrok-1.1-rc17/data -W D:/tools/opengrok/opengrok-1.1-rc17/data/configuration.xml
 ```
+
