@@ -46,5 +46,10 @@ systemctl start docker
 systemctl enable docker
 
 systemctl status docker
+
+yum install docker-compose -y
+# https://github.com/certbot/certbot/issues/5104
+pip install requests urllib3 pyOpenSSL --force --upgrade
+
 ```
 
