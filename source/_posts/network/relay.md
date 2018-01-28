@@ -44,5 +44,5 @@ ssh -NR 9001:localhost:4040 root@192.168.2.157
 ssh -NR 9001:xxx:4040 root@192.168.2.157
 
 # 动态访问 chrome安装(switchysharp)
-ssh -ND 9003 root@gg
+ssh -ND 1080 root@gg
 ```
