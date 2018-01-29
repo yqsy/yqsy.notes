@@ -21,4 +21,10 @@ categories: [微服务]
 * http://www.ituring.com.cn/book/1734 (HTTPS权威指南)
 * https://www.nginx.com/resources/wiki/start/topics/examples/SSL-Offloader/ (nginx 配置)
 * https://letsencrypt.org/ 
-
+* https://github.com/jwilder/nginx-proxy (默认只EXPOSE80端口,需要反向443)
+* https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+* https://github.com/fatk/docker-letsencrypt-nginx-proxy-companion-examples
+* https://github.com/SteveLTN/https-portal (就是这个了)
+* https://hub.docker.com/r/steveltn/https-portal/ (同上docker hub的)
+* https://developers.google.com/web/fundamentals/security/encrypt-in-transit/enable-https (说明)
+* http://nginx.org/en/docs/http/configuring_https_servers.html (nginx如何配置)
