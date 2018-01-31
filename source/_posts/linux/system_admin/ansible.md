@@ -97,8 +97,6 @@ web服务example
 ```bash
 ---
 - hosts: my-servers
----
-- hosts: my-servers
   remote_user: root
   tasks:
   - name: install software
@@ -109,7 +107,9 @@ web服务example
       - vim
       - telnet
       - git
-      - zsh
+
+  - name: config zsh | install
+    yum: pkg=zsh state=latest
 
   - name: config zsh | remove
     file: path=~/.zshrc state=absent
