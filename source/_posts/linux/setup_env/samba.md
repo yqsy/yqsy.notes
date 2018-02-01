@@ -36,7 +36,7 @@ echo "
     writeable = Yes
 " > /etc/samba/smb.conf
 
-mkdir -p /samba/anonymous
+# mkdir -p /samba/anonymous
 systemctl enable smb.service
 systemctl enable nmb.service
 systemctl restart smb.service

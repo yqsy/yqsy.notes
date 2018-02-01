@@ -14,7 +14,7 @@ categories: [web]
 
 <a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
-* https://docs.djangoproject.com/en/2.0/intro/tutorial01/ (初始教学)
+* https://docs.djangoproject.com/en/2.0/contents/ (初始教学)
 
 
 <a id="markdown-2-windows安装" name="2-windows安装"></a>
@@ -118,4 +118,18 @@ python manage.py createsuperuser
 
 在poll/admin.py中添加表可以通过web管理
 
+template要拿到 context以及request进行模板渲染
+template.render(context, request) 
+
+html的目录是这样的:(注意要在urls.py中设置app_name)
+\mysite\polls\templates\polls\index.html
+
+简洁的写法:
+    return render(request, 'polls/index.html', context)
+
+
+前面的Path的name参数的作用找到了
+    <li>
+        <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+    </li>
 ```
