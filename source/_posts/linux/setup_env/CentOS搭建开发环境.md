@@ -68,6 +68,11 @@ sudo sudo yum makecache
 # 关闭iptables
 sudo systemctl stop firewalld.service && sudo systemctl disable firewalld.service
 
+# 关闭selinux
+setenforce 0
+sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+
+
 sudo yum update -y
 sudo yum install vim -y
 sudo yum install net-tools -y
