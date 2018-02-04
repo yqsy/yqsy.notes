@@ -9,6 +9,7 @@ categories: [微服务]
 
 - [1. 资料](#1-资料)
 - [2. 安装](#2-安装)
+- [3. 指令](#3-指令)
 
 <!-- /TOC -->
 
@@ -53,3 +54,20 @@ pip install requests urllib3 pyOpenSSL --force --upgrade
 
 ```
 
+<a id="markdown-3-指令" name="3-指令"></a>
+# 3. 指令
+
+```bash
+
+# 运行就删除
+docker run -it --rm debian bash
+docker run -it --rm nginx bash
+
+-i, --interactive                 Keep STDIN open even if not attached
+-t, --tty                         Allocate a pseudo-TTY
+--rm                          Automatically remove the container when it exits
+
+# 附加到容器
+docker exec -it xxx bash;
+
+```

@@ -31,6 +31,7 @@ categories: [微服务]
 * https://certbot.eff.org/ (这个好像可以直接生成证书)
 * https://segmentfault.com/a/1190000005797776 (cerbot快速入门)
 * https://hub.docker.com/r/certbot/certbot/ (docker)
+* https://www.v2ex.com/t/365967 (简单的实践)
 
 <a id="markdown-2-docker示例" name="2-docker示例"></a>
 # 2. docker示例
@@ -38,8 +39,8 @@ categories: [微服务]
 * https://github.com/jwilder/nginx-proxy (默认只EXPOSE80端口,需要反向443)
 * https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
 * https://github.com/fatk/docker-letsencrypt-nginx-proxy-companion-examples
-* https://github.com/SteveLTN/https-portal (就是这个了)
-* https://hub.docker.com/r/steveltn/https-portal/ (同上docker hub的)
+* https://github.com/SteveLTN/https-portal
+* https://hub.docker.com/r/steveltn/https-portal/
 
 <a id="markdown-3-免费签名" name="3-免费签名"></a>
 # 3. 免费签名

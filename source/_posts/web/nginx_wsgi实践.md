@@ -9,6 +9,7 @@ categories: [web]
 
 - [1. 实践](#1-实践)
 - [2. https实践](#2-https实践)
+- [3. docker-https proxy实践](#3-docker-https-proxy实践)
 
 <!-- /TOC -->
 
@@ -157,5 +158,21 @@ certbot实践,参考:https://certbot.eff.org/all-instructions/#centos-rhel-7-ngi
 wget https://dl.eff.org/certbot-auto
 chmod a+x ./certbot-auto
 ./certbot-auto
+```
+
+<a id="markdown-3-docker-https-proxy实践" name="3-docker-https-proxy实践"></a>
+# 3. docker-https proxy实践
+
+```bash
+docker pull jwilder/nginx-proxy:latest
+docker pull jwilder/whoami
+
+docker-compose up -d 
+
+# -d                         Detached mode: Run containers in the background,
+#                            print new container names.
+
+dbash httpsproxy_nginx-proxy_1
+
 
 ```
