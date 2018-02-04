@@ -8,19 +8,24 @@ categories: [web]
 <!-- TOC -->
 
 - [1. 资源](#1-资源)
-- [2. windows安装](#2-windows安装)
+- [2. 实践](#2-实践)
+- [3. with docker](#3-with-docker)
 
 <!-- /TOC -->
 
 <a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 * https://docs.djangoproject.com/en/2.0/contents/ (初始教学)
+* https://docs.djangoproject.com/en/2.0/ref/models/expressions/#avoiding-race-conditions-using-f (解决web服务器的race condition)
+* https://docs.djangoproject.com/en/2.0/howto/static-files/ (静态文件)
+* https://docs.djangoproject.com/en/2.0/intro/reusable-apps/ (打包)
+* https://docs.djangoproject.com/en/2.0/topics/ (全部文档)
+* https://code.ziqiangxuetang.com/django/django-tutorial.html (中文文档)
 
+<a id="markdown-2-实践" name="2-实践"></a>
+# 2. 实践
 
-<a id="markdown-2-windows安装" name="2-windows安装"></a>
-# 2. windows安装
-
-```
+```bash
 Python 3.6.2
 pip 9.0.1 from c:\python36\lib\site-packages (python 3.6)
 
@@ -32,104 +37,46 @@ python -m django --version
 # 创建一个工程
 django-admin startproject mysite
 
-# 运行工程
-python manage.py runserver 0:8000
-
 # An app can be in multiple projects.
 python manage.py startapp polls
 
+# 运行工程
+python manage.py runserver 0:8000
 
-mysite/urls.py -> app polls or admin
-
-path('polls/', include('polls.urls')), 应该是路径 polls -> 找到polls目录下的urls.py文件把
-
-app polls -> urls.py  -> views.py (定义路径函数)
-这里面定义为啥要反射? path('', views.index, name='index'),
-
-path() argument: route view kwargs name是别名
-
-
-安装的app
-django.contrib.admin – The admin site. You’ll use it shortly.
-django.contrib.auth – An authentication system.
-django.contrib.contenttypes – A framework for content types.
-django.contrib.sessions – A session framework.
-django.contrib.messages – A messaging framework.
-django.contrib.staticfiles – A framework for managing static files.
-
-
-数据库用的是orm技术?
-
-models文件定义数据类型
-
-添加了models如何让manage.py 生成数据库结构呢?
-在settings.py里面配置
-'polls.apps.PollsConfig', 路径.apps.PollsConfig?
-
-生成数据库结构?是的,可以看到migrations目录中有生成的文件
+# 生成数据库结构?是的,可以看到migrations目录中有生成的文件
 python manage.py makemigrations polls
 
-生成sql (其实也不用执行啦)
+# 生成sql (其实也不用执行啦)
 python manage.py sqlmigrate polls 0001
 
-在数据库创建model (默认是sqlite)
+# 在数据库创建model (默认是sqlite)
 python manage.py migrate
 
-交互访问源码模块
+# 交互访问源码模块
 python manage.py shell 
 
-导入模块
+# 单元测试
+python manage.py test polls
+
+# 导入模块
 from polls.models import Question, Choice
 
-表的所有数据
-Question.objects.all()
-
-from django.utils import timezone
-q = Question(question_text="What's new?", pub_date=timezone.now())
-q.save()
-q.id
-q.question_text
-q.pub_date
-q.question_text = "What's up?"
-q.save()
-Question.objects.all()
-
-Question.objects.filter(id=1)
-Question.objects.filter(question_text__startswith='What')
-current_year = timezone.now().year
-Question.objects.get(pub_date__year=current_year)
-
-q = Question.objects.get(pk=1)
-q.was_published_recently()
-
-?这个choice_set是哪里来的呀
-q.choice_set.all()
-
-q.choice_set.create(choice_text='Not much', votes=0)
-q.choice_set.create(choice_text='The sky', votes=0)
-c = q.choice_set.create(choice_text='Just hacking again', votes=0)
-c.question
-q.choice_set.all()
-
-q.choice_set.count()
-
-创建用户名密码
+# 创建用户名密码
 python manage.py createsuperuser
 
-在poll/admin.py中添加表可以通过web管理
+# 打包整个工程??
+python setup.py sdist
 
-template要拿到 context以及request进行模板渲染
-template.render(context, request) 
+# 从tar包安装??
+pip install --user dist/django-xxx-0.1.tar.gz
 
-html的目录是这样的:(注意要在urls.py中设置app_name)
-\mysite\polls\templates\polls\index.html
+# 卸载??
+pip uninstall dist/django-xxx-0.1.tar.gz
+```
 
-简洁的写法:
-    return render(request, 'polls/index.html', context)
+<a id="markdown-3-with-docker" name="3-with-docker"></a>
+# 3. with docker
 
-
-前面的Path的name参数的作用找到了
-    <li>
-        <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-    </li>
+```
+docker pull django:latest
 ```

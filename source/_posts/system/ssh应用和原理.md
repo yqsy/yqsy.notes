@@ -28,7 +28,7 @@ categories: [系统底层]
 
 * http://blog.csdn.net/is0501xql/article/details/8158327 (SSL协议详解)
 * http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html (SSH 阮一峰)
-
+* https://en.wikipedia.org/wiki/Public-key_cryptography (公钥身份认证流程)
 
 <a id="markdown-2-日常碰到的场景" name="2-日常碰到的场景"></a>
 # 2. 日常碰到的场景
