@@ -38,3 +38,6 @@ categories: [微服务]
 * https://www.zhihu.com/question/50363231/answer/132735459 (整体方向)
 * https://zhuanlan.zhihu.com/p/30056870 (python 技术栈)
 * https://zhuanlan.zhihu.com/p/31144648 (史上最全IT学习资料)
+* https://zhuanlan.zhihu.com/p/32802683 (京东京麦商家开放平台的消息推送架构演进之路)
+* http://www.52im.net/thread-848-1-1.html (go高并发消息推送实践)
+* https://zhuanlan.zhihu.com/p/32846499 (负载均衡和代理技术)

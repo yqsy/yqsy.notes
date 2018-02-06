@@ -18,6 +18,7 @@ categories: [微服务]
 <a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 
+* https://www.zhihu.com/question/19636141/answer/13154248 (常用的运维,管理工具)
 * https://blog.serverdensity.com/80-linux-monitoring-tools-know/ (80个监控工具)
 * http://www.linuxscrew.com/2012/03/22/linux-monitoring-tools/ (排名前5监控系统)
 * http://my-netdata.io/ (my-netdata.io 太复杂啦)
@@ -29,9 +30,11 @@ categories: [微服务]
 * http://zhuanlan.zhihu.com/p/20385707 (手写 监控,赞)
 * https://github.com/nkrode/RedisLive (redis的监控赞,学习一下)
 * https://github.com/XiaoMi/open-falcon (小米开源的监控)
+* https://zhuanlan.zhihu.com/p/32764309 (17个开源的运维监控系统)
 * http://blog.csdn.net/yuzhihui_no1/article/details/65435471 (rdd数据库 时序图环形 复写)
 * http://liubin.org/blog/2016/02/25/tsdb-list-part-1/ (时序数据库)
 * https://oss.oetiker.ch/rrdtool/ (rrdtool)
+
 
 <a id="markdown-2-核心问题" name="2-核心问题"></a>
 # 2. 核心问题
