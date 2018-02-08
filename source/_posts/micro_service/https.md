@@ -11,8 +11,9 @@ categories: [微服务]
 - [1. 资源](#1-资源)
 - [2. docker示例](#2-docker示例)
 - [3. 免费签名](#3-免费签名)
-- [4. 梳理](#4-梳理)
-- [5. 所有文件后缀的含义](#5-所有文件后缀的含义)
+- [4. https梳理](#4-https梳理)
+- [5. 中间人攻击](#5-中间人攻击)
+- [6. 所有文件后缀的含义](#6-所有文件后缀的含义)
 
 <!-- /TOC -->
 
@@ -48,16 +49,41 @@ categories: [微服务]
 * https://letsencrypt.org/
 * https://bruceking.site/2017/07/12/how-letsencrypt-works/ (letsencrypt原理)
 
-<a id="markdown-4-梳理" name="4-梳理"></a>
-# 4. 梳理
-> Web browsers know how to trust HTTPS websites based on certificate authorities that come pre-installed in their software. Certificate authorities (such as Symantec, Comodo, GoDaddy, GlobalSign and Let's Encrypt) are in this way being trusted by web browser creators to provide valid certificates. 
+<a id="markdown-4-https梳理" name="4-https梳理"></a>
+# 4. https梳理
+
+* http://blog.csdn.net/is0501xql/article/details/8158327 (SSL协议详解)
+* http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature (公钥私钥讲的很清楚)
+* https://www.zhihu.com/question/52493697/answer/130813213 (这个还算清楚)
 
 
-<a id="markdown-5-所有文件后缀的含义" name="5-所有文件后缀的含义"></a>
-# 5. 所有文件后缀的含义
+CA会给网站颁发一个证书,包括
+* 证书用途
+* 网站的公钥
+* 网站的加密算法
+* 网站的hash算法
+* 证书到期时间
+
+把证书做hash,再用ca的私钥加密,得到了数字签名.放在证书末尾一起给到网站.
+
+* 浏览器请求网站,得到证书(会验证证书合法性)和数字签名,把数字签名用公钥解密得到hash值,再计算证书的hash值,相等认证成功
+* 双方运行 Diffie Hellman 算法,协商master-key再推导出`session-key`,用于SSL数据流加密,一般用AES
+* 以master-key推导出`hash-key`,用于数据完整性检查,一般有MD5,SHA
+* 浏览器把http报文用hash key生成一个MAC,放在http报文后,然后用session-key加密所有数据,发送
+* 服务器用session-key解密数据,然后用相同的算法计算MAC,如果MAC==MAC,则数据没有篡改
+
+<a id="markdown-5-中间人攻击" name="5-中间人攻击"></a>
+# 5. 中间人攻击
+
+* https://www.zhihu.com/question/20744215 (什么是TLS中间人攻击,如何防范这类攻击)
+
+<a id="markdown-6-所有文件后缀的含义" name="6-所有文件后缀的含义"></a>
+# 6. 所有文件后缀的含义
 
 * https://www.zhihu.com/question/29620953 
 
+
+后缀:
 * X.509 DER 编码(ASCII)的后缀是： .DER .CER .CRT
 * X.509 PAM 编码(Base64)的后缀是： .PEM(也可能是key) .CER .CRT
 * 私钥：.key
