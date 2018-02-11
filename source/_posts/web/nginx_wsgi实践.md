@@ -144,12 +144,20 @@ cp server.key /etc/nginx/server.key
 再来,参考https://github.com/greyltc/docker-LAMP/blob/master/setupApacheSSLKey.sh (owncloud的)
 ```bash
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out ./privkey.pem
+
 openssl req -new -key ./privkey.pem -out ./server.csr -subj /C=US/ST=CA/L=CITY/O=ORGANIZATION/OU=UNIT/CN=localhost
 
 openssl x509 -req -days 3650 -in ./server.csr -signkey ./privkey.pem -out ./fullchain.pem
 
 cp fullchain.pem /etc/nginx/fullchain.pem
 cp privkey.pem /etc/nginx/privkey.pem
+```
+
+https权威指南指令
+```bash
+# 生成rsa密钥
+
+
 ```
 
 certbot实践,参考:https://certbot.eff.org/all-instructions/#centos-rhel-7-nginx
@@ -173,6 +181,5 @@ docker-compose up -d
 #                            print new container names.
 
 dbash httpsproxy_nginx-proxy_1
-
 
 ```

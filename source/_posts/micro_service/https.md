@@ -33,6 +33,7 @@ categories: [微服务]
 * https://segmentfault.com/a/1190000005797776 (cerbot快速入门)
 * https://hub.docker.com/r/certbot/certbot/ (docker)
 * https://www.v2ex.com/t/365967 (简单的实践)
+* https://www.zhihu.com/question/21518760/answer/19698894 (消耗的服务器资源)
 
 <a id="markdown-2-docker示例" name="2-docker示例"></a>
 # 2. docker示例
