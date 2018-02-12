@@ -19,7 +19,10 @@ categories: [读书笔记]
 - [10. 部署](#10-部署)
 - [11. 性能优化](#11-性能优化)
 - [12. http严格传输安全](#12-http严格传输安全)
-- [OpenSSL](#openssl)
+- [13. OpenSSL](#13-openssl)
+- [14. 指令](#14-指令)
+- [15. 配置apache](#15-配置apache)
+- [16. 配置nginx](#16-配置nginx)
 
 <!-- /TOC -->
 
@@ -437,8 +440,8 @@ http请求重定向至https还有问题:会被截获http明文信息.解决方�
 * 修改你的网站使每个主机名向根域名提交一个请求
 * 如果在你的网站面前有一个反向代理,在代理级别集中配置HSTS策略时一个加分项
 
-<a id="markdown-openssl" name="openssl"></a>
-# OpenSSL
+<a id="markdown-13-openssl" name="13-openssl"></a>
+# 13. OpenSSL
 
 OpenSSL项目时安全套接字层(secure sockets layer, SSL)和传输层安全(transport layer security,TLS)协议的一个实现,是大家共同努力开发出的代码可靠,功能齐全,商业级别的开源工具集.
 
@@ -449,3 +452,53 @@ OpenSSL项目时安全套接字层(secure sockets layer, SSL)和传输层安全(
 1. 生成强加密的私钥
 2. 常见证书签名申请(centificate signing request, CSR)并且发送给CA
 3. 在你的Web服务器上安装CA提供的证书
+
+
+<a id="markdown-14-指令" name="14-指令"></a>
+# 14. 指令
+
+```bash
+# 连接SSL服务
+openssl s_client -connect www.feistyduck.com:443
+
+# 指定可信证书
+openssl s_client -connect www.feistyduck.com:443 -CAfile /etc/ssl/certs/ca-certificates.crt
+
+# 测试支持的密码套件
+openssl s_client -connect www.feistyduck.com:443 -cipher RC4-SHA
+
+# 测试会话复用
+echo | openssl s_client -connect www.feistyduck.com:443 -reconnect
+
+# 测试心脏出血
+openssl s_client -connect www.feistyduck.com:443 -tlsextdebug
+
+```
+
+
+<a id="markdown-15-配置apache" name="15-配置apache"></a>
+# 15. 配置apache
+
+```bash
+# 配置服务器私钥
+SSLCertificateKeyFile conf/server.key
+
+# 配置服务器证书
+SSLCertificateFile conf/server.crt
+
+# 配置CA提供的中间证书链，当服务器是自签名证书时不需要这个指令
+SSLCertificateChainFile conf/chain.pem
+```
+
+<a id="markdown-16-配置nginx" name="16-配置nginx"></a>
+# 16. 配置nginx
+
+```bash
+# 私钥
+ssl_certificate_key server.key;
+
+# 证书：服务器证书在最前面，后面是所有必要的中间证书，不需要根证书
+ssl_certificate server.crt;
+
+```
+

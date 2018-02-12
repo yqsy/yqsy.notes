@@ -155,8 +155,70 @@ cp privkey.pem /etc/nginx/privkey.pem
 
 https权威指南指令
 ```bash
-# 生成rsa密钥
+# 解析rsa私钥
+openssl rsa -text -in fd.key
 
+# 单独查看密钥的公开部分
+openssl rsa -in fd.key -pubout -out fd-public.key
+
+# DSA密钥生成(先生成DSA的参数,再生成密钥)
+openssl dsaparam -genkey 2048 | openssl dsa -out dsa.key -aes128
+
+# 创建ECDSA密钥
+openssl ecparam -genkey -name secp256r1 | openssl ec -out ec.key -aes128
+
+# 检查证书签名申请是否是正确的
+openssl req -text -in fd.csr -noout
+
+
+# 非交互式方式生成CSR (注意这里的ext是不生效的)
+
+echo \
+"[req]
+prompt = no
+distinguished_name = dn
+req_extensions = ext
+input_password = PASSPHRASE
+[dn]
+CN = localhost
+emailAddress = webmaster@feistyduck.com
+O = Feisty Duck Ltd
+L = London
+C = GB
+[ext]
+" > ./fd.cnf
+
+
+# 生成私钥
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out ./fd.key
+
+# 直接创建CSR文件
+openssl req -new -config fd.cnf -key fd.key -out fd.csr
+
+# 自签名证书
+openssl x509 -req -days 365 -in fd.csr -signkey fd.key -out fd.crt
+
+# copy到目录
+cp fd.crt /etc/nginx/fd.crt
+cp fd.key /etc/nginx/fd.key
+
+# 无需创建csr,直接创建证书
+openssl req -new -x509 -days 365 -key fd.key -out fd.crt \
+-subj "/C=GB/L=London/O=Feisty Duck Ltd/CN=www.feistyduck.com"
+
+# 打印证书
+openssl x509 -text -in fd.crt -noout
+
+# 签发给多个域名
+echo \
+"subjectAltName = DNS:*.feistyduck.com, DNS:feistyduck.com" > fd.ext
+
+openssl x509 -req -days 365 \
+-in fd.csr -signkey fd.key -out fd.crt \
+-extfile fd.ext
+
+# 查看openssl支持的密码套件
+openssl ciphers -v 'ALL:COMPLEMENTOFALL'
 
 ```
 

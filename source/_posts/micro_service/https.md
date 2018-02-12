@@ -90,3 +90,12 @@ CA会给网站颁发一个证书,包括
 * 私钥：.key
 * 证书请求：.csr
 
+```bash
+
+# 从PEM装换到DER
+openssl x509 -inform PEM -in fd.pem -outform DER -out fd.der
+
+# 从DER转换到PEM
+openssl x509 -inform DER -in fd.der -outform PEM -out fd.pem
+
+```
