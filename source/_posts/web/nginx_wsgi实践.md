@@ -180,8 +180,8 @@ distinguished_name = dn
 req_extensions = ext
 input_password = PASSPHRASE
 [dn]
-CN = localhost
-emailAddress = webmaster@feistyduck.com
+CN = yqsycloud.top
+emailAddress = yqsy021@126.com
 O = Feisty Duck Ltd
 L = London
 C = GB
