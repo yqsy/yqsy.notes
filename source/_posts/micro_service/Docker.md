@@ -22,6 +22,7 @@ categories: [微服务]
 * http://www.docker.org.cn/book/docker/what-is-docker-16.html (docker中文社区)
 * https://stackoverflow.com/questions/30494050/how-do-i-pass-environment-variables-to-docker-containers (传递环境变量给docker)
 * https://docs.docker.com/engine/admin/volumes/volumes/ (manager data in docker)
+* https://nickjanetakis.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image (各大base镜像大小)
 
 
 <a id="markdown-2-安装" name="2-安装"></a>
@@ -69,5 +70,18 @@ docker run -it --rm nginx bash
 
 # 附加到容器
 docker exec -it xxx bash;
+
+# 暂停和删除所有容器
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+# 删除none标签的images
+docker rmi $(docker images -f "dangling=true" -q)
+
+# 含义
+RUN set -ex; 
+
+-e 遇到错误时退出
+-x 打印执行语句
 
 ```
