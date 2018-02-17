@@ -9,7 +9,6 @@ categories: [web]
 
 - [1. 实践](#1-实践)
 - [2. https实践](#2-https实践)
-- [3. docker-https proxy实践](#3-docker-https-proxy实践)
 
 <!-- /TOC -->
 
@@ -180,12 +179,13 @@ distinguished_name = dn
 req_extensions = ext
 input_password = PASSPHRASE
 [dn]
-CN = yqsycloud.top
+CN = localhost
 emailAddress = yqsy021@126.com
 O = Feisty Duck Ltd
 L = London
 C = GB
 [ext]
+subjectAltName = DNS:www.feistyduck.com,DNS:feistyduck.com
 " > ./fd.cnf
 
 
@@ -222,26 +222,4 @@ openssl ciphers -v 'ALL:COMPLEMENTOFALL'
 
 ```
 
-certbot实践,参考:https://certbot.eff.org/all-instructions/#centos-rhel-7-nginx
-```
 
-wget https://dl.eff.org/certbot-auto
-chmod a+x ./certbot-auto
-./certbot-auto
-```
-
-<a id="markdown-3-docker-https-proxy实践" name="3-docker-https-proxy实践"></a>
-# 3. docker-https proxy实践
-
-```bash
-docker pull jwilder/nginx-proxy:latest
-docker pull jwilder/whoami
-
-docker-compose up -d 
-
-# -d                         Detached mode: Run containers in the background,
-#                            print new container names.
-
-dbash httpsproxy_nginx-proxy_1
-
-```

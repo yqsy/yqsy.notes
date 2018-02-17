@@ -14,6 +14,8 @@ categories: [微服务]
 - [4. https梳理](#4-https梳理)
 - [5. 中间人攻击](#5-中间人攻击)
 - [6. 所有文件后缀的含义](#6-所有文件后缀的含义)
+- [7. 使用certbot获取证书](#7-使用certbot获取证书)
+- [docker proxy  https -> http](#docker-proxy--https---http)
 
 <!-- /TOC -->
 
@@ -98,4 +100,102 @@ openssl x509 -inform PEM -in fd.pem -outform DER -out fd.der
 # 从DER转换到PEM
 openssl x509 -inform DER -in fd.der -outform PEM -out fd.pem
 
+```
+
+
+<a id="markdown-7-使用certbot获取证书" name="7-使用certbot获取证书"></a>
+# 7. 使用certbot获取证书
+
+参考:
+* https://certbot.eff.org/#debianstretch-nginx (官网)
+* https://linuxstory.org/deploy-lets-encrypt-ssl-certificate-with-certbot/ (经验)
+
+需要:
+* 一个域名
+* 一个公网IP
+
+内网NAT是不可以的,必须要公网IP(电信不开放80 443)
+
+```bash
+mkdir -p ~/cert && cd ~/cert
+
+docker run -it --name nginx1 \
+    -v `pwd`/:/cert \
+    -p 80:80 \
+    -p 443:443 \
+    nginx bash
+
+apt-get update
+apt-get install python-certbot-nginx -y
+
+certbot  certonly \
+    --agree-tos --standalone --installer nginx \
+    -d yqsycloud.top -d www.yqsycloud.top \
+    --email yqsy021@126.com
+
+cd /cert
+cp /etc/letsencrypt/keys/0000_key-certbot.pem ./
+cp /etc/letsencrypt/csr/0000_csr-certbot.pem ./
+cp /etc/letsencrypt/live/yqsycloud.top/fullchain.pem ./
+
+
+# 证书只有90天有效期,继续获得
+certbot renew
+```
+
+
+<a id="markdown-docker-proxy--https---http" name="docker-proxy--https---http"></a>
+# docker proxy  https -> http
+
+```bash
+mkdir -p ~/env/testhttps && cd ~/env/testhttps
+
+echo \
+"[req]
+prompt = no
+distinguished_name = dn
+req_extensions = ext
+input_password = PASSPHRASE
+[dn]
+CN = localhost
+emailAddress = yqsy021@126.com
+O = Feisty Duck Ltd
+L = London
+C = GB
+[ext]
+subjectAltName = DNS:www.feistyduck.com,DNS:feistyduck.com
+" > ./fd.cnf
+
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out default.key
+openssl req -new -config fd.cnf -key default.key -out default.csr
+openssl x509 -req -days 365 -in default.csr -signkey default.key -out default.crt
+
+cp default.key test.top.key
+cp default.crt test.top.crt
+
+cp default.key www.test.top.key
+cp default.crt www.test.top.crt
+
+docker run -d --name nginx1 -e VIRTUAL_HOST=test.top,www.test.top nginx
+
+docker run -d --name nginx-proxy1 -p 80:80 -p 443:443 \
+    -v `pwd`/:/etc/nginx/certs \
+    -v /var/run/docker.sock:/tmp/docker.sock:ro \
+    jwilder/nginx-proxy
+```
+
+```bash
+# 树莓派
+docker pull braingamer/nginx-proxy-arm
+
+docker run -d --name nginx1 -e VIRTUAL_HOST=test.top,www.test.top nginx
+
+mkdir -p ~/env/testhttps && cd ~/env/testhttps
+
+#... 证书
+
+docker run -d --name nginx-proxy1 -p 80:80 -p 443:443 \
+    -v `pwd`/:/etc/nginx/certs \
+    -v /var/run/docker.sock:/tmp/docker.sock:ro \
+    braingamer/nginx-proxy-arm
 ```
