@@ -37,8 +37,11 @@ cat id_rsa.pub >>  ~/.ssh/authorized_keys
 rm id_rsa.pub -f
 
 # 禁止密码
-sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
-systemctl restart sshd
+sudo sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
+sudo systemctl restart sshd
+
+# debian
+sudo systemctl restart ssh
 ```
 
 <a id="markdown-4-设置清华源" name="4-设置清华源"></a>
