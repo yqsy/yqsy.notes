@@ -69,7 +69,7 @@ sudo sudo yum makecache
 ```bash
 
 # 关闭iptables
-sudo systemctl stop firewalld.service && sudo systemctl disable firewalld.service
+sudo systemctl stop firewalld && sudo systemctl disable firewalld
 
 # 关闭selinux
 setenforce 0
