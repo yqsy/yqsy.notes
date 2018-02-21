@@ -21,36 +21,31 @@ categories: [linux, 搭建环境]
 # 2. 安装
 
 ```bash
-yum install samba samba-client samba-common -y
-mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+sudo yum install samba samba-client samba-common -y
+sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
-echo "
+sudo bash -c "cat > /etc/samba/smb.conf" << EOF
 [vm1]
     comment = Admin Config Share  - Whatever
     path = /
-    valid users = srijan
-    force user = root
-    force group = root
+    valid users = yq
+    # force user = root
+    # force group = root
     # invalid users = xxx
     # admin users = xxx
     writeable = Yes
-" > /etc/samba/smb.conf
+EOF
 
-# mkdir -p /samba/anonymous
-systemctl enable smb.service
-systemctl enable nmb.service
-systemctl restart smb.service
-systemctl restart nmb.service
 
-groupadd smbgrp
-useradd srijan -G smbgrp
-smbpasswd -a srijan
+sudo systemctl enable smb.service
+sudo systemctl enable nmb.service
+sudo systemctl restart smb.service
+sudo systemctl restart nmb.service
 
-# mkdir -p /samba/secured
-# chmod -R 0777 /samba/secured
+sudo smbpasswd -a yq
 
-systemctl restart smb.service
-systemctl restart nmb.service
+sudo systemctl restart smb.service
+sudo systemctl restart nmb.service
 
 # windows:
 # 清空会话

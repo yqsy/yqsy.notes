@@ -77,11 +77,11 @@ sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 
 
 sudo yum update -y
+sudo yum install epel-release -y
 sudo yum install vim -y
 sudo yum install net-tools -y
 sudo yum install telnet -y
 sudo yum install tcpdump -y
-sudo yum install epel-release -y
 sudo yum install pv -y
 sudo yum install boost-devel -y
 sudo yum install strace -y
