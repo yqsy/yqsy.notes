@@ -15,6 +15,7 @@ categories: [版本管理]
 - [6. clone windows目录](#6-clone-windows目录)
 - [7. 设置用户名和邮箱](#7-设置用户名和邮箱)
 - [8. 清理文件夹](#8-清理文件夹)
+- [windows lf](#windows-lf)
 
 <!-- /TOC -->
 
@@ -86,6 +87,12 @@ git clean -fd
 git ls-files -ci --exclude-standard
 
 git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
+```
+<a id="markdown-windows-lf" name="windows-lf"></a>
+# windows lf
+
+```bash
+git config --global core.autocrlf false
 ```
 
 说明|指令
