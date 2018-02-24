@@ -8,9 +8,11 @@ categories: [微服务]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
+    - [1.1. 前端展示](#11-前端展示)
 - [2. 核心问题](#2-核心问题)
 - [3. 时序数据库实践](#3-时序数据库实践)
-- [4. 分析小计](#4-分析小计)
+- [4. glances调试环境搭建](#4-glances调试环境搭建)
+- [5. 分析小计](#5-分析小计)
 
 <!-- /TOC -->
 
@@ -35,6 +37,11 @@ categories: [微服务]
 * http://liubin.org/blog/2016/02/25/tsdb-list-part-1/ (时序数据库)
 * https://oss.oetiker.ch/rrdtool/ (rrdtool)
 
+<a id="markdown-11-前端展示" name="11-前端展示"></a>
+## 1.1. 前端展示
+
+* https://www.highcharts.com/stock/demo (控件)
+* http://feixiao.github.io/2015/10/08/glances/ (我擦,直接配置配置就可以可视化啦?!)
 
 <a id="markdown-2-核心问题" name="2-核心问题"></a>
 # 2. 核心问题
@@ -48,13 +55,29 @@ categories: [微服务]
 * https://github.com/pldimitrov/Rrd/issues/1  (安装)
 
 ```bash
-yum install rrdtool-devel rrdtool -y
-yum install python34-devel -y
-pip3 install rrdtool
+sudo yum install rrdtool-devel rrdtool -y
+sudo yum install python34-devel -y
+sudo pip3 install rrdtool
 ```
 
-<a id="markdown-4-分析小计" name="4-分析小计"></a>
-# 4. 分析小计
+<a id="markdown-4-glances调试环境搭建" name="4-glances调试环境搭建"></a>
+# 4. glances调试环境搭建
+
+```bash
+sudo yum install python34-devel -y
+git clone https://github.com/nicolargo/glances
+cd glances
+sudo pip3 install -r requirements.txt
+
+sudo pip3 install bottle requests
+sudo pip3 install glances
+
+python3 -m glances -w
+```
+
+
+<a id="markdown-5-分析小计" name="5-分析小计"></a>
+# 5. 分析小计
 
 ```
 strace netstat -g &> 1.txt && grep 'open' ./1.txt  > 2.txt
@@ -152,3 +175,6 @@ CPU
 28800 * 30 = 201600
 
 ```
+
+
+
