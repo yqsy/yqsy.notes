@@ -8,11 +8,14 @@ categories: [微服务]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
-    - [1.1. 前端展示](#11-前端展示)
+    - [1.1. 开源方案](#11-开源方案)
+    - [1.2. 前端展示](#12-前端展示)
 - [2. 核心问题](#2-核心问题)
 - [3. 时序数据库实践](#3-时序数据库实践)
 - [4. glances调试环境搭建](#4-glances调试环境搭建)
-- [5. 分析小计](#5-分析小计)
+- [5. 使用flask模拟glances小计](#5-使用flask模拟glances小计)
+- [tick stack方案搭建小计](#tick-stack方案搭建小计)
+- [6. 分析小计](#6-分析小计)
 
 <!-- /TOC -->
 
@@ -37,11 +40,22 @@ categories: [微服务]
 * http://liubin.org/blog/2016/02/25/tsdb-list-part-1/ (时序数据库)
 * https://oss.oetiker.ch/rrdtool/ (rrdtool)
 
-<a id="markdown-11-前端展示" name="11-前端展示"></a>
-## 1.1. 前端展示
+<a id="markdown-11-开源方案" name="11-开源方案"></a>
+## 1.1. 开源方案
+
+* influxdb 时序数据库 https://en.wikipedia.org/wiki/InfluxDB https://hub.docker.com/_/influxdb/
+* kapacitor 处理 https://github.com/influxdata/kapacitor https://hub.docker.com/_/kapacitor/
+* telegraf 收集数据 https://github.com/influxdata/telegraf  https://hub.docker.com/_/telegraf/
+* chronograf 展示 https://github.com/influxdata/chronograf https://hub.docker.com/_/chronograf/
+* https://docs.influxdata.com/telegraf/v0.13/introduction/installation/ (telegraf安装手册)
+
+<a id="markdown-12-前端展示" name="12-前端展示"></a>
+## 1.2. 前端展示
 
 * https://www.highcharts.com/stock/demo (控件)
-* http://feixiao.github.io/2015/10/08/glances/ (我擦,直接配置配置就可以可视化啦?!)
+* http://glances.readthedocs.io/en/stable/gw/influxdb.html (我擦,直接配置配置就可以可视化啦?!)
+* http://zhuanlan.zhihu.com/p/28570033 (10 分钟内快速构建能够承载海量数据的 NG<em>I</em>NX 日志分析与报警平台 - 七牛云的文章 - 知乎)
+
 
 <a id="markdown-2-核心问题" name="2-核心问题"></a>
 # 2. 核心问题
@@ -75,9 +89,78 @@ sudo pip3 install glances
 python3 -m glances -w
 ```
 
+<a id="markdown-5-使用flask模拟glances小计" name="5-使用flask模拟glances小计"></a>
+# 5. 使用flask模拟glances小计
 
-<a id="markdown-5-分析小计" name="5-分析小计"></a>
-# 5. 分析小计
+```bash
+# 库安装
+sudo pip3 install SQLAlchemy
+sudo pip3 install flask
+
+sudo yum install openssl-devel -y
+sudo pip3 install PyJWT
+
+# 数据库创建
+from ymonitor import db
+
+db.create_all()
+
+# 收集资料资源
+https://psutil.readthedocs.io/en/latest/#memory
+
+
+# 模拟cpu负载
+sudo yum install stress -y
+stress --cpu 2 --timeout 60
+```
+
+<a id="markdown-tick-stack方案搭建小计" name="tick-stack方案搭建小计"></a>
+# tick stack方案搭建小计
+
+```bash
+docker network create influxdb-network
+
+mkdir -p ~/env/influxdb
+cd ~/env/influxdb
+docker run -d --name influxdb \
+    -p 8086:8086 \
+    --network influxdb-network \
+    -v $PWD:/var/lib/influxdb \
+    influxdb
+
+mkdir -p ~/env/chronograf
+cd ~/env/chronograf
+docker run -d --name chronograf \
+    -p 8888:8888 \
+    --network influxdb-network \
+    -v $PWD:/var/lib/chronograf \
+    chronograf --influxdb-url=http://influxdb:8086
+
+# 主机上装telegraf
+cat <<EOF | sudo tee /etc/yum.repos.d/influxdb.repo
+[influxdb]
+name = InfluxDB Repository - RHEL \$releasever
+baseurl = https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable
+enabled = 1
+gpgcheck = 1
+gpgkey = https://repos.influxdata.com/influxdb.key
+EOF
+
+sudo su - root
+export http_proxy=http://host1:1080
+export https_proxy=http://host1:1080
+yum clean all
+yum install telegraf -y
+exit
+
+telegraf config | sudo tee /etc/telegraf/telegraf.conf
+
+sudo systemctl start telegraf
+```
+
+
+<a id="markdown-6-分析小计" name="6-分析小计"></a>
+# 6. 分析小计
 
 ```
 strace netstat -g &> 1.txt && grep 'open' ./1.txt  > 2.txt
@@ -175,6 +258,3 @@ CPU
 28800 * 30 = 201600
 
 ```
-
-
-
