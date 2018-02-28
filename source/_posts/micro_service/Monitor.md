@@ -44,7 +44,7 @@ categories: [微服务]
 ## 1.1. 开源方案
 
 * influxdb 时序数据库 https://en.wikipedia.org/wiki/InfluxDB https://hub.docker.com/_/influxdb/
-* kapacitor 处理 https://github.com/influxdata/kapacitor https://hub.docker.com/_/kapacitor/
+* kapacitor 报警把 https://github.com/influxdata/kapacitor https://hub.docker.com/_/kapacitor/
 * telegraf 收集数据 https://github.com/influxdata/telegraf  https://hub.docker.com/_/telegraf/
 * chronograf 展示 https://github.com/influxdata/chronograf https://hub.docker.com/_/chronograf/
 * https://docs.influxdata.com/telegraf/v0.13/introduction/installation/ (telegraf安装手册)
@@ -154,6 +154,8 @@ yum install telegraf -y
 exit
 
 telegraf config | sudo tee /etc/telegraf/telegraf.conf
+
+sudo sed -i '' /etc/telegraf/telegraf.conf
 
 sudo systemctl start telegraf
 ```
