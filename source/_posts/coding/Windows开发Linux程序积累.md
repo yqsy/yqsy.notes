@@ -232,13 +232,13 @@ done
 <a id="markdown-7-samba-终极方案" name="7-samba-终极方案"></a>
 # 7. samba-终极方案
 
-适用于本地虚拟机开发,目的是为了提高开发效率,
+适用于本地虚拟机开发,目的是为了提高开发效率,使用visual studio 2017开发吧
 
 映射成z:,everything也可以扫描
 
 ```
                 "z:/opt/muduo/build/release-install-cpp11/include",
-                "z:/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include",
+                "z:/usr/lib/gcc/x86_64-redhat-linux/4.8.2/include",
                 "z:/usr/local/include",
                 "z:/usr/include",
                 "z:/usr/include/c++/4.8.5",

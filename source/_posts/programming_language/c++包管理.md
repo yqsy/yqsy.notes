@@ -129,7 +129,7 @@ The following libraries require building:
 
 该死的,这个版本的muduo都编译不过,还是用yum的1.5.3吧
 ```
-yum install boost-devel -y
+sudo yum install boost-devel -y
 ```
 
 <a id="markdown-5-muduo" name="5-muduo"></a>
@@ -139,6 +139,7 @@ yum install boost-devel -y
 
 1.0.9版本 (c++98)
 ```
+sudo su - root
 mkdir -p /opt/muduo-1.0.9
 cd /opt/muduo-1.0.9
 wget https://github.com/chenshuo/muduo/archive/v1.0.9.tar.gz
@@ -151,6 +152,7 @@ BUILD_TYPE=release ./build.sh install
 
 11版本
 ```
+sudo su - root
 rm -rf /opt/muduo-1.0.9/
 mkdir -p /opt/muduo
 cd /opt/muduo

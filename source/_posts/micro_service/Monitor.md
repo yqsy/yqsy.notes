@@ -155,9 +155,8 @@ exit
 
 telegraf config | sudo tee /etc/telegraf/telegraf.conf
 
-sudo sed -i '' /etc/telegraf/telegraf.conf
-
 sudo systemctl start telegraf
+sudo systemctl enable telegraf
 ```
 
 
