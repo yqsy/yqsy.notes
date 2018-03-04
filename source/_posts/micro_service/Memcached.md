@@ -61,10 +61,10 @@ scp memcached.tgz root@vm1:/opt/
 * https://stackoverflow.com/questions/9725278/cant-turn-off-gcc-optimizer-makefile-from-automake (automake编译关优化)
 
 ```bash
+sudo su - root
 yum install libevent-devel -y
 yum install perl-CPAN -y
-cpan 
-install Test::More
+yum install perl-Test-Simple -y
 
 cd /opt
 tar -xvzf memcached.tgz
