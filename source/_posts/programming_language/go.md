@@ -8,6 +8,7 @@ categories: [编程语言]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
+- [2. 设置环境变量](#2-设置环境变量)
 
 <!-- /TOC -->
 
@@ -19,3 +20,12 @@ categories: [编程语言]
 * https://github.com/golang/go/wiki/GoGetProxyConfig (go get 使用代理)
 
 
+<a id="markdown-2-设置环境变量" name="2-设置环境变量"></a>
+# 2. 设置环境变量
+
+```bash
+cat >> ~/.zshrc << EOF
+export GOPATH=\$HOME/go
+export PATH=\$PATH:\$GOROOT/bin:$GOPATH/bin
+EOF
+```
