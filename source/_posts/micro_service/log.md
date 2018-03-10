@@ -24,6 +24,8 @@ categories: [微服务]
 ```bash
 yum install httpd -y
 
-nohup ./frps -c ./frps.ini | rotatelogs /var/log/frp.log-%Y%m%d 86400 &
+sudo mkdir /var/log/frp
+sudo chown $(id -u):$(id -g) /var/log/frp
+nohup ./frps -c ./frps.ini | rotatelogs /var/log/frp/frp.log-%Y%m%d 86400 &
 
 ```
