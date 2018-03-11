@@ -9,6 +9,7 @@ categories: [网络相关]
 
 - [1. 资料](#1-资料)
 - [2. 实践](#2-实践)
+- [3. socks5研究](#3-socks5研究)
 
 <!-- /TOC -->
 
@@ -46,3 +47,50 @@ ssh -NR 9001:xxx:4040 root@192.168.2.157
 # 动态访问 chrome安装(switchysharp)
 ssh -ND 1080 root@gg
 ```
+
+
+<a id="markdown-3-socks5研究" name="3-socks5研究"></a>
+# 3. socks5研究
+
+sshd  
+raw ==== local ===ssh tun=== remote socks5 ====other  
+
+而shadowsocks是这样的!  
+raw ==== local socks5 === 加密 === remote shadowsocks自定义协议 ==== other  
+
+怎么得知这个结论?
+
+```bash
+# 树莓派
+chmod 700 ~/.ssh/id_rsa
+eval `ssh-agent -s`
+ssh-add
+
+ssh -ND 1080 yq@vm1
+
+# 抓包
+sudo tcpdump -i lo port 1080 -w /home/pi/env/tcpdump/1080stop.pcap
+
+# 在另一台服务器上中止socks5 server
+kill -STOP 62365
+
+# 这个是恢复
+kill -CONT 62365
+
+# centos nc
+nc --proxy-type socks4 --proxy 127.0.0.1:1080 localhost 5003
+
+# debian nc
+nc -X 4 -x 127.0.0.1:1080 localhost 5003
+
+```
+
+抓包结果
+
+```bash
+4	0.000657	127.0.0.1	Socks	1080	75	Version: 4, Remote Port: 5003
+6	12.166724(回复后才有应答)	127.0.0.1	Socks	52678	74	Version: 4, Remote Port: 5003 (应答)
+
+# 注意恢复后才有应答
+```
+
