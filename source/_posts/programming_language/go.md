@@ -18,7 +18,7 @@ categories: [编程语言]
 * http://www.ctolib.com/cheatsheets-go-project.html (开源项目速查)
 * https://tour.golang.org/welcome/1 (a tour of go)
 * https://github.com/golang/go/wiki/GoGetProxyConfig (go get 使用代理)
-
+* https://www.zhihu.com/question/20862617 (routine 实现)
 
 <a id="markdown-2-设置环境变量" name="2-设置环境变量"></a>
 # 2. 设置环境变量
