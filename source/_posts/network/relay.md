@@ -35,16 +35,13 @@ ssh -NL  9001:localhost:4040 root@pi1
 -L (Locally forwarded ports)
 -R (Remotely forwarded ports)
 
-# 通过远程机器跳板访问其他机器
-ssh -NL 9001:192.168.2.127:22 root@pi1
+# 将远程的 x.x.x.x:22 映射到本地的:9001
+ssh -NL 9001:x.x.x.x:22 pi@pi1
 
-# 把localhost:4040 映射到 root@192.168.2.157的localhost:9001上
-ssh -NR 9001:localhost:4040 root@192.168.2.157
+# 将本地的x.x.x.x:22 映射到远程的:9001
+ssh -NR 9001:x.x.x.x:22 pi@pi1
 
-# xxx:4040 映射到 root@192.168.2.157的localhost:9001上
-ssh -NR 9001:xxx:4040 root@192.168.2.157
-
-# 动态访问 chrome安装(switchysharp)
+# socks4 socks5
 ssh -ND 1080 root@gg
 ```
 
