@@ -9,6 +9,8 @@ categories: [网络相关]
 
 - [1. 资料](#1-资料)
 - [2. 一些实践](#2-一些实践)
+- [3. 一些发现](#3-一些发现)
+    - [多线程](#多线程)
 
 <!-- /TOC -->
 
@@ -76,4 +78,20 @@ basic_resolver_entry可以直接这样转,吓死我了 = =
 
 阻塞I/O写明确的bytes
 http://www.boost.org/doc/libs/1_57_0/doc/html/boost_asio/reference/write.html
+```
+
+
+<a id="markdown-3-一些发现" name="3-一些发现"></a>
+# 3. 一些发现
+
+<a id="markdown-多线程" name="多线程"></a>
+## 多线程
+```
+      asio::thread* new_thread = new asio::thread(
+          boost::bind(&asio::io_context::run, &ioc));
+
+都在跑全局的 asio::io_context ioc;  run 函数上
+
+里面有一把锁 mutex::scoped_lock lock(mutex_);
+
 ```

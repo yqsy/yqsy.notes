@@ -16,6 +16,7 @@ categories: [linux, 系统管理]
         - [1.2.2. 过滤选项](#122-过滤选项)
         - [1.2.3. 注意点,用tcp-reset代替drop](#123-注意点用tcp-reset代替drop)
         - [1.2.4. 参考书籍的](#124-参考书籍的)
+- [2. 命令](#2-命令)
 
 <!-- /TOC -->
 
@@ -97,3 +98,19 @@ categories: [linux, 系统管理]
 <a id="markdown-124-参考书籍的" name="124-参考书籍的"></a>
 ### 1.2.4. 参考书籍的
 ![](http://ouxarji35.bkt.clouddn.com/snipaste_20170901_073422.png)
+
+
+<a id="markdown-2-命令" name="2-命令"></a>
+# 2. 命令
+
+```bash
+# 查看
+sudo iptables -S
+
+# 存储
+iptables-save > /etc/network/iptables.rules
+
+# 恢复
+cat /etc/network/iptables.rules | sudo iptables-restore -c
+
+```

@@ -30,6 +30,8 @@ cat /proc/cpuinfo | grep "cpu cores" | uniq
 # 显示逻辑CPU的个数
 cat /proc/cpuinfo | grep "processor" | wc -l
 
+# 针对进程名看
+top -c -p $(pgrep -d',' -f ./client)
 ```
 
 <a id="markdown-3-查看cpu信息" name="3-查看cpu信息"></a>
