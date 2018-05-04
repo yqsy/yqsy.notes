@@ -26,6 +26,6 @@ categories: [编程语言]
 ```bash
 cat >> ~/.zshrc << EOF
 export GOPATH=\$HOME/go
-export PATH=\$PATH:\$GOROOT/bin:$GOPATH/bin
+export PATH=\$PATH:\$GOPATH/bin:$GOPATH/bin
 EOF
 ```
