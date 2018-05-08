@@ -7,9 +7,7 @@ categories: [微服务]
 <!-- TOC -->
 
 - [1. 资料](#1-资料)
-- [2. 特性](#2-特性)
-    - [2.1. 连接方式](#21-连接方式)
-    - [2.2. 负载均衡方式](#22-负载均衡方式)
+- [2. 维度](#2-维度)
 
 <!-- /TOC -->
 
@@ -22,26 +20,29 @@ categories: [微服务]
 * https://zhuanlan.zhihu.com/p/28927834 (grpc学习笔记)
 * https://zhuanlan.zhihu.com/p/27595419 (深入了解grpc)
 * https://www.zhihu.com/question/20189791/answer/43563283 (使用thrift)
-* https://www.zhihu.com/question/20189791/answer/18386473 (使用thrift)
 
-<a id="markdown-2-特性" name="2-特性"></a>
-# 2. 特性
 
-* 易用的数据格式和接口
-* 多种RPC协议的支持
-* 连接管理和适配
-* 异步、超时机制
-* 名字服务、负载均衡、组合访问
+<a id="markdown-2-维度" name="2-维度"></a>
+# 2. 维度
 
-<a id="markdown-21-连接方式" name="21-连接方式"></a>
-## 2.1. 连接方式
+连接方式
 * 短链接: 每次请求前创建一个新连接,完成后关闭
 * 连接池: 每次请求前从pool中获取一个新连接,结束后归还
 * 单连接: 所有发往同一地址的请求/返回,公用同一个连接
 
-<a id="markdown-22-负载均衡方式" name="22-负载均衡方式"></a>
-## 2.2. 负载均衡方式
+负载均衡方式
 * Round-Robin
 * 一致性hash
 * 随机
 * Locality Aware
+
+服务发现
+* Zookeeper
+* etcd
+
+追踪
+
+健康检查
+
+认证
+
