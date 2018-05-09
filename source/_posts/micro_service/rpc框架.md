@@ -14,12 +14,9 @@ categories: [微服务]
 <a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 
-* https://github.com/brpc/brpc
+* https://github.com/brpc/brpc/blob/master/README_cn.md
 * https://www.zhihu.com/question/49617328/answer/116923669 (为什么需要rpc)
 * https://www.zhihu.com/question/41609070 (既然有了http请求为什么还需要rpc框架?)
-* https://zhuanlan.zhihu.com/p/28927834 (grpc学习笔记)
-* https://zhuanlan.zhihu.com/p/27595419 (深入了解grpc)
-* https://www.zhihu.com/question/20189791/answer/43563283 (使用thrift)
 
 
 <a id="markdown-2-维度" name="2-维度"></a>
