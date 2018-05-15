@@ -21,7 +21,7 @@ categories: [微服务]
 * https://www.zhihu.com/question/37619635 (高性能高并发的本质)
 * https://www.zhihu.com/question/24847805/answer/148714624 (nodejs也有协程啦)
 
-Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一个`事件驱动`且`异步非阻塞I/O`的模型使其轻量且搞笑,Node.js的包管理器NPM使全球最大的开源库生态系统
+Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一个`事件驱动`且`异步非阻塞I/O`的模型使其轻量且高效,Node.js的包管理器NPM使全球最大的开源库生态系统
 
 <a id="markdown-2-应用场景" name="2-应用场景"></a>
 # 2. 应用场景

@@ -28,10 +28,9 @@ categories: [微服务]
 * 单连接: 所有发往同一地址的请求/返回,公用同一个连接
 
 负载均衡方式
+* random
 * Round-Robin
 * 一致性hash
-* 随机
-* Locality Aware
 
 服务发现
 * Zookeeper
