@@ -102,7 +102,7 @@ server
     index index.html index.htm
     location / {
         proxy_pass http://backend;
-        proxy_set_header Host &host
+        proxy_set_header Host &host;
     }
 }
 
