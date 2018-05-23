@@ -41,3 +41,5 @@ categories: [微服务]
 * https://zhuanlan.zhihu.com/p/32802683 (京东京麦商家开放平台的消息推送架构演进之路)
 * http://www.52im.net/thread-848-1-1.html (go高并发消息推送实践)
 * https://zhuanlan.zhihu.com/p/32846499 (负载均衡和代理技术)
+* https://www.zhihu.com/question/37808426 (SOA的微服务的差别)
+* https://www.zhihu.com/question/37808426/answer/263743289  (这个回答绝了微服务)
