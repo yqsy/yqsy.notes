@@ -33,8 +33,9 @@ categories: [微服务]
 * 一致性hash
 
 服务发现
-* Zookeeper
-* etcd
+* Zookeeper (zab)
+* etcd (raft)
+* consul (raft)
 
 追踪
 
