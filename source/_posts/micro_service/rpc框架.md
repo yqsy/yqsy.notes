@@ -17,7 +17,7 @@ categories: [微服务]
 * https://github.com/brpc/brpc/blob/master/README_cn.md
 * https://www.zhihu.com/question/49617328/answer/116923669 (为什么需要rpc)
 * https://www.zhihu.com/question/41609070 (既然有了http请求为什么还需要rpc框架?)
-
+* http://p.primeton.com/articles/59030eeda6f2a40690f03629 (选择)
 
 <a id="markdown-2-维度" name="2-维度"></a>
 # 2. 维度
