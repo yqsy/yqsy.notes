@@ -8,6 +8,11 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
+    - [1.1. POW](#11-pow)
+    - [1.2. POS](#12-pos)
+    - [1.3. DPOS](#13-dpos)
+    - [1.4. PBFT](#14-pbft)
+    - [1.5. 总结](#15-总结)
 - [2. 解决什么问题](#2-解决什么问题)
 
 <!-- /TOC -->
@@ -16,12 +21,63 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* PoW(Proof-of-Work) 比特币 
-* PoS(Proof of Stake) 以太坊,权益证明机制  
-* DPoS(Delegated Proof of Stake) 委托权益证明机制  
-* PBFT(Practical Byzantine Fault Tolerance)  拜占庭共识算法 1999
+* POW(Proof-of-Work) 比特币 
+* POS(Proof of Stake) 权益证明机制  以太坊?
+* DPOS(Delegated Proof of Stake) 委托权益证明(股份授权证明机制)    EOS
+* PBFT(Practical Byzantine Fault Tolerance)  拜占庭容错算法 1999
 * Paxos  希腊议会1990
 * Raft, 比paxos 更容易理解
+
+---
+* https://blog.csdn.net/lsttoy/article/details/61624287 (csdn的资料)
+
+<a id="markdown-11-pow" name="11-pow"></a>
+## 1.1. POW
+
+如果分支情况出现,那么网络上的人们继续保持两个分支,`任何情况下`挖矿者只在`最长`的
+那个blockchain上工作
+
+问题是: 用这个共识机制维护这个公共账本的运作,`浪费了大量的电力`,`浪费了大量的能源`
+
+
+<a id="markdown-12-pos" name="12-pos"></a>
+## 1.2. POS
+
+试图解决POW机制中大量资源被浪费的情况.通过计算你持有`占总币数的百分比`,包括`占用币数的时间`来决定记账权
+
+```
+SHA256(SHA256(Bprev), A, t) <= balance(A)m
+```
+
+
+* t: utc时间戳
+* Bprev: 上个区块
+* m: 固定的实数
+* balance(A): 账户A的余额
+
+这个文章写的让人看不大懂= = 
+
+总之: 通过持有`币的数量`和`时间长短`来决定`记账`的`节点`,这样就省略了记账造成的资源浪费.如果在POS机制中想要发起攻击,必须要收集全部币量的50%以上,不仅成本比较大,而且执行难度非常高.
+
+
+其他的总结: 根据你持有数字货币的量和时间,分配给你相应的利息.每个币每天产生1币龄,例如你持有100个币,总共持有了30天,那么此时币龄就为3000.这个时候,如果你发现了一个POS区块,你的币零就会被清空为0,你每被清空365币龄,你将会从区块中获得0.05个币的利息 -> 持币有利息
+
+
+<a id="markdown-13-dpos" name="13-dpos"></a>
+## 1.3. DPOS
+
+让每一个持有比特股的人进行投票,由此产生101位代表,我们可以理解为`101个超级节点`或者`矿池`,而这101个超级节点彼此的权利是完全相等的.有点像议会制度或人民代表大会制度,如果不能履行他们的职责,他们会被除名.
+
+<a id="markdown-14-pbft" name="14-pbft"></a>
+## 1.4. PBFT
+
+状态机副本复制算法,即服务作为状态机建模,状态机在分布式系统的不同节点进行副本复制.每个状态机都保存了服务的状态,同时也实现了服务的操作.
+
+
+<a id="markdown-15-总结" name="15-总结"></a>
+## 1.5. 总结
+
+共识算法与应用场景高度相关,可信环境使用paxos或者raft,带许可的联盟可使用pbft,非许可链可以是pow,pos,ripple共识等,根据对手方信任度分级,自由选择共识机制,这样才是最优
 
 
 <a id="markdown-2-解决什么问题" name="2-解决什么问题"></a>

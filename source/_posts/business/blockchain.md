@@ -12,15 +12,28 @@ categories: [business]
 - [3. 比特币私钥,公钥,钱包维度梳理](#3-比特币私钥公钥钱包维度梳理)
 - [4. 转账记录的存储与维护](#4-转账记录的存储与维护)
 - [5. 区块链细节](#5-区块链细节)
+- [6. UTXO?](#6-utxo)
+- [7. 锁定是什么意思?](#7-锁定是什么意思)
+- [8. 主链是啥意思?](#8-主链是啥意思)
+- [9. 区块链信息越来越大了怎么办?](#9-区块链信息越来越大了怎么办)
+- [10. 交易速度的限制主要是什么?每秒7笔怎么算的](#10-交易速度的限制主要是什么每秒7笔怎么算的)
+- [11. 个区块怎么确认一笔交易的真实性?](#11-个区块怎么确认一笔交易的真实性)
+- [12. 比特币的根本技术](#12-比特币的根本技术)
+- [13. 比特币和以以太坊的区别?](#13-比特币和以以太坊的区别)
+- [14. 区块链分布式存储?](#14-区块链分布式存储)
+- [15. EOS是啥?](#15-eos是啥)
+- [16. ipfs](#16-ipfs)
 
 <!-- /TOC -->
 
 <a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 
-* https://www.zhihu.com/question/27687960/answer/148814714
-* https://github.com/chaozh/awesome-blockchain-cn
-* https://www.youtube.com/watch?v=chQttZ4PH24 (非常好的说明)
+* https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
+* https://github.com/chaozh/awesome-blockchain-cn (所有资料)
+* https://legacy.gitbook.com/book/yeasy/blockchain_guide (区块链原理设计与应用)
+* https://www.blockchain.com/zh-cn/explorer (比特币区块链浏览器)
+* https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
 
 <a id="markdown-2-梳理" name="2-梳理"></a>
 # 2. 梳理
@@ -126,9 +139,8 @@ categories: [business]
 <a id="markdown-4-转账记录的存储与维护" name="4-转账记录的存储与维护"></a>
 # 4. 转账记录的存储与维护
 
-* https://zhuanlan.zhihu.com/p/23243289 (具体细节)
-* https://www.youtube.com/watch?v=obRzfcvMshM (这个youtute挺好的)
 
+* https://www.youtube.com/watch?v=obRzfcvMshM (这个youtute全解释清楚了)
 
 让所有运行比特币客户端的计算机存储`所有的`比特币的转账记录?
 
@@ -184,6 +196,8 @@ categories: [business]
 <a id="markdown-5-区块链细节" name="5-区块链细节"></a>
 # 5. 区块链细节
 
+* https://zhuanlan.zhihu.com/p/23243289 (具体细节)
+
 ![](http://ouxarji35.bkt.clouddn.com/v2-6ce36ec885e86ea252d343dddd961a35_hd.jpg)
 
 * 区块高度: 每个区块的唯一ID,一段时间生成一个块,`块高度增加一`
@@ -194,4 +208,164 @@ categories: [business]
 * Nonce: 挖矿所要达到的目标值
 * 区块体: 一定时间内所产生的交易信息,即`账本`
 
+
+<a id="markdown-6-utxo" name="6-utxo"></a>
+# 6. UTXO?
+
+* http://8btc.com/article-4381-1.html
+* https://www.blockchain.com/en/explorer (查找指定地址的UTXO)
+
+`Unspent Transaction Output`
+
+传统的支付方案是基于账户系统的,由关系型数据库支撑.
+
+但是比特币没有设计成基于账户系统,而是发明了UTXO方案
+
+这图赞!  
+![](http://ouxarji35.bkt.clouddn.com/140447qe7vo3vt7g22slev.jpg)
+
+每一笔交易都要花费一笔输出,而其所产生的输出,就是`没有花出去的交易输出`,也就是UTXO
+
+除了`coinbase交易`之外,所有的资金都必须来自前面某一个或者几个交易的UTXO,钱就在交易之间流通起来了
+
+`第二!` 任何一笔交易的输入总量必须等于交易输出总量,`等式两边必须配平`
+
+
+其实并没有什么比特币,只有UTXO.当我们说张三拥有10枚比特币的时候,实际上是,当前区块链账本中,有`若干比交易`的`UTXO项收款人`写的是张三的地址,而这些UTXO项的数额总和是10.因为在比特币系统里,一个人可以拥有的地址资源,可谓是去之不尽,用之不竭.要知道自己的一大堆地址一共收到了多少的UTXO,认识算不过来的,需要由比特币钱包代为跟踪计算.
+
+
+但是我有`一个问题`: 按照上面的逻辑,每一个区块的比特币总量就是起初挖矿所得的12.5个比特币呀?矿工挖矿以及奖励来的比特币怎么加入到区块链中?
+
+
+
+<a id="markdown-7-锁定是什么意思" name="7-锁定是什么意思"></a>
+# 7. 锁定是什么意思?
+
+* https://zhuanlan.zhihu.com/p/33672729 (比特币的交易过程,还有源码)
+
+
+
+<a id="markdown-8-主链是啥意思" name="8-主链是啥意思"></a>
+# 8. 主链是啥意思?
+
+
+* https://www.blockchain.com/zh-cn/charts
+
+
+<a id="markdown-9-区块链信息越来越大了怎么办" name="9-区块链信息越来越大了怎么办"></a>
+# 9. 区块链信息越来越大了怎么办?
+
+* https://www.zhihu.com/question/39067000/answer/110878081
+
+
+<a id="markdown-10-交易速度的限制主要是什么每秒7笔怎么算的" name="10-交易速度的限制主要是什么每秒7笔怎么算的"></a>
+# 10. 交易速度的限制主要是什么?每秒7笔怎么算的
+
+* https://www.zhihu.com/question/41004649
+* https://www.zhihu.com/question/41004649/answer/145731141
+
+---
+* 定义每一个区块的一个账册的大小是1MiB
+* 每10分钟产生一个这样的区块
+* 每个最基本的比特交易的大小是250B
+
+```
+1MiB = 1024 * 1024 B = 1048576 B
+
+1048576 / 250 = 4194 (个)  -- 一个区块可有4194个比特币的转账记录
+
+4194 / 600 ≈ 7 (个/s) -- 大约7秒钟能交易一个比特币
+```
+
+但这里我有一个问题,如果1分钟之内记录不满一个区块怎么办?不够1MiB的区块也会广播到每个节点吗?是否是我的认知问题?全天每个时间点都有交易发生吗?
+
+<a id="markdown-11-个区块怎么确认一笔交易的真实性" name="11-个区块怎么确认一笔交易的真实性"></a>
+# 11. 个区块怎么确认一笔交易的真实性?
+
+* https://www.zhihu.com/question/55581569 
+
+<a id="markdown-12-比特币的根本技术" name="12-比特币的根本技术"></a>
+# 12. 比特币的根本技术
+
+
+* `POW` 工作量证明的共识达成机制是Adma在Hashcash里提出来的
+* 将`全部交易计入一本总账`,并给交易打时间戳来`防范双花攻击`(double-spend attack)的思想是的 b-money 和 Nick Szabo 的 Bitgold 提出来的
+* P2P技术比不上2001年出现的BitTorrent
+
+中本聪自创的
+* 区块链的设计
+* UTXO `Unspent Transaction Output`
+* 智能合约
+
+<a id="markdown-13-比特币和以以太坊的区别" name="13-比特币和以以太坊的区别"></a>
+# 13. 比特币和以以太坊的区别?
+
+* http://www.360doc.com/content/17/0720/23/34265476_672940504.shtml
+* https://baike.baidu.com/item/%E4%BB%A5%E5%A4%AA%E5%9D%8A/20865117?fr=aladdin
+* https://blog.csdn.net/huangshulang1234/article/details/79374085 (以太坊开发入门)
+* https://www.jianshu.com/p/410198814516 (如何在以太坊上发行货币)
+
+比特币开创了`去中心化密码货币`的先河,其实是一套`分布式的数据库`,比特币只是数据库中加上一个特定的符号,并规定一套协议使得这个符号可以在数据库上安全地转移,并且无需信任第三方
+
+然而比特币网络里面只有一种符号--比特币,用户无法自定义另外的符号.这些符号可以是代表`公司的股票,债务凭证`,以太坊从设计上就是为了解决比特币扩展性不足的问题.
+
+
+以太坊: 可以被看作一台"全球计算机": 一个任何人都可以上传和执行应用程序,并且程序的有效性得到保证的地方,这种保证依赖的是以太坊系统的去中心化,由全球成千上万的计算机组成的
+
+以太坊没有采用UTXO的概念,但`UTXO`也不乏一些`优点`;
+
+* 较高成都的隐私保护,每次交易都用一个新的地址,适用于安全性要求高的货币系统
+* 潜在地可扩展性,......what?
+
+`账户`的`优点`?
+
+* 节省大量的空间
+
+如果一个账户有5个UTXO,那么从UTXO模式转成账户模式所需空间会从`300字节`降到`30字节`.
+
+* (20地址字节数 + 32TX的id字节数 + 8交易金额字节数) * 5 = 300
+* 20地址字节数 + 8交易金额字节数 + nonce 2字节数
+
+---
+
+* 可代替性更高 .....what?
+* 简单 .编码更简单,更容易理解. UTXO脚本限定?? what?
+* 轻客户端
+
+---
+
+要弄懂以太坊的机制要理解
+* 默克尔帕特里夏树
+* RPL (recursive length prefix) 递归长度前缀(主要的序列化格式)
+* 压缩算法 sha3
+* trie树: 状态树,交易树,收据树
+* Uncle 块
+* 难度更新算法
+
+
+<a id="markdown-14-区块链分布式存储" name="14-区块链分布式存储"></a>
+# 14. 区块链分布式存储?
+
+* http://baijiahao.baidu.com/s?id=1594153755560823127&wfr=spider&for=pc
+
+据测算到2020年,全球将会有超过200亿台联网设备,这些庞大的设备都会产生海量的数据.紧接着需要对这些海量的数据进行管理,存储,检索.
+
+区块链带来的去中心化应用也创造了很多新的挑战,他们也需要存储和管理海量的数据.例如!!`以太坊不是为了存储和管理数据而设计的,使用区块链来管理数据会消耗更多的时间和空间`
+
+可能的解决方案: SWARMING(蜂拥) 和 SHARDING(分片)
+
+??? 有没有更好的资料?
+
+
+
+<a id="markdown-15-eos是啥" name="15-eos是啥"></a>
+# 15. EOS是啥?
+
+* https://www.jianshu.com/p/a1dec7dd0427
+
+<a id="markdown-16-ipfs" name="16-ipfs"></a>
+# 16. ipfs
+
+* https://www.jianshu.com/p/a1dec7dd0427
+* http://ipfser.org/2018/01/17/r17/
 
