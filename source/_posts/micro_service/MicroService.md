@@ -43,3 +43,4 @@ categories: [微服务]
 * https://zhuanlan.zhihu.com/p/32846499 (负载均衡和代理技术)
 * https://www.zhihu.com/question/37808426 (SOA的微服务的差别)
 * https://www.zhihu.com/question/37808426/answer/263743289  (这个回答绝了微服务)
+* https://zhuanlan.zhihu.com/p/26777189 (华尔街微服务实践)

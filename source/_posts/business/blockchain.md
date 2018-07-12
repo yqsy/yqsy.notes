@@ -368,6 +368,7 @@ categories: [business]
 # 14. 区块链分布式存储?
 
 * http://baijiahao.baidu.com/s?id=1594153755560823127&wfr=spider&for=pc
+* https://blog.csdn.net/u014345860/article/details/77521670 (不会用以太坊存储大文件)
 
 据测算到2020年,全球将会有超过200亿台联网设备,这些庞大的设备都会产生海量的数据.紧接着需要对这些海量的数据进行管理,存储,检索.
 
