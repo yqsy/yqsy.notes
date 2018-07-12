@@ -21,10 +21,11 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* POW(Proof-of-Work) 比特币 
-* POS(Proof of Stake) 权益证明机制  以太坊?
-* DPOS(Delegated Proof of Stake) 委托权益证明(股份授权证明机制)    EOS
+* POW(Proof-of-Work) (比特币,莱特币,以太坊)
+* POS(Proof of Stake) 权益证明机制 
+* DPOS(Delegated Proof of Stake) 委托权益证明(股份授权证明机制)    EOS  (还是中心化咯?) 
 * PBFT(Practical Byzantine Fault Tolerance)  拜占庭容错算法 1999
+* DBFT (delegated BFT) 授权拜占庭容错 (小蚁区块链)
 * Paxos  希腊议会1990
 * Raft, 比paxos 更容易理解
 
