@@ -14,6 +14,7 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* https://github.com/ZtesoftCS/go-ethereum-code-analysis (源码分析!!!)
 * https://www.ethereum.org/greeter (开发入门)
 * https://ethereum.org/cli (安装cli)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
@@ -24,11 +25,8 @@ categories: [business]
 * https://blog.csdn.net/huangshulang1234/article/details/79374085 (讲的蛮清楚)
 
 ```
-# 安装Geth
+# 拉代码
+go get -u github.com/ethereum/go-ethereum
 
-sudo apt-get install software-properties-common
-sudo add-apt-repository -y ppa:ethereum/ethereum
-sudo apt-get update
-sudo apt-get install ethereum
+cloc ./ --exclude-dir=tests,vendor
 ```
-
