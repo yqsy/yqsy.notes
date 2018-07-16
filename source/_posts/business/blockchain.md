@@ -40,6 +40,7 @@ categories: [business]
 * https://legacy.gitbook.com/book/yeasy/blockchain_guide (区块链原理设计与应用)
 * https://www.blockchain.com/zh-cn/explorer (比特币区块链浏览器)
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
+* https://mp.weixin.qq.com/s/VM2Orz4LuN9sBzoSbQSl2w (区块链在银行的作用)
 
 <a id="markdown-2-梳理" name="2-梳理"></a>
 # 2. 梳理

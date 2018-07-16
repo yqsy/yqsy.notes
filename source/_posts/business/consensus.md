@@ -31,6 +31,7 @@ categories: [business]
 
 ---
 * https://blog.csdn.net/lsttoy/article/details/61624287 (csdn的资料)
+* https://en.wikipedia.org/wiki/Cryptocurrency (所有机制)
 
 <a id="markdown-11-pow" name="11-pow"></a>
 ## 1.1. POW
