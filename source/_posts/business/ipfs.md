@@ -8,6 +8,7 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
+- [2. 实践](#2-实践)
 
 <!-- /TOC -->
 
@@ -19,7 +20,10 @@ categories: [business]
 * https://ipfs.io/docs/ (资源大全)
 * http://www.8btc.com/ipfs-application (ipfs技术列表)
 * https://www.jianshu.com/p/4e380c67753a (EOS是基于IPFS设计的?!!! 非常好)
-* http://blog.sina.com.cn/s/blog_e99bfe2f0102xyf6.html (这个解释的也非常清楚)
+* http://blog.sina.com.cn/s/blog_e99bfe2f0102xyf6.html (这个解释的也非常清楚
+* http://www.ipfs.cn/news/info-100097.html (很好))
+* https://github.com/ipfs/ipfs (官方文档)
+* https://github.com/ipfs/go-ipfs (源码)
 
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
@@ -66,3 +70,35 @@ miner(矿工: 分为`存储矿工`和`检索矿工`)为挖矿的方式提供存�
 
 EOS引以为傲的是支持百万级别TPS,其中除了DPFS共识机制的功劳外,还归功于其底层存储设计时`采取IPFS`来解决大型数据的传输效率
 
+
+* http://www.ipfs.cn/news/info-100091.html   说的非常好
+
+区块链已经产生很多风口,就像一棵树结很多种子,第一个果子是比特币,第二个果子ICO,`第三个果子是内容和文件`.
+
+存储项目有很多技术问题需要攻克, `货币和ICO`只要把一份`文件存储在所有节点`上就可以了,但是存储项目:
+
+第一个难点:
+* 把N个文件放在M个节点上进行存储
+* 区块链的节点是有下线的可能的
+* 区块链的节点上的文件损坏了
+
+
+第二个难点:
+* 经济激励模式和收益分配
+
+下一波牛市会由内容和文件存储的项目所引爆,2019年,或在2020年项目都会有比较可用的程度
+
+`第四个风口`可能是产权在区块链上的交易,有一些东西抵押登记在区块链上,区块链上也有相应的货币可以`实现产权与数字货币的交易`,政府不仅不能控制甚至连税都收不了了
+
+P2P技术还是比较完善的,只需要把这些`完善的技术以一种市场化的方法组合起来`,完善里面的经济激励就足够了.
+
+
+<a id="markdown-2-实践" name="2-实践"></a>
+# 2. 实践
+
+```bash
+go get -u -d github.com/ipfs/go-ipfs
+cd $GOPATH/src/github.com/ipfs/go-ipfs
+make install
+
+```
