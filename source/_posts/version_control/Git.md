@@ -15,7 +15,8 @@ categories: [版本管理]
 - [6. clone windows目录](#6-clone-windows目录)
 - [7. 设置用户名和邮箱](#7-设置用户名和邮箱)
 - [8. 清理文件夹](#8-清理文件夹)
-- [windows lf](#windows-lf)
+- [9. windows lf](#9-windows-lf)
+- [10. 底层](#10-底层)
 
 <!-- /TOC -->
 
@@ -88,8 +89,8 @@ git ls-files -ci --exclude-standard
 
 git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
 ```
-<a id="markdown-windows-lf" name="windows-lf"></a>
-# windows lf
+<a id="markdown-9-windows-lf" name="9-windows-lf"></a>
+# 9. windows lf
 
 ```bash
 git config --global core.autocrlf false
@@ -101,3 +102,7 @@ git config --global core.autocrlf false
 未被忽视	|-f
 忽视+未被忽视	|-fx
 文件夹	|-d
+
+<a id="markdown-10-底层" name="10-底层"></a>
+# 10. 底层
+

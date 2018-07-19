@@ -26,6 +26,8 @@ categories: [business]
 * https://github.com/ipfs/ipfs (官方文档)
 * https://github.com/ipfs/go-ipfs (源码)
 * http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
+* https://github.com/ipfs/ipfs#project-directory (所有项目与资料)
+* https://github.com/ipfs/specs (学术文档)
 
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
@@ -187,6 +189,12 @@ wget https://dist.ipfs.io/go-ipfs/v0.4.16/go-ipfs_v0.4.16_linux-amd64.tar.gz
 tar -xvzf go-ipfs_v0.4.16_linux-amd64.tar.gz
 cd go-ipfs
 sudo cp ipfs /usr/bin
+
+# 创建默认的配置文件
+ipfs init   
+
+# 查看readme
+ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
 
 ```
 
