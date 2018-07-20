@@ -17,6 +17,8 @@ categories: [版本管理]
 - [8. 清理文件夹](#8-清理文件夹)
 - [9. windows lf](#9-windows-lf)
 - [10. 底层](#10-底层)
+- [11. 继续整理](#11-继续整理)
+- [12. 大文本文件是怎么做存储的?](#12-大文本文件是怎么做存储的)
 
 <!-- /TOC -->
 
@@ -105,4 +107,119 @@ git config --global core.autocrlf false
 
 <a id="markdown-10-底层" name="10-底层"></a>
 # 10. 底层
+
+* https://www.cnblogs.com/gscienty/p/7904518.html (csdn的)
+
+```bash
+# 文件 
+COMMIT_EDITMSG  # 最近一次的commit message,git系统都不会用到,给用户一个参考
+config          # git 仓库的配置文件
+description     # 主要给gitweb等git托管文件使用
+HEAD            # 映射到ref引用,能够找到下一次commitd的前一次hash值
+index           # 暂存区,一个二进制文件
+
+# 路径
+branches
+hooks            # 存放脚本
+info             # 存放仓库信息
+ipfs             
+ipld
+logs             # !!!保存所有更新的引用记录  (分支)
+objects          # !!!所有git对象
+refs             # !!!保存最近一次提交的hash值
+
+```
+
+git系统中的三个实体
+* 提交节点实体  核心实体,`节点`与`节点`之间的`继承关系`
+* 节点内容实体  本次提交的`文件名`和所`对应`的`hash`
+* 文件内容实体 用于`具体记录文件的内容`,所有的历史都有备份
+
+存储时采用`deflate`对原始文件内容进行压缩, key 根据`原始文件内容`,`文件大小`等数据生成的消息摘要
+
+在当前版本的git中,主要采用SHA1算法,将`文件格式`与`文件长度`组成`头部`,将`文件内容`作为`尾部`,由头部和尾部拼接作为原文,经过SHA1算法计算之后得到该文件的160位长的SHA1签名.一般用`长度为40`的字符串来表示,将字符串的前两个字符作为文件夹,后38个字符作为文件名进行存储
+
+计算差异使用`pack`算法: https://github.com/git/git/blob/master/Documentation/technical/pack-heuristics.txt
+
+merkle dag
+
+
+实验
+
+```
+mkdir testipfs
+cd testipfs
+git init
+
+# 一次提交两个文件
+echo "this is readme" > readme.md
+echo "hello" > 1.txt
+git add .  && git commit -a -m "1"
+
+# 已有两个文件再提交第三个文件
+echo "world" > 2.txt
+git add .  && git commit -a -m "2"
+
+# 三个文件都存在,修改其中一个文件(增)
+echo ", thar is readme too" >> readme.md
+git commit -a -m "3"
+
+# 修改增加很多字呢(不可能是全量的吧)
+echo "123123123123123123123213213" >> readme.md
+git commit -a -m "4"
+
+```
+
+```bash
+# 查看hash值的方法
+git cat-file -p SHA1
+```
+
+
+<a id="markdown-11-继续整理" name="11-继续整理"></a>
+# 11. 继续整理
+
+* https://www.youtube.com/watch?v=P6jD966jzlk
+* https://github.com/pluralsight/git-internals-pdf
+
+![](http://ouxarji35.bkt.clouddn.com/20180719210954.png)
+
+对象类型
+* Commit - Author,message,pointer to a tree of changes
+* Tree - Pointer to file names, content , other trees
+* Blob - Data (source code,pictures,video, etc.)
+
+
+知识点:
+* git是一个 Directed acyclic graph (有向无环图)
+* commits都会引用父亲节点
+* 分支是commit的引用
+* master是权威的主线分支
+* HEAD 是特殊的指针,指向最新的提交
+
+![](http://ouxarji35.bkt.clouddn.com/20180719225914.png)
+
+
+```bash
+# 观察文件夹变化
+watch -n 1 -d find .
+
+
+```
+
+<a id="markdown-12-大文本文件是怎么做存储的" name="12-大文本文件是怎么做存储的"></a>
+# 12. 大文本文件是怎么做存储的?
+
+例如一个1MB的源码文件(假设),其中只做了一行修改不可能整个文件copy一遍把,我要做个实验
+
+```bash
+mkdir testipfs 
+cd testipfs
+for i in $(seq 1 100000); do echo $i >> 1.txt; done
+git add .
+git commit -a -m "new"
+
+```
+
+这个功能应该是gc
 

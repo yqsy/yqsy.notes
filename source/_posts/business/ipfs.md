@@ -9,23 +9,20 @@ categories: [business]
 
 - [1. 说明](#1-说明)
 - [2. 再介绍](#2-再介绍)
-- [3. 实践](#3-实践)
+- [3. 安装ipfs](#3-安装ipfs)
+- [4. 存储原理](#4-存储原理)
+- [5. 实践 merkle dag](#5-实践-merkle-dag)
 
 <!-- /TOC -->
 
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* https://blog.csdn.net/liyuechun520/article/details/78599374?locationNum=2&fps=1 (实践)
-* http://ipfser.org/2018/06/27/r45/ (这本书超赞)
+
+* http://ipfser.org/2018/06/27/r45/ (书)
 * https://ipfs.io/docs/ (资源大全)
-* http://www.8btc.com/ipfs-application (ipfs技术列表)
-* https://www.jianshu.com/p/4e380c67753a (EOS是基于IPFS设计的?!!! 非常好)
-* http://blog.sina.com.cn/s/blog_e99bfe2f0102xyf6.html (这个解释的也非常清楚
-* http://www.ipfs.cn/news/info-100097.html (很好))
 * https://github.com/ipfs/ipfs (官方文档)
 * https://github.com/ipfs/go-ipfs (源码)
-* http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
 * https://github.com/ipfs/ipfs#project-directory (所有项目与资料)
 * https://github.com/ipfs/specs (学术文档)
 
@@ -174,8 +171,8 @@ Filecoin:
 * Storj: 去中心化的基于区块链的分布式云存储西永,主要功能与中心化的Dropbox,Onedrive类似. 相较于Filecoin,基于ERC2.0的以太坊众筹币种.
 * Bluzella: 很小,大小固定,按照数组,集合等数据结构的数据字段进行结构化存储
 
-<a id="markdown-3-实践" name="3-实践"></a>
-# 3. 实践
+<a id="markdown-3-安装ipfs" name="3-安装ipfs"></a>
+# 3. 安装ipfs
 
 ```bash
 go get -u -d github.com/ipfs/go-ipfs
@@ -198,3 +195,91 @@ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
 
 ```
 
+<a id="markdown-4-存储原理" name="4-存储原理"></a>
+# 4. 存储原理
+
+* http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
+* https://blog.csdn.net/yichigo/article/details/79655922 (原理简述)
+* https://github.com/ChainBook/IPFS-For-Chinese (国人积累的资料)
+* http://mochain.info/wordpress/index.php/2018/03/12/qian_xi_ipfs_de_cun_chu_yu_du_qu/ (存储/检索 文件/目录树基本)
+
+数据结构: Merkle DAG 
+
+![](http://ouxarji35.bkt.clouddn.com/file_split.png)
+
+单文件存储:
+
+* 把单个文件拆分成若干个`256KB`大小的块 (block,可以理解为扇区)
+* 逐块(block)计算block hash,hashn = hash(blockn)
+* 把所有block hash拼凑成一个数组,再计算一次hash得到了文件的最终hash.并将`文件hash`和`block hash`数组捆绑起来成一个对象,把这个对象当成一个索引结构. 
+* 把`block`和`索引结构`全部上传给IPFS节点,文件便同步到了IPFS的网络了
+* 把hash file 打印出来,读的时候有用
+
+小文件:  
+* 小文件(小于1KB),IPFS会把数据内容直接和hash放在一起上传给ipfs节点,不会再占用一个block的大小
+
+大文件的增量存储:  
+* 文件是分块存储的,hash相同的block,只会存储一次.
+
+Merkle DAG:  
+* 内容可寻址: 所有的内容都是被多重hash校验和来唯一识别的,包括links
+* 无法篡改: 所有的内容都用它的校验和来做验证,如果数据被篡改或篡改,IPFS会检测    到
+* 重复数据删除
+
+简单来说就是 `分块存储 (256kb) + Merkle DAG`,和git还是有区别的: `文件分开存储  + Merkle DAG (冗余用gc来解决)`
+
+
+文件树存储???什么鬼要分析源码:  
+
+1. 把目录下的所有的文件同步到IPFS网络中去,`为所有的文件hash建立一个别名,`这个别名其实就是本地文件名,把`hash`和`别名`捆绑在一起组建一个名为IPFSLink的对象
+2. 把该目录下的所有的`IPFSLink对象`组成一个`数组`,对该数组计算一个`目录hash`,并将数组和目录hash拼成一个结构体,同步到IPFS网络
+3. 如果上层还有目录结构,则为目录hash建立一个别名,把目录hash和别名捆绑在一起组成一个IPFSLink的对象
+4. 把目录hash打印出来,读取的时候用
+
+单文件读取:
+
+1. 根据`hash`搜索该文件的`hash的索引结构`,即找到该文件的block hash数组(这一步是矿工做的)
+2. 得到了block的索引,根据block hash,搜索block 所在的节点的位置,下载下来
+3. 本地拼装block,根据block hash数组的顺序,把文件拼装好
+
+
+文件树读取:
+
+1. 根据hash搜索该hash的索引结构,找到该目录的IPFSLink对象数组,即目录下的子列表
+2. 遍历数组,如果IPFSLink对象是文件,则取出文件的hash下载该文件
+3. 如果是目录 ... 递归向下
+
+支持的潜在的数据结构:
+* 键值对存储(key-value stores)
+* 关系型数据库(traditional relatioinal database)
+* 三元组存储 (Linked Data triple stores)
+* 文档发布系统 (Linked document publishing systems)
+* 通信平台 (Linked communication platforms)
+* 加密货币区块链 (cryptocurrency blockchains)
+
+
+
+<a id="markdown-5-实践-merkle-dag" name="5-实践-merkle-dag"></a>
+# 5. 实践 merkle dag
+
+```bash
+ipfs add 1.jpg
+
+added QmQn14QTMctBUp8GVhSamP1cz1NbnsqfcGm9nJWzqQV47u 1.jpg
+```
+
+```bash
+ipfs ls -v QmQn14QTMctBUp8GVhSamP1cz1NbnsqfcGm9nJWzqQV47u
+
+
+Hash                                           Size   Name
+QmPpeqJ1LHQs6Ru374nxjtMeDMHrSvqYRqtQwrHE9c531D 262158 
+QmRaatTT2hcNzyratU5mEqMBEszL6e2pUghC1LUHXipbfL 262158 
+QmYe9YKKabDDpdRyPWYzsYTZNZkS3JwYV4vpReyU7ANyFb 262158 
+QmQxx4QY2aYQMWRNyHU3pAbYEsJhCS6SPxMpRonLjZfnyB 262158 
+QmVMqHCMnkmsdftw45S2LuNWLAGPXtU6w9qMLof2G8xGma 262158 
+QmPkY5hQEuZJ8hhvbUWVTDXrLGSZg631WtNx7MM9vURtGt 262158 
+QmWFFbLwKgoz714u28Dzos4Sv4cXVydexM7m7y2cUqFBzA 262158 
+QmTWAV2Z5c13wGqcv23ScyeH5RJkQZFHnAkMuyvTJU2L4p 22572 
+
+```
