@@ -15,7 +15,6 @@ categories: [business]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 
@@ -94,7 +93,6 @@ EOS引以为傲的是支持百万级别TPS,其中除了DPFS共识机制的功劳
 P2P技术还是比较完善的,只需要把这些`完善的技术以一种市场化的方法组合起来`,完善里面的经济激励就足够了.
 
 
-<a id="markdown-2-再介绍" name="2-再介绍"></a>
 # 2. 再介绍
 
 
@@ -171,7 +169,6 @@ Filecoin:
 * Storj: 去中心化的基于区块链的分布式云存储西永,主要功能与中心化的Dropbox,Onedrive类似. 相较于Filecoin,基于ERC2.0的以太坊众筹币种.
 * Bluzella: 很小,大小固定,按照数组,集合等数据结构的数据字段进行结构化存储
 
-<a id="markdown-3-安装ipfs" name="3-安装ipfs"></a>
 # 3. 安装ipfs
 
 ```bash
@@ -195,7 +192,6 @@ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
 
 ```
 
-<a id="markdown-4-存储原理" name="4-存储原理"></a>
 # 4. 存储原理
 
 * http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
@@ -259,7 +255,6 @@ Merkle DAG:
 
 
 
-<a id="markdown-5-实践-merkle-dag" name="5-实践-merkle-dag"></a>
 # 5. 实践 merkle dag
 
 ```bash

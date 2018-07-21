@@ -18,11 +18,19 @@ categories: [版本管理]
 - [9. windows lf](#9-windows-lf)
 - [10. 底层](#10-底层)
 - [11. 继续整理](#11-继续整理)
-- [12. 大文本文件是怎么做存储的?](#12-大文本文件是怎么做存储的)
+    - [11.1. 一个blob对象的实验](#111-一个blob对象的实验)
+    - [11.2. tree对象](#112-tree对象)
+    - [11.3. 继续实验](#113-继续实验)
+    - [11.4. references](#114-references)
+    - [11.5. packfiles](#115-packfiles)
+    - [11.6. refspec(远程映射？)](#116-refspec远程映射)
+    - [11.7. 协议](#117-协议)
+    - [11.8. http流程](#118-http流程)
+    - [11.9. 上传数据(智能)](#119-上传数据智能)
+    - [11.10. 下载数据(智能)](#1110-下载数据智能)
 
 <!-- /TOC -->
 
-<a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 
 * https://git-scm.com/book/zh/v2 (git book)
@@ -31,7 +39,6 @@ categories: [版本管理]
 * https://github.com/xirong/my-git (学习资料)
 * http://www.cnblogs.com/ShaYeBlog/p/5712839.html (托管商)
 
-<a id="markdown-2-删除本地以及remote的分支" name="2-删除本地以及remote的分支"></a>
 # 2. 删除本地以及remote的分支
 * https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-remotely
 
@@ -41,39 +48,33 @@ git branch -D branch1
 git push origin --delete branch1
 ```
 
-<a id="markdown-3-push-所有分支" name="3-push-所有分支"></a>
 # 3. push 所有分支
 ```
 git push --all origin
 ```
 
-<a id="markdown-4-文本文件行尾lf" name="4-文本文件行尾lf"></a>
 # 4. 文本文件行尾LF
 .gitattributes
 ```
 *.sqc text eol=lf
 ```
 
-<a id="markdown-5-切换到最新的master" name="5-切换到最新的master"></a>
 # 5. 切换到最新的master
 ```
 git fetch && git reset --hard origin/master
 ```
 
-<a id="markdown-6-clone-windows目录" name="6-clone-windows目录"></a>
 # 6. clone windows目录
 ```bash
 git clone file:////10.243.141.8/git/cache
 ```
 
-<a id="markdown-7-设置用户名和邮箱" name="7-设置用户名和邮箱"></a>
 # 7. 设置用户名和邮箱
 ```
 git config --global user.email "yqsy021@126.com"
 git config --global user.name "yqsy"
 ```
 
-<a id="markdown-8-清理文件夹" name="8-清理文件夹"></a>
 # 8. 清理文件夹
 
 ```bash
@@ -91,7 +92,6 @@ git ls-files -ci --exclude-standard
 
 git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
 ```
-<a id="markdown-9-windows-lf" name="9-windows-lf"></a>
 # 9. windows lf
 
 ```bash
@@ -105,7 +105,6 @@ git config --global core.autocrlf false
 忽视+未被忽视	|-fx
 文件夹	|-d
 
-<a id="markdown-10-底层" name="10-底层"></a>
 # 10. 底层
 
 * https://www.cnblogs.com/gscienty/p/7904518.html (csdn的)
@@ -115,18 +114,18 @@ git config --global core.autocrlf false
 COMMIT_EDITMSG  # 最近一次的commit message,git系统都不会用到,给用户一个参考
 config          # git 仓库的配置文件
 description     # 主要给gitweb等git托管文件使用
-HEAD            # 映射到ref引用,能够找到下一次commitd的前一次hash值
+HEAD            # 存在挡墙所在分支的指针文件路径,一般指向refs的某文件
 index           # 暂存区,一个二进制文件
 
 # 路径
 branches
 hooks            # 存放脚本
-info             # 存放仓库信息
+info             # 存放仓库信息???
 ipfs             
 ipld
-logs             # !!!保存所有更新的引用记录  (分支)
+logs             # 存储日志的文件夹
 objects          # !!!所有git对象
-refs             # !!!保存最近一次提交的hash值
+refs             # !!!存储各个分支的指针
 
 ```
 
@@ -176,13 +175,16 @@ git cat-file -p SHA1
 ```
 
 
-<a id="markdown-11-继续整理" name="11-继续整理"></a>
 # 11. 继续整理
 
 * https://www.youtube.com/watch?v=P6jD966jzlk
 * https://github.com/pluralsight/git-internals-pdf
+* https://github.com/ChainBook/IPFS-For-Chinese/blob/master/IPFS%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/Git%E5%8E%9F%E7%90%86.md
 
 ![](http://ouxarji35.bkt.clouddn.com/20180719210954.png)
+
+
+
 
 对象类型
 * Commit - Author,message,pointer to a tree of changes
@@ -197,6 +199,17 @@ git cat-file -p SHA1
 * master是权威的主线分支
 * HEAD 是特殊的指针,指向最新的提交
 
+和文件的映射
+
+指向|文件名|内容|含义
+-|-|-|-
+HEAD|HEAD|ref: refs/heads/master|最近一次提交的branch
+branch|refs/heads/`<branch>`|hash|branch相应的commit hash
+remote|refs/remotes/origin(仓库名)/`<branch>`|hash|branch相应的commit hash
+tag|refs/tags/v1.1(版本号名)/`<version>`|hash|tag相应的tag hash
+tree|objects/`<hash>`|object|对象,包括commit,tree,blob和tag
+blob|objects/`<hash>`|object|同上
+
 ![](http://ouxarji35.bkt.clouddn.com/20180719225914.png)
 
 
@@ -207,19 +220,239 @@ watch -n 1 -d find .
 
 ```
 
-<a id="markdown-12-大文本文件是怎么做存储的" name="12-大文本文件是怎么做存储的"></a>
-# 12. 大文本文件是怎么做存储的?
+* 已提交 committed  被安全的保存在本地数据库中
+* 已修改 modified 修改了某个文件，但还没有提交保存
+* 已暂存 staged 把已修改的文件存放在下次提交时要保存的清单中
 
-例如一个1MB的源码文件(假设),其中只做了一行修改不可能整个文件copy一遍把,我要做个实验
+对于文件所处的位置来判断状态
+* git目录中保存着的特定版本文件，就属于已提交状态
+* 作了修改并已放入暂存区域，就属于已暂存状态
+* 自上次取出后,作了修改但还没有放到暂存区域,就是已修改状态
+
+## 11.1. 一个blob对象的实验
+```bash
+mkdir test
+git init
+find .git/objects
+find .git/objects -type f
+
+# 初始化内容
+echo 'test content' | git hash-object -w --stdin
+find .git/objects -type f
+git cat-file -p $hash
+
+# 内容1
+echo 'version 1' > test.txt
+git hash-object -w test.txt
+
+# 内容2
+echo 'version 2' > test.txt
+git hash-object -w test.txt
+
+# 3个objects
+find .git/objects -type f
+```
+
+## 11.2. tree对象
+
+在tree中,所有内容以tree或blob对象存储,类似于递归向下
 
 ```bash
-mkdir testipfs 
-cd testipfs
-for i in $(seq 1 100000); do echo $i >> 1.txt; done
-git add .
-git commit -a -m "new"
+# 分支上最新提交指向的tree对象
+git cat-file -p master^{tree}
+```
+
+文件模式:
+* 100644 普通文件
+* 100755 可执行文件
+* 120000 符号链接
+
+
+## 11.3. 继续实验
+```bash
+# 把文件写到暂存区
+git update-index --add --cacheinfo 100644 d670460b4b4aece5915caf5c68d12f560a9fe3e4 test1.txt
+
+# 把暂存区的内容写到一个tree对象
+git write-tree
+
+# 新创建一个文件,直接生成blob加入到tree
+echo 'new file' > new.txt
+
+git update-index --add new.txt
+
+# 生成一个新的对象
+git write-tree
+
+
+# 将第一次生成的tree作为一个目录再扔到当前目录下生成一个新的tree
+git read-tree  --prefix=bak eef15dc2733be81aedb7bbdf39127b34e38b9f4e
+git write-tree
+
+# commit (但是我不知道为什么这一步没有真正的提交,所以我使用了git commit就后继)
+echo 'first commit' | git commit-tree 52210aa7448b8f6ead6141789d3cace4581cd126
 
 ```
 
-这个功能应该是gc
+## 11.4. references
+
+```bash
+find .git/refs
+
+
+# 最近一次提交的branch
+cat .git/HEAD
+
+# branch相应的commit哈希
+cat .git/refs/heads/master
+
+
+# 显示hash
+git log --pretty=oneline  master
+
+
+# tags
+ls .git/refs/tags
+
+# remotes
+ls .git/refs/remotes
+```
+
+## 11.5. packfiles
+
+
+```bash
+curl https://raw.githubusercontent.com/mojombo/grit/master/lib/grit/repo.rb > repo.rb
+git add repo.rb
+git commit -m 'added repo.rb'
+
+# 查看文件hash值
+git cat-file -p master^{tree}
+
+du -b .git/objects/03/3b4468fa6b2a9547a70d88d1bbe8bf3f9ed0d5
+
+# 添加一行
+echo '# testing' >> repo.rb
+
+git commit -am 'modified repo a bit'
+
+# 多了一个完整的copy
+
+# gc
+git gc
+
+
+# 查看　文件详细
+git verify-pack -v .git/objects/pack/pack-23ebb38eb638d4a10ae17fb547074d2db9845a83.idx
+```
+
+git 往磁盘保存对象时默认使用的格式叫松散对象(loose object)格式,git`时不时`地将这些对象打包至一个叫`packfile`的二进制文件以节省空间并提高效率,当仓库中有太多的松散对象,或是手工调用`git gc`命令,或推送至远程服务器,git都会这样做. (还有`差分压缩`，差异保存)
+
+
+
+## 11.6. refspec(远程映射？)
+
+```bash
+git remote add origin https://github.com/yqsy/test.git
+
+cat .git/config
+```
+
+```
+[remote "origin"]
+	url = https://github.com/yqsy/test.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+```
+
+格式是 +<src>:<dst>
+
+* <src> 是远端上的引用格式
+* <dst> 将要记录的本地的引用格式
+
+缺省情况下refspec会被git remote add 命令自动生成,git会获取`远端上refs/heads/`下面的所有引用,并将它写入到本地的`refs/remotes/origin`,
+
+查看远程的历史
+```bash
+git log origin/master
+git log remotes/origin/master
+git log refs/remotes/origin/master
+
+# 上面的都是等价的,因为git会把她们扩展成refs/remotes/origin/master
+```
+
+```bash
+# fetch 分支 (可以同时fetch多个分支)
+git fetch origin master:refs/remotes/origin/master
+
+# 你也可以在配置文件中指定多个refspec,如果想在每次获取时都获取master和experiment分支.就添加两行
+[remote "origin"]
+       url = git@github.com:schacon/simplegit-progit.git
+       fetch = +refs/heads/master:refs/remotes/origin/master
+       fetch = +refs/heads/experiment:refs/remotes/origin/experiment
+```
+
+
+```
+# 如果第一次选择push
+git push --set-upstream origin master
+
+
+# config就会增加master
+yq@yq-PC:/media/yq/ST1000DM003/linux/reference/test/testgit/.git% cat config
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = file:///media/yq/ST1000DM003/linux/reference/test/testgit-remote
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+```
+
+## 11.7. 协议
+
+* https://
+* file://
+* ssh://
+* git://
+
+
+
+## 11.8. http流程 
+```
+git clone http://github.com/schacon/simplegit-progit.git
+```
+
+`.git/info/refs`(起点提交)  <- 服务端`update-server-info`
+
+`.git/HEAD` (应该被检出的目录)
+
+`.git/objects/xx/hash` (获取commit) -> 递归commit
+
+`.git/objects/xx/hash` (获取tree) -> 递归tree
+
+如果tree对象在服务端不以松散对象存在,会得到404响应 -> `.git/objects/info/packs`
+
+`.git/objects/pack/pack-hash.idx`
+
+
+
+## 11.9. 上传数据(智能)
+至远端,git使用 `send-pack` 和 `receive-pack` . 这个`send-pack`进程运行在客户端上,连接至远端运行的`receive-pack`进程
+
+
+```bash
+# ssh 大概会执行
+ssh -x git@github.com "git-receive-pack 'schacon/simplegit-progit.git'"
+
+send-pack进程会判断那些commit是它所拥有但服务端没有的,针对每个引用,这次推送都会告诉对端的receive-pack这个信息
+
+```
+
+## 11.10. 下载数据(智能)
+
+当你下载数据时,`fetch-pack`和`upload-pack`进程就起作用了,客户端启动`fetch-pack`进程,连接至远端的`upload-pack`进程,以协商后续数据传输过程
 
