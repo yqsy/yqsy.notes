@@ -28,6 +28,7 @@ categories: [版本管理]
     - [11.8. http流程](#118-http流程)
     - [11.9. 上传数据(智能)](#119-上传数据智能)
     - [11.10. 下载数据(智能)](#1110-下载数据智能)
+- [12. gitremotehelp](#12-gitremotehelp)
 
 <!-- /TOC -->
 
@@ -205,8 +206,8 @@ git cat-file -p SHA1
 -|-|-|-
 HEAD|HEAD|ref: refs/heads/master|最近一次提交的branch
 branch|refs/heads/`<branch>`|hash|branch相应的commit hash
-remote|refs/remotes/origin(仓库名)/`<branch>`|hash|branch相应的commit hash
-tag|refs/tags/v1.1(版本号名)/`<version>`|hash|tag相应的tag hash
+remote|refs/remotes/`<remoteName>`/`<branch>`|hash|branch相应的commit hash
+tag|refs/tags/`<version>`|hash|tag相应的tag hash
 tree|objects/`<hash>`|object|对象,包括commit,tree,blob和tag
 blob|objects/`<hash>`|object|同上
 
@@ -456,3 +457,48 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 
 当你下载数据时,`fetch-pack`和`upload-pack`进程就起作用了,客户端启动`fetch-pack`进程,连接至远端的`upload-pack`进程,以协商后续数据传输过程
 
+
+
+# 12. gitremotehelp
+
+* https://github.com/git/git/blob/master/git-remote-testgit.sh (shell的example)
+* https://rovaughn.github.io/2015-2-9.html (尝试记录)
+* https://github.com/rovaughn/git-remote-grave (案例)
+
+![](http://ouxarji35.bkt.clouddn.com/git-remote-helper-1.png)
+
+* push: 把差异发送到remote
+* fetch: 把差异拉取到本地 (pull = fetch + reset)
+* clone: 把仓库clone到本地
+
+`GIT_DIR` 在调用remote helper的过程中会被设置成当前工作的git目录
+
+
+git是怎么调用到helper的?简单梳理
+
+push
+```bash
+git remote add myremote go::http://example.com/repo
+git push myremote master
+
+# ↓↓↓↓
+
+git-remote-go myremote http://example.com/repo
+```
+
+fetch
+```bash
+TODO
+```
+
+clone
+```bash
+git clone go::http://example.com/repo
+
+# ↓↓↓↓
+
+git-remote-go origin http://example.com/repo
+
+
+# 当我们clone的时候`origin`会被自动的创建
+```
