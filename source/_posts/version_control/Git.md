@@ -465,11 +465,16 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 * https://rovaughn.github.io/2015-2-9.html (尝试记录)
 * https://github.com/rovaughn/git-remote-grave (案例)
 
+
 ![](http://ouxarji35.bkt.clouddn.com/git-remote-helper-1.png)
 
 * push: 把差异发送到remote
 * fetch: 把差异拉取到本地 (pull = fetch + reset)
 * clone: 把仓库clone到本地
+
+参考:
+* https://github.com/cryptix/git-remote-ipfs (go,实现fetch,push)
+* https://github.com/larsks/git-remote-ipfs (python,capabilities,list,export,import)
 
 `GIT_DIR` 在调用remote helper的过程中会被设置成当前工作的git目录
 
