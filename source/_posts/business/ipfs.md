@@ -11,10 +11,11 @@ categories: [business]
 - [2. 再介绍](#2-再介绍)
 - [3. 安装ipfs](#3-安装ipfs)
 - [4. 存储原理](#4-存储原理)
-- [5. 实践 merkle dag](#5-实践-merkle-dag)
+- [5. 实践](#5-实践)
 
 <!-- /TOC -->
 
+<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 
@@ -93,6 +94,7 @@ EOS引以为傲的是支持百万级别TPS,其中除了DPFS共识机制的功劳
 P2P技术还是比较完善的,只需要把这些`完善的技术以一种市场化的方法组合起来`,完善里面的经济激励就足够了.
 
 
+<a id="markdown-2-再介绍" name="2-再介绍"></a>
 # 2. 再介绍
 
 
@@ -169,6 +171,7 @@ Filecoin:
 * Storj: 去中心化的基于区块链的分布式云存储西永,主要功能与中心化的Dropbox,Onedrive类似. 相较于Filecoin,基于ERC2.0的以太坊众筹币种.
 * Bluzella: 很小,大小固定,按照数组,集合等数据结构的数据字段进行结构化存储
 
+<a id="markdown-3-安装ipfs" name="3-安装ipfs"></a>
 # 3. 安装ipfs
 
 ```bash
@@ -192,6 +195,7 @@ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
 
 ```
 
+<a id="markdown-4-存储原理" name="4-存储原理"></a>
 # 4. 存储原理
 
 * http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
@@ -255,8 +259,32 @@ Merkle DAG:
 
 
 
-# 5. 实践 merkle dag
+<a id="markdown-5-实践" name="5-实践"></a>
+# 5. 实践
 
+基础实践
+```bash
+# 初始化全局配置
+ipfs init 
+
+# 上传当前整个目录
+ipfs add -r .
+
+# 使用ipfs cat打印
+ipfs cat QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+
+# 本地直接的浏览
+http://127.0.0.1:8080/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+
+#　如果开启了daemon 那么会传输到星际网络
+https://gateway.ipfs.io/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+
+本地inspector:
+http://127.0.0.1:5001/webui
+```
+
+
+哈希值
 ```bash
 ipfs add 1.jpg
 

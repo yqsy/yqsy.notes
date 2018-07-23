@@ -32,6 +32,7 @@ categories: [版本管理]
 
 <!-- /TOC -->
 
+<a id="markdown-1-资料" name="1-资料"></a>
 # 1. 资料
 
 * https://git-scm.com/book/zh/v2 (git book)
@@ -40,6 +41,7 @@ categories: [版本管理]
 * https://github.com/xirong/my-git (学习资料)
 * http://www.cnblogs.com/ShaYeBlog/p/5712839.html (托管商)
 
+<a id="markdown-2-删除本地以及remote的分支" name="2-删除本地以及remote的分支"></a>
 # 2. 删除本地以及remote的分支
 * https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-both-locally-and-remotely
 
@@ -49,33 +51,39 @@ git branch -D branch1
 git push origin --delete branch1
 ```
 
+<a id="markdown-3-push-所有分支" name="3-push-所有分支"></a>
 # 3. push 所有分支
 ```
 git push --all origin
 ```
 
+<a id="markdown-4-文本文件行尾lf" name="4-文本文件行尾lf"></a>
 # 4. 文本文件行尾LF
 .gitattributes
 ```
 *.sqc text eol=lf
 ```
 
+<a id="markdown-5-切换到最新的master" name="5-切换到最新的master"></a>
 # 5. 切换到最新的master
 ```
 git fetch && git reset --hard origin/master
 ```
 
+<a id="markdown-6-clone-windows目录" name="6-clone-windows目录"></a>
 # 6. clone windows目录
 ```bash
 git clone file:////10.243.141.8/git/cache
 ```
 
+<a id="markdown-7-设置用户名和邮箱" name="7-设置用户名和邮箱"></a>
 # 7. 设置用户名和邮箱
 ```
 git config --global user.email "yqsy021@126.com"
 git config --global user.name "yqsy"
 ```
 
+<a id="markdown-8-清理文件夹" name="8-清理文件夹"></a>
 # 8. 清理文件夹
 
 ```bash
@@ -93,6 +101,7 @@ git ls-files -ci --exclude-standard
 
 git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
 ```
+<a id="markdown-9-windows-lf" name="9-windows-lf"></a>
 # 9. windows lf
 
 ```bash
@@ -106,6 +115,7 @@ git config --global core.autocrlf false
 忽视+未被忽视	|-fx
 文件夹	|-d
 
+<a id="markdown-10-底层" name="10-底层"></a>
 # 10. 底层
 
 * https://www.cnblogs.com/gscienty/p/7904518.html (csdn的)
@@ -176,6 +186,7 @@ git cat-file -p SHA1
 ```
 
 
+<a id="markdown-11-继续整理" name="11-继续整理"></a>
 # 11. 继续整理
 
 * https://www.youtube.com/watch?v=P6jD966jzlk
@@ -230,6 +241,7 @@ watch -n 1 -d find .
 * 作了修改并已放入暂存区域，就属于已暂存状态
 * 自上次取出后,作了修改但还没有放到暂存区域,就是已修改状态
 
+<a id="markdown-111-一个blob对象的实验" name="111-一个blob对象的实验"></a>
 ## 11.1. 一个blob对象的实验
 ```bash
 mkdir test
@@ -254,6 +266,7 @@ git hash-object -w test.txt
 find .git/objects -type f
 ```
 
+<a id="markdown-112-tree对象" name="112-tree对象"></a>
 ## 11.2. tree对象
 
 在tree中,所有内容以tree或blob对象存储,类似于递归向下
@@ -269,6 +282,7 @@ git cat-file -p master^{tree}
 * 120000 符号链接
 
 
+<a id="markdown-113-继续实验" name="113-继续实验"></a>
 ## 11.3. 继续实验
 ```bash
 # 把文件写到暂存区
@@ -295,6 +309,7 @@ echo 'first commit' | git commit-tree 52210aa7448b8f6ead6141789d3cace4581cd126
 
 ```
 
+<a id="markdown-114-references" name="114-references"></a>
 ## 11.4. references
 
 ```bash
@@ -319,6 +334,7 @@ ls .git/refs/tags
 ls .git/refs/remotes
 ```
 
+<a id="markdown-115-packfiles" name="115-packfiles"></a>
 ## 11.5. packfiles
 
 
@@ -351,6 +367,7 @@ git 往磁盘保存对象时默认使用的格式叫松散对象(loose object)�
 
 
 
+<a id="markdown-116-refspec远程映射" name="116-refspec远程映射"></a>
 ## 11.6. refspec(远程映射？)
 
 ```bash
@@ -413,6 +430,7 @@ yq@yq-PC:/media/yq/ST1000DM003/linux/reference/test/testgit/.git% cat config
 	merge = refs/heads/master
 ```
 
+<a id="markdown-117-协议" name="117-协议"></a>
 ## 11.7. 协议
 
 * https://
@@ -422,6 +440,7 @@ yq@yq-PC:/media/yq/ST1000DM003/linux/reference/test/testgit/.git% cat config
 
 
 
+<a id="markdown-118-http流程" name="118-http流程"></a>
 ## 11.8. http流程 
 ```
 git clone http://github.com/schacon/simplegit-progit.git
@@ -441,6 +460,7 @@ git clone http://github.com/schacon/simplegit-progit.git
 
 
 
+<a id="markdown-119-上传数据智能" name="119-上传数据智能"></a>
 ## 11.9. 上传数据(智能)
 至远端,git使用 `send-pack` 和 `receive-pack` . 这个`send-pack`进程运行在客户端上,连接至远端运行的`receive-pack`进程
 
@@ -453,18 +473,20 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 
 ```
 
+<a id="markdown-1110-下载数据智能" name="1110-下载数据智能"></a>
 ## 11.10. 下载数据(智能)
 
 当你下载数据时,`fetch-pack`和`upload-pack`进程就起作用了,客户端启动`fetch-pack`进程,连接至远端的`upload-pack`进程,以协商后续数据传输过程
 
 
 
+<a id="markdown-12-gitremotehelp" name="12-gitremotehelp"></a>
 # 12. gitremotehelp
 
 * https://github.com/git/git/blob/master/git-remote-testgit.sh (shell的example)
 * https://rovaughn.github.io/2015-2-9.html (尝试记录)
 * https://github.com/rovaughn/git-remote-grave (案例)
-
+* https://git-scm.com/docs/git-remote-helpers (官方文档)
 
 ![](http://ouxarji35.bkt.clouddn.com/git-remote-helper-1.png)
 
@@ -475,6 +497,8 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 参考:
 * https://github.com/cryptix/git-remote-ipfs (go,实现fetch,push)
 * https://github.com/larsks/git-remote-ipfs (python,capabilities,list,export,import)
+* https://github.com/whyrusleeping/git-ipfs-rehost (github 重定向到ipfs)
+* https://github.com/ipfs-shipyard/git-remote-ipld (推送到ipld))
 
 `GIT_DIR` 在调用remote helper的过程中会被设置成当前工作的git目录
 
@@ -506,4 +530,52 @@ git-remote-go origin http://example.com/repo
 
 
 # 当我们clone的时候`origin`会被自动的创建
+```
+
+https://github.com/cryptix/git-remote-ipfs 简单实践
+
+
+
+
+```bash
+# 把github的仓库clone到远程
+cd /home/yq/resource/test
+git-ipfs-rehost https://github.com/yqsy/testipfs
+# 地址
+https://ipfs.io/ipfs/QmQ8KCt2cBHc5kbnVrwEBcvUoGi99yZxLXHaCEdM3zNJF4/testipfs
+
+#  调用git-remote-ipfs从ipfs网络取  local < ipfs
+git clone ipfs://ipfs/QmQ8KCt2cBHc5kbnVrwEBcvUoGi99yZxLXHaCEdM3zNJF4/testipfs
+
+# clone的流程
+访问 /ipfs/QmQ8KCt2cBHc5kbnVrwEBcvUoGi99yZxLXHaCEdM3zNJF4/testipfs/info/refs
+
+# info/refs 的值如下(git update-server-info 这个语句创建的)
+40b2b4bd1af3d6dec497e437a571742d5c334c9a	refs/heads/branch1
+9cad683db47866d63d2772d3763d622e3ec9d14d	refs/heads/branch2
+4b9dba7604127878d9a5885dd98153523b1c301e	refs/heads/master
+
+再访问 /ipfs/QmQ8KCt2cBHc5kbnVrwEBcvUoGi99yZxLXHaCEdM3zNJF4/testipfs/HEAD
+
+# 值如下
+ref: refs/heads/master
+
+# 再依次print "hash ref\n"
+# 再print "hash HEAD\n"
+
+# 然后git程序会调用fetch 指定的hash (git程序判断梅克尔图需要哪个父节点,依次取到)
+# 里面包括 (pack)文件
+
+
+# push的流程
+
+# 注意 push的时候 info/refs没有内容!
+git push
+
+ipfs://ipfs/QmNMvVKFtQVfqGsASMqY2tPviPjm2TqwiHXtzgKpui5oMT
+
+新的地址再clone的时候会发生问题
+, 因为Push的时候漏掉了哈!
+
+
 ```
