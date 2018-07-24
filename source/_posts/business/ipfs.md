@@ -12,6 +12,8 @@ categories: [business]
 - [3. 安装ipfs](#3-安装ipfs)
 - [4. 存储原理](#4-存储原理)
 - [5. 实践](#5-实践)
+- [6. ipld](#6-ipld)
+- [7. filecoin](#7-filecoin)
 
 <!-- /TOC -->
 
@@ -20,11 +22,11 @@ categories: [business]
 
 
 * http://ipfser.org/2018/06/27/r45/ (书)
-* https://ipfs.io/docs/ (资源大全)
 * https://github.com/ipfs/ipfs (官方文档)
-* https://github.com/ipfs/go-ipfs (源码)
-* https://github.com/ipfs/ipfs#project-directory (所有项目与资料)
-* https://github.com/ipfs/specs (学术文档)
+* https://ipfs.io/docs/examples/ (常用场景,看完了)
+* https://www.youtube.com/watch?v=h73bd9b5pPA (indeep-turtoial)
+* https://github.com/ipfs/specs (协议规范)
+* https://github.com/ipfs/reading-list (阅读列表)
 
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
@@ -271,7 +273,16 @@ ipfs init
 ipfs add -r .
 
 # 使用ipfs cat打印
-ipfs cat QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+ipfs cat /ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+
+# 连接到互联网
+ipfs daemon
+
+# 查看peers
+ipfs swarm peers
+
+# 本地inspector:
+http://127.0.0.1:5001/webui
 
 # 本地直接的浏览
 http://127.0.0.1:8080/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
@@ -279,30 +290,134 @@ http://127.0.0.1:8080/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
 #　如果开启了daemon 那么会传输到星际网络
 https://gateway.ipfs.io/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
 
-本地inspector:
-http://127.0.0.1:5001/webui
+# 这个也可以吗?
+https://ipfs.io/ipfs/QmeV1kwh3333bsnT6YRfdCRrSgUPngKmAhhTa4RrqYPbKT
+
+# 查看文件分片
+ipfs ls QmQn14QTMctBUp8GVhSamP1cz1NbnsqfcGm9nJWzqQV47u
+
+# 直接创建分片
+echo "This is some data" | ipfs block put
+
+# 获取分片
+ipfs block get QmfQ5QAjvg4GtA3wg3adpnDJug8ktA1BxurVqBD8rtgVjM
+
+# 主动连接 swarm
+ipfs swarm connect /ip4/104.236.176.52/tcp/4001/ipfs/QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z
+
+# 寻找peer
+ipfs dht findpeer QmSoLnSGccFuZQJzRadHn95W2CrSFmZuTdDWP8HXaHca9z
+
+# 防止gc
+ipfs pin
+
+
+# 本地映射
+sudo mkdir /ipfs /ipns
+sudo chown `whoami` /ipfs /ipns
+
+ipfs mount
+
 ```
 
-
-哈希值
+ipns 名字空间!!!!  感觉没有什么用
 ```bash
-ipfs add 1.jpg
+echo 'Let us have some mutable fun!' | ipfs add
 
-added QmQn14QTMctBUp8GVhSamP1cz1NbnsqfcGm9nJWzqQV47u 1.jpg
+# 发布
+ipfs name publish QmYuWGLtu2fwTBMyt9LWJw212PBdMm2uDchub4rHqkHPg3
+
+# 解析自己的(hash是自己的node id)
+ipfs name resolve QmRxvVhBA9p1CTamqzyfPbqS4QsdnihYaMnm6sLY2utW6D
+
+# 为何不是目录树,而直接是文本呢?
+https://ipfs.io/ipns/QmRxvVhBA9p1CTamqzyfPbqS4QsdnihYaMnm6sLY2utW6D
+
+echo 'Look! Things have changed!' | ipfs add
+
+ipfs name publish QmSb8DSVmu4Qip56jcqPVz1Cx9RJ3vTf3d1Gf9ixaG2tWg
+
 ```
+
+bootstrap(初始化引导列表把)
+```
+ipfs bootstrap list
+```
+
+ipfs 配置
+```
+"Addresses": {
+    "Swarm": [  
+      "/ip4/0.0.0.0/tcp/4001" # 公网地址给别人dial的
+    ],
+    "API": "/ip4/127.0.0.1/tcp/5001", # 提供http API,操控daemon,本机用
+    "Gateway": "/ip4/127.0.0.1/tcp/8080" # 网关地址,本机用
+  }
+```
+
+Graphing Objects 画图哦
+```
+yq@yq-PC:~/resource/test% tree shit
+shit
+├── cat.jpg
+└── test
+    ├── bar
+    ├── baz
+    │   ├── b
+    │   └── f
+    └── foo
+
+graphmd Qma2m3f9w345iMWX32ormPsNwq8PWa5Pmm94N9WiErMqHY | dot -Tpng > graph.png
+
+```
+
+git more distributed
 
 ```bash
-ipfs ls -v QmQn14QTMctBUp8GVhSamP1cz1NbnsqfcGm9nJWzqQV47u
+git clone --bare https://github.com/yqsy/testipfs
+
+# 往ipfs上扔的时候
+git update-server-info
+
+# 可选
+cp objects/pack/*.pack .
+git unpack-objects < ./*.pack
+rm ./*.pack
+
+ipfs add -r .
 
 
-Hash                                           Size   Name
-QmPpeqJ1LHQs6Ru374nxjtMeDMHrSvqYRqtQwrHE9c531D 262158 
-QmRaatTT2hcNzyratU5mEqMBEszL6e2pUghC1LUHXipbfL 262158 
-QmYe9YKKabDDpdRyPWYzsYTZNZkS3JwYV4vpReyU7ANyFb 262158 
-QmQxx4QY2aYQMWRNyHU3pAbYEsJhCS6SPxMpRonLjZfnyB 262158 
-QmVMqHCMnkmsdftw45S2LuNWLAGPXtU6w9qMLof2G8xGma 262158 
-QmPkY5hQEuZJ8hhvbUWVTDXrLGSZg631WtNx7MM9vURtGt 262158 
-QmWFFbLwKgoz714u28Dzos4Sv4cXVydexM7m7y2cUqFBzA 262158 
-QmTWAV2Z5c13wGqcv23ScyeH5RJkQZFHnAkMuyvTJU2L4p 22572 
+git clone http://127.0.0.1:8080/ipfs/QmaUufWKhav51hZHT9BMHSVGwTg4ksiSwKXd8cPH9D8sXP myrepo
+
+# 直接可以这样用
+import (
+    mylib "gateway.ipfs.io/ipfs/QmX679gmfyaRkKMvPA4WGNWXj9PtpvKWGPgtXaF18etC95"
+)
 
 ```
+
+websites
+
+```bash
+mkdir testhtml
+cd testhtml
+echo "<h> hello world</h>" > index.html
+ipfs add -r .
+
+# 访问
+http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
+```
+
+
+<a id="markdown-6-ipld" name="6-ipld"></a>
+# 6. ipld
+
+
+* https://ipld.io/
+* https://github.com/ipld/ipld 
+
+<a id="markdown-7-filecoin" name="7-filecoin"></a>
+# 7. filecoin
+
+* https://filecoin.io/
+

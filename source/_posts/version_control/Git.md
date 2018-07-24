@@ -498,7 +498,8 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 * https://github.com/cryptix/git-remote-ipfs (go,实现fetch,push)
 * https://github.com/larsks/git-remote-ipfs (python,capabilities,list,export,import)
 * https://github.com/whyrusleeping/git-ipfs-rehost (github 重定向到ipfs)
-* https://github.com/ipfs-shipyard/git-remote-ipld (推送到ipld))
+* https://github.com/ipfs-shipyard/git-remote-ipld (推送到ipld,!!研究这个啊)
+* https://github.com/ipfs/go-ipfs/blob/master/docs/plugins.md (这个插件?)
 
 `GIT_DIR` 在调用remote helper的过程中会被设置成当前工作的git目录
 
@@ -577,5 +578,48 @@ ipfs://ipfs/QmNMvVKFtQVfqGsASMqY2tPviPjm2TqwiHXtzgKpui5oMT
 新的地址再clone的时候会发生问题
 , 因为Push的时候漏掉了哈!
 
+
+```
+
+https://github.com/ipfs-shipyard/git-remote-ipld  简单实践
+
+```bash
+# 安装git-remote-ipld
+go get github.com/magik6k/git-remote-ipld
+cd ~/go/src/github.com/magik6k/git-remote-ipld
+make install
+
+# 安装插件
+cd /home/yq/go/src/github.com/ipfs/go-ipfs
+make build_plugins
+ls plugin/plugins/*.so
+
+# 复制插件 (启动ipfs有问题吗?)
+mkdir -p ~/.ipfs/plugins/
+cp plugin/plugins/git.so ~/.ipfs/plugins/
+chmod +x ~/.ipfs/plugins/git.so
+
+
+cd /home/yq/resource/test
+mkdir testipfs
+echo "hello-world" > 1.txt
+git init
+git add .
+git commit -am "first commit"
+
+# 直接push到ipld
+git push --set-upstream ipld:// master
+
+# 拉取新的仓库
+git clone ipld://9de90314f9452084dd11bb5f167b08aa9795bf32 testipfs-new
+
+# 再修改原始的仓库,push新的
+
+# 在clone下的仓库更新 pull(fetch)
+git pull ipld://69b17abd354126f758598a284a4c4777eba95378
+
+
+# 在clone下的仓库,再试试fetch
+git fetch ipld://0c56b567962982e4cc175dfd4cf9210dd2c98f0c
 
 ```
