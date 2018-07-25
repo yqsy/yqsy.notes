@@ -602,6 +602,7 @@ chmod +x ~/.ipfs/plugins/git.so
 
 cd /home/yq/resource/test
 mkdir testipfs
+cd testipfs
 echo "hello-world" > 1.txt
 git init
 git add .
@@ -621,5 +622,16 @@ git pull ipld://69b17abd354126f758598a284a4c4777eba95378
 
 # 在clone下的仓库,再试试fetch
 git fetch ipld://0c56b567962982e4cc175dfd4cf9210dd2c98f0c
+
+```
+
+```bash
+# 调试试把
+cd /home/yq/go/src/github.com/ipfs-shipyard/git-remote-ipld
+
+go install -gcflags "-N -l" -v ./cmd/git-remote-ipld/...
+go install -gcflags "-N -l" -v ./cmd/git-remote-ipns/...
+
+
 
 ```

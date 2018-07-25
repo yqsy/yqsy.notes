@@ -27,6 +27,9 @@ categories: [business]
 * https://www.youtube.com/watch?v=h73bd9b5pPA (indeep-turtoial)
 * https://github.com/ipfs/specs (协议规范)
 * https://github.com/ipfs/reading-list (阅读列表)
+* http://ipfser.org/author/wendury/ (汉化文章)
+* http://ipfser.org/ (国内官网)
+* https://github.com/filecoin-project (file-coin源码)
 
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
@@ -172,6 +175,10 @@ Filecoin:
 * Sia: 让云存储去中心化,倾向于在P2P和企业级领域与现有存储解决方案进行竞争
 * Storj: 去中心化的基于区块链的分布式云存储西永,主要功能与中心化的Dropbox,Onedrive类似. 相较于Filecoin,基于ERC2.0的以太坊众筹币种.
 * Bluzella: 很小,大小固定,按照数组,集合等数据结构的数据字段进行结构化存储
+
+![](http://ouxarji35.bkt.clouddn.com/QQ%E5%9B%BE%E7%89%8720180725093735.png)
+
+![](http://ouxarji35.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180725094636.png)
 
 <a id="markdown-3-安装ipfs" name="3-安装ipfs"></a>
 # 3. 安装ipfs
@@ -320,7 +327,7 @@ ipfs mount
 
 ```
 
-ipns 名字空间!!!!  感觉没有什么用
+ipns 名字空间!!!!
 ```bash
 echo 'Let us have some mutable fun!' | ipfs add
 
@@ -335,6 +342,8 @@ https://ipfs.io/ipns/QmRxvVhBA9p1CTamqzyfPbqS4QsdnihYaMnm6sLY2utW6D
 
 echo 'Look! Things have changed!' | ipfs add
 
+# 绑定节点名(绑定到自己的!)
+# 主要解决问题是每次修改文件后add都会返回不同的hash,对于网站来说没法访问
 ipfs name publish QmSb8DSVmu4Qip56jcqPVz1Cx9RJ3vTf3d1Gf9ixaG2tWg
 
 ```
@@ -420,4 +429,59 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 # 7. filecoin
 
 * https://filecoin.io/
+* https://filecoin.io/blog/update-2017-q4/ (博客)
+* http://chainx.org/paper/index/index/id/13.html (中文白皮书)
+* http://ipfser.org/2017/12/28/r12/ (证明机制)
+
+应用:
+* https://d.tube
+
+
+大概梳理:
+
+* 去中心化存储网络(Decentralized Storage Network)(DSN)
+* 新型的存储证明 1.复制证明”（`Proof-of-Replication` PoRep  2.`“时空证明”（Proof-of-Spacetime）` PoSt
+* 可验证市场,确保服务被正常提供的时候执行支付请求
+* 有效的工作量证明(Proof-of-work), 在时空证明的基础上构建一个可以在共识协议上的有效工作证明,矿工们不需要浪费计算能力来开采区块.
+
+具体做啥?:
+
+* Filecoin协议是构建于区块链和`带有原生令牌的去中心化存储网络`。客户`花费令牌`来`存储`数据和`检索`数据，而`矿工们`通过提供存储和检索数据来`赚取`令牌。
+* Filecoin `DSN` 分别通过`两个可验证市场`来处理存储请求和检索请求：`存储市场`和`检索市场`。客户和矿工设定所要求服务的价格和提供服务的价格，并将其`订单`提交到`市场`。
+* 市场由Filecoin网络来操作，该网络采用了`“时空证明”`和`“复制证明”`来确保矿工们正确存储他们承诺存储的数据。
+
+参与者:
+
+* 客户: 在DSN中通过Put和Get请求存储数据或者检索数据,并为此付费
+* 存储矿工为网络提供数据存储,存储矿工通过提供他们的磁盘空间和响应Pug请求来参与Filecoin.
+* 检索矿工为网络提供数据检索服务
+
+数据结构:
+
+* `碎片`是客户在DSN所存储数据的一部分: 数据可以`划分为许多片`,每片都可以有不同集合的存储矿工来存储
+* `扇区`: `存储矿工`向网络`提供`的一些`磁盘空间`,矿工将客户数据的碎片存储到扇区,并通过服务赚取令牌
+* `分配表`: `跟踪碎片`和其分配的扇区
+* `订单`: 订单式请求或提供服务的意向声明,客户向市场提交投标来请求服务
+* `订单簿`: 订单的集合
+* `抵押`: 网络提供存储的承诺
+
+存储会面临到的攻击手段?:
+
+* 女巫攻击 (Sybil Attacks): 利用n个身份，承诺存储n份数据D，`而实际上存储小于n份`（比如1份），但是`却提供了n份存储证明`，攻击成功
+* 外部数据源攻击 (Outsourcing Attacks): 攻击者矿工收到检验者要求提供数据D的证明的时候，`攻击者矿工从别的矿工那里生成证明`，证明自己一直存储了数据D，而实际上没有存储，攻击成功
+* 生成攻击 (Generation Attacks):  `攻击者A可以使用某种方式生成数据D`，当检验者验证的时候，攻击者A就可以重新生成数据D来完成存储证明，攻击成功
+
+其他共识?
+
+* 数据持有性证明(Provable Data Possession,PDP): 用户发送数据给矿工进行存储,矿工`证明数据已经被自己存储`,用户重复检查矿工是否还在存储自己的数据
+* 可检索证明(Proof-of-Retrievablity,PoRet): 和PDP过程比较类似,证明矿工存储的数据是可以用来查询的
+
+---
+* 存储证明(Proof-of-Storage,PoS): 利用存储空间进行的证明,工作量证明的一种,FileCoin上一篇论文一直使用这个名字,`新的论文则升级为PoRep`
+* 复制证明(Proof-of-Replication,`PoRep`): 新的PoS(Proof-of-storage),`PoRep可以保证每份数据都是独立的`.可以防止女巫攻击,外源攻击和生成攻击
+* 时空证明(Proof-of-Spacetime,`PoSt`): 证明自己花费了spacetime的资源,`一定时间内的存储使用`,`PoSt是基于PoRep实现的`
+
+---
+* 工作量证明(Proof-of-Work,`PoW`): 证明者向校验者证明自己花费了一定的资源.
+* 空间证明(Proof-of-Space,PoSpace): `PoSpace是PoW的一种`,不同的是PoW是用的是`计算的资源`,而PoSpace使用的是`存储的资源`
 
