@@ -14,31 +14,35 @@ categories: [网络相关]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* http://blog.51cto.com/wangbojing/1968118
+* https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2
 * http://www.goto.info.waseda.ac.jp/~wei/file/wei-apan-v10.pdf
+* https://www.cnblogs.com/whyandinside/archive/2010/12/08/1900492.html
+
+Full cone NAT
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Full_Cone_NAT.svg/709px-Full_Cone_NAT.svg.png)
 
 
-简单整理下来,有这么几种
 
-* Full Cone NAT ,对端任意ip port
-* Restricted Cone NAT 对端`unique ip`,任意port
-* Port Restricted Cone NAT
-* Symmetric NAT, 对端`unique ip`, `unique port`
+Address-Restricted cone NAT
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Restricted_Cone_NAT.svg/709px-Restricted_Cone_NAT.svg.png)
 
 
-打洞方法我的梳理:
+
+Port-Restricted cone NAT
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Port_Restricted_Cone_NAT.svg/709px-Port_Restricted_Cone_NAT.svg.png)
 
 
-```
-   server
- |       |
-NATA     NATB
- |       |
- PCA     PCB
-```
 
-简单的就是锥形模式,server处有A/B(ip,port),让AB得知各自的(ip,port)即可穿透NAT  
+Symmetric NAT
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Symmetric_NAT.svg/709px-Symmetric_NAT.svg.png)
 
 
-但是对称模式如何打洞呢?只能靠猜测了,AB得知各自的ip地址后, port怎么办?靠猜测,或者预测nat产生port的规律
 
+穿透技术:
+* https://zh.wikipedia.org/wiki/STUN
+* https://zh.wikipedia.org/wiki/TURN
+* https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment (ice)

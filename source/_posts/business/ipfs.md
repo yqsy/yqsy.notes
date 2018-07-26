@@ -123,11 +123,12 @@ IPFS为解决这些问题诞生
 * 数据的永久保存,IPFS提供了一种使得互联网数据可以被`永久保存`可能性方式,并且提供数据的历史版本(Git)`回溯`功能
 
 整合了多种技术的优点
-* 分布式哈希表DHT
-* Kademlia
+* 分布式哈希表DHT (Kademlia)
+* BitTorrent -> Bitswap  (p2p)
 * Git -> DAG
-* BitTorrent -> Bitswap
 * SFS 自验证文件系统Self-Certifying File System
+* FileCoin
+
 
 轻钱包:  
 我们只需要下载与自己钱包对应的交易信息,需要验证的时候,只需要找一条从交易信息的叶节点到根节点的哈希路径即可,而`不需要`下载区块链的`全部数据`.

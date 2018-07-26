@@ -37,6 +37,14 @@ go get -u github.com/ethereum/go-ethereum
 cloc ./ --exclude-dir=tests,vendor
 ```
 
+用到的技术:
+* 帕特里夏树(Patricia tree)
+* 前缀树(prefix tree)
+* 字典树(trie)
+* 基数树(radix tree)
+
+
+
 <a id="markdown-2-缺陷" name="2-缺陷"></a>
 # 2. 缺陷
 
@@ -214,6 +222,9 @@ EVM不是基于寄存器,而是基于栈的虚拟机.因此所有的计算都在
 
 <a id="markdown-5-实践" name="5-实践"></a>
 # 5. 实践
+
+* https://remix.ethereum.org
+* https://metamask.io/
 
 ```
 sudo su - root
