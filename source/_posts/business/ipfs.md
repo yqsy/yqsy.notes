@@ -14,6 +14,7 @@ categories: [business]
 - [5. 实践](#5-实践)
 - [6. ipld](#6-ipld)
 - [7. filecoin](#7-filecoin)
+- [8. ipfs私人网络](#8-ipfs私人网络)
 
 <!-- /TOC -->
 
@@ -124,7 +125,7 @@ IPFS为解决这些问题诞生
 
 整合了多种技术的优点
 * 分布式哈希表DHT (Kademlia)
-* BitTorrent -> Bitswap  (p2p)
+* BitTorrent -> Bitswap  (p2p) ICE NAT traversal -> STUN,TURN
 * Git -> DAG
 * SFS 自验证文件系统Self-Certifying File System
 * FileCoin
@@ -486,3 +487,8 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 * 工作量证明(Proof-of-Work,`PoW`): 证明者向校验者证明自己花费了一定的资源.
 * 空间证明(Proof-of-Space,PoSpace): `PoSpace是PoW的一种`,不同的是PoW是用的是`计算的资源`,而PoSpace使用的是`存储的资源`
 
+
+<a id="markdown-8-ipfs私人网络" name="8-ipfs私人网络"></a>
+# 8. ipfs私人网络
+
+* https://blog.csdn.net/oscube/article/details/80598790
