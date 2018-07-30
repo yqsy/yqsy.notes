@@ -15,6 +15,7 @@ categories: [business]
 - [6. ipld](#6-ipld)
 - [7. filecoin](#7-filecoin)
 - [8. ipfs私人网络](#8-ipfs私人网络)
+- [9. 常用指令](#9-常用指令)
 
 <!-- /TOC -->
 
@@ -494,6 +495,22 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 * https://blog.csdn.net/oscube/article/details/80598790
 * https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
 
+
+<a id="markdown-9-常用指令" name="9-常用指令"></a>
+# 9. 常用指令
+
 ```bash
+# 连接的peer
+ipfs swarm peers
+
+# 展示所有的bootstrap
+ipfs bootstrap list
+
+# 恢复
+ipfs bootstrap rm --all
+ipfs bootstrap add --default
+
+# 增加
+ipfs bootstrap add /ip4/192.168.0.248/tcp/4001/ipfs/QmcAQMcAdw1jzkRyScLqWQK9fXiSjkVh9uYHHki76vvahm
 
 ```
