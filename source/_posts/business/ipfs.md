@@ -492,3 +492,8 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 # 8. ipfs私人网络
 
 * https://blog.csdn.net/oscube/article/details/80598790
+* https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
+
+```bash
+
+```
