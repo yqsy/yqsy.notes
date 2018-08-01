@@ -629,9 +629,19 @@ git fetch ipld://0c56b567962982e4cc175dfd4cf9210dd2c98f0c
 # 调试试把
 cd /home/yq/go/src/github.com/ipfs-shipyard/git-remote-ipld
 
-go install -gcflags "-N -l" -v ./cmd/git-remote-ipld/...
-go install -gcflags "-N -l" -v ./cmd/git-remote-ipns/...
+# 在build 这里 加上 -gcflags "-N -l"
+
+sed -i "s/build/build -gcflags \"-N -l\"/g" ./Makefile
+
+# 增加debug代码
+make
 
 
 
+git push --set-upstream ipld:// master
+nc localhost 30001
+
+
+git clone ipld://439202fa1f18e16d448a4b7aad08baf89515034d hello
+nc localhost 30001
 ```

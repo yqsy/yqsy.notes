@@ -21,6 +21,7 @@ categories: [网络相关]
 
 * https://zh.wikipedia.org/wiki/BitTorrent_(%E5%8D%8F%E8%AE%AE) (wiki)
 * https://www.bittorrent.com/ (官网)
+* https://zh.wikipedia.org/wiki/Kademlia 
 * https://github.com/ipfs/go-ipfs/tree/master/exchange/bitswap (ipfs的改进)
 
 ---
@@ -57,7 +58,6 @@ DHT网络:
 
 全称分布式哈希表(`Distributed Hash Table`),一种分布式存储方法.在不需要服务器的情况下,每个客户端都负责一个`小范围的路由`,并存储一小部分数据,从而实现整个DHT网络的寻址和存储.从而实现整个DHT网络的寻址和存储,使用支持该技术的BT下载软件,`用户无需连上Tracker就可以下载`,因为软件会在DHT网络中寻找下载同一个文件的其他用户并与之通讯,开始下载任务.
 
-算法: https://zh.wikipedia.org/wiki/Kademlia 
 
 <a id="markdown-2-torrent实践" name="2-torrent实践"></a>
 # 2. torrent实践
@@ -197,5 +197,4 @@ KAD路由表将距离分成`160个K桶`(存放K个数据的桶),编号为i的路
 * 最优化阻塞: 始终畅通的连接,不论目前的下载情况,它每间隔30秒就会重新计算一次哪一个连接应该是最优化阻塞.30秒的周期完全够达到最大化上传和下载速度了
 * 反对歧视: 某个Peer可能被全部的peers都阻塞了,为了减轻这个问题,如果过了一段时间以后,`从某个peer那里一个片段也没有得到`,那么这个peer认为自己被对方怠慢了,于是`不再为对方提供上传`
 * 完成后的上传: 一旦peer完成下载任务了,就不再以它的下载速率决定为哪些peers提供上传服务....
-
 
