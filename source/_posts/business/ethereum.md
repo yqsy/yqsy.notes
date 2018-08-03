@@ -8,21 +8,21 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
-- [2. 缺陷](#2-缺陷)
-- [3. solidity](#3-solidity)
-- [4. 智能合约](#4-智能合约)
-- [5. 实践](#5-实践)
-- [6. 代币](#6-代币)
-- [7. 详细介绍](#7-详细介绍)
-    - [7.1. 场景](#71-场景)
-    - [7.2. 开源项目](#72-开源项目)
-    - [7.3. 架构](#73-架构)
-    - [7.4. 钱包](#74-钱包)
-    - [7.5. 存储](#75-存储)
-    - [7.6. 防止ASCI的算法](#76-防止asci的算法)
-    - [7.7. GAS 价格换算](#77-gas-价格换算)
-    - [7.8. 交易包含的信息](#78-交易包含的信息)
-    - [7.9. 公有链,私有链,联盟链](#79-公有链私有链联盟链)
+- [2. solidity](#2-solidity)
+- [3. 详细介绍](#3-详细介绍)
+    - [3.1. 场景](#31-场景)
+    - [3.2. 开源项目](#32-开源项目)
+    - [3.3. 架构](#33-架构)
+    - [3.4. 钱包](#34-钱包)
+    - [3.5. 存储](#35-存储)
+    - [3.6. 防止ASCI的算法](#36-防止asci的算法)
+    - [3.7. GAS 价格换算](#37-gas-价格换算)
+    - [3.8. 交易包含的信息](#38-交易包含的信息)
+    - [3.9. 公有链,私有链,联盟链](#39-公有链私有链联盟链)
+- [4. 实践联盟链搭建](#4-实践联盟链搭建)
+- [5. 实践智能合约](#5-实践智能合约)
+    - [truffle](#truffle)
+    - [remix](#remix)
 
 <!-- /TOC -->
 
@@ -39,7 +39,11 @@ categories: [business]
 * https://github.com/ethereum/dapp-bin (示例)
 * https://blog.csdn.net/huangshulang1234/article/details/79374085 (讲的蛮清楚)
 * https://ethfans.org/posts/a-gentle-introduction-to-ethereum (基础介绍)
+* https://ethereum.org/token#the-code (货币)
+* https://ethereum.org/crowdsale#the-code (去中心知识库)
+* https://www.jianshu.com/p/a5158fbfaeb9 (ERC20)
 
+看代码行数
 ```
 # 拉代码
 go get -u github.com/ethereum/go-ethereum
@@ -49,207 +53,87 @@ cloc ./ --exclude-dir=tests,vendor
 ```
 
 
-<a id="markdown-2-缺陷" name="2-缺陷"></a>
-# 2. 缺陷
 
-* http://baijiahao.baidu.com/s?id=1596196077071413605&wfr=spider&for=pc
-
-
----
-
-* 以太坊网络的效率低容易造成网络堵塞,容易受到DDOS的攻击致使主网瘫痪
-* 暂时采用POW,造成了大量的网络资源浪费
-* 真实世界的数据上链的难度较大,且数据上链的成本较高
-
-以太坊创始人v神也意识到了这些问题,已经提出了使用
-* 分片（Sharding)
-* 侧链(Plasma)
-* 雷电网络(Radien Network)
-
-
-
-
-<a id="markdown-3-solidity" name="3-solidity"></a>
-# 3. solidity
+<a id="markdown-2-solidity" name="2-solidity"></a>
+# 2. solidity
 
 * http://wiki.jikexueyuan.com/project/solidity-zh/introduction-smart-contracts.html (简单学习)
 * http://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html (原版教程)
 * http://wiki.jikexueyuan.com/project/solidity-zh/units-globally-available-variables.html (全局变量)
 
-```solidity
-contract Coin {
-//关键字“public”使变量能从合约外部访问。
-    address public minter;
-    mapping (address => uint) public balances;
 
-//事件让轻客户端能高效的对变化做出反应。
-    event Sent(address from, address to, uint amount);
+变量类型根据参数传递方式的不同可以分为两类: `值类型`和`引用类型`.  
+* 值类型在每次赋值或者作为`参数传递`时都会`创建一份拷贝`
+* 账户存储和内存
+  * 状态变量与部分类型的局部变量(`数组,结构体等复杂类型`)是默认保存在`账户存储`中的
+  * 函数的`参数和其他简单类型的局部变量`是保存在`内存`中的
 
-//这个构造函数的代码仅仅只在合约创建的时候被运行。
-    function Coin() {
-        minter = msg.sender;
-    }
-    function mint(address receiver, uint amount) {
-        if (msg.sender != minter) return;
-        balances[receiver] += amount;
-    }
-    function send(address receiver, uint amount) {
-        if (balances[msg.sender] < amount) return;
-        balances[msg.sender] -= amount;
-        balances[receiver] += amount;
-        Sent(msg.sender, receiver, amount);
-    }
-}
-```
+值类型:
+* 布尔类型 bool true,false
+* 整数类型, int8,int16,...,int256(int)
+* 枚举类型, enum ,默认从0开始,依次递增
+* 地址类型, address (20字节)
 
-```
-address public minter;
-```
+引用类型:  
+* 数组: 包括固定长度的`数组Ｔ[k]`，以及运行时动态改变长度的`动态数组T[]`
+* 结构体: 结构体可以作为映射或者数组中的元素
+* Map: 键值对存储结构
 
-* adderss: 声明了一个可公开访问的状态变量,160bits. 存储`合约的地址`或`其他人的公钥私钥`
-* public: `为其修饰的状态变量生成访问函数.`没有public的关键字无法被其他的合约访问
+其他:
+* delete 只是赋值运算
 
-```bash
-# public生成的代码
-function minter() returns (address) { return minter; }
-```
+内置单位,全局变量和函数:
+* 货币单位: wei,finney,szabo,ether
+* 时间单位
+* 区块和交易属性
+  * block.blockhash 获取特定区块的散列值
+  * block.conbase: 当前区块矿工的账号地址
+  * block.difficulty: 当前区块的挖矿难度
+  * block.gaslimit: 当前区块的Gas限制
+  * block.number: 当前区块编号
+  * block.timestamp: 以UNIX时间戳的形式表示当前区块的产生时间
+  * msg.data: 表示完整的调用数据
+  * msg.gas: 剩余的Gas
+  * `msg.sender`: 发送者地址
+  * msg.sig: 函数表示符
+  * msg.value: 消息转账的以太币数额,单位是wei
+  * now: 表示当前时间
+  * tx.gasprice: 表示当前交易的Gas价格
+  * tx.origin: 表示完整调用链的发起者
+* 异常处理
+  * assert: 用于处理内部的错误
+  * require: `处理输入`或者来自外部模块的错误
+  * revert: 中断程序执行并且回退状态改变
+* 数学和加密函数
+  * addmod: (x+y)%k ,加法支持任意精度
+  * mulmod: (x*y)%k , 乘法支持任意精度
+  * keccak256: 计算Ethereum-SHA-3 散列值
+  * sha3: keccak256别名
+  * sha256: 计算SHA-256散列值
+  * ripemd160: 计算RIPEMD-160
+  * ecrecover: 使用ECDSA算法对地址进行解密,返回解密后的地址
+* 与合约相关的变量和函数
+  * this: 指代当前合约,可以转换为地址类型
+  * selfdestruct: 销毁当前合约,并将全部的以太币余额转账到作为参数传入的地址
+  * suicide(address recipient): selfdestruct 函数的别名
+  
 
-```
-mapping (address => uint) public balances;
-```
-
-* mapping 哈希表
-* address => uint 将一些address映射到无符号整数
-
-```bash
-# public生成的代码
-function balances(address _account) returns (uint balance) {
-    return balances[_account];
-}
-```
-
-```
-event Sent(address from, address to, uint amount);
-```
-
-* event: 事件. 由send函数最后一行代码出发,`客户端,服务端都适用`.用很低的开销监听由这些区块链触发的事件.事件触发时,监听者会同时接收到`from,to,value`这些参数值.
-
-
-```
-function Coin() {
-    minter = msg.sender;
-}
-```
-
-* Coin(): 在合约创建的时候运行,之后就无法被调用.它会永久得存储合约创建者的地址.
-* msg: 一个神奇的`全局变量`,包含了一些可以被合约代码访问的属`于区块链的属性`.
-* msg.sender: 总是存放着`当前函数的外部调用者`的地址
-
-```
-function mint(address receiver, uint amount) {
-    if (msg.sender != minter) return;
-    balances[receiver] += amount;
-}
-function send(address receiver, uint amount) {
-    if (balances[msg.sender] < amount) return;
-    balances[msg.sender] -= amount;
-    balances[receiver] += amount;
-    Sent(msg.sender, receiver, amount);
-}
-
-```
-
-* 真正被用户或者其他合约调用. 用来`完成本合约`功能的函数是`mint和send`.
-* 如果合约创建者之外的其他人调用mint,什么都不会发生
-* send可以被任何人`(拥有一定数量的代币)`调用,发送一些币给其他人  
-* 注意: 通过合约发送一些带代币到某个地址,在区块链浏览器中查询该地址将什么也看不到.!!因为发送代币导致的余额变化只存储在该`代币合约`的数据存储中,通过事件我们可以很容易创建一个可以追踪新币交易和余额的区块链浏览器
+修饰(修改函数和变量的可见性):
+* external:  修饰函数,外部函数,`只能通过其他合约`发送交易的方式来调用
+* public: 用于修饰公开的函数/变量,表明该函数/变量既可以在`合约外部访问`,也可以在`合约内部访问`
+* internal: 内部函数/变量,只能在`当前合约`或者`继承自当前合约`的其他合约中访问
+* private: 私有函数和变量,`只有当前合约内部才可以访问`
 
 
----
+其他:
+* view: 告诉编译器这个函数进行的是只读操作
+* fallback: 当一个合约收到`无法匹配任何函数名的函数`调用或者仅仅用于转账的交易时,fallback函数将被自动执行
 
+<a id="markdown-3-详细介绍" name="3-详细介绍"></a>
+# 3. 详细介绍
 
-<a id="markdown-4-智能合约" name="4-智能合约"></a>
-# 4. 智能合约
-
-区块链是一个全局共享的,事务性的数据库.  = = 没仔细说清楚,是关系型数据库的ACID吗?
-
-区块链以一个相当规律的时间间隔加入到链上,对于以太坊,`这个间隔大致是17秒`
-
-你的交易可能被删除,也可能被回滚,但是你`等待`的时间`越久`,这种情况发生的`概率越小`.
-
-以太坊虚拟机`EVM`是以太坊中智能合约的运行环境,他不仅被沙箱封装起来,事实上也被`完全隔离`.运行在EVM内部的代码不能接触到网络,文件系统或者其他进程,甚至智能合约与其他智能合约只有有限的接触
-
-
-账户:
-* 外部账户: 被公钥-私钥控制,由公钥决定,
-* 合约账户: 被存储在账户中的代码控制, 创建合约时确定,
-
-`合约账户存储代码`,外部账户则没有,除了这两点之外,这两类账户对于EVM来说是一致的
-
-每个账户都有一个以太币余额
-
-
-交易:
-* 从一个账户发到另一个账户
-* 可以是二进制数据也可以是以太币
-
----
-* 如果目标账户包含代码,该代码就会执行
-* 如果目标账户是零账户,交易就会创建一个新的合约
-
-
-GAS:
-* 以太坊的每笔交易都会收取一定数量的GAS,GAS的目的是限制执行交易所需的工作量
-* 无论执行到什么位置,一旦gas被耗尽,将会触发一个out-of-gas异常,当前调用帧所有状态修改都将会被回滚
-
-存储:
-
-* 持久化内存区域,形式为key-value,key,value均为256比特,在合约里,不能遍历账户的存储
-* 主存,每次消息调用时,都有一块新的,被清除过的主存.按字节粒度寻址,读写粒度为32字节(256比特
-
-EVM不是基于寄存器,而是基于栈的虚拟机.因此所有的计算都在一个被成为栈的区域执行.栈`最多`有`1024个元素`,每个元素`256比特`,对栈的访问只限于其顶端.
-
-无法只访问栈上面的指定深度的那个元素,在那之前必须要把指定深度的所有元素从栈中移除才行.
-
-
-消息调用:??
-
-合约可以通过消息调用的方式来调用其他合约或者发送以太币到非合约账户上.
-
-
-代码调用和库: ??
-
-存在一种特殊类型的消息调用,被成为callcode,只是`加载自目标地址的代码将在发起调用的合约上下文运行`
-
-这使得Solidity可以实现"库 ",可复用的库代码可以应用在一个合约的存储上,`可以用来实现复杂的数据结构???`.
-
-
-<a id="markdown-5-实践" name="5-实践"></a>
-# 5. 实践
-
-* https://remix.ethereum.org
-* https://metamask.io/
-
-```
-sudo su - root
-
-export http_proxy=http://localhost:1080
-export https_proxy=http://localhost:1080
-
-npm install solc -g
-```
-<a id="markdown-6-代币" name="6-代币"></a>
-# 6. 代币
-
-* https://ethereum.org/token#the-code (货币)
-* https://ethereum.org/crowdsale#the-code (去中心知识库)
-* https://www.jianshu.com/p/a5158fbfaeb9 (ERC20)
-
-<a id="markdown-7-详细介绍" name="7-详细介绍"></a>
-# 7. 详细介绍
-
-<a id="markdown-71-场景" name="71-场景"></a>
-## 7.1. 场景
+<a id="markdown-31-场景" name="31-场景"></a>
+## 3.1. 场景
 
 * Golem 创造一个全球空闲计算资源的产消市场
 * CryptoKitties 基于以太坊区块链的养猫娱乐DApp
@@ -270,8 +154,8 @@ npm install solc -g
 链上交易,兑换过程可被立即确认,过程结束后也可追溯,并且用户无需更改以太坊底层协议或其他智能合约协议
 
 
-<a id="markdown-72-开源项目" name="72-开源项目"></a>
-## 7.2. 开源项目
+<a id="markdown-32-开源项目" name="32-开源项目"></a>
+## 3.2. 开源项目
 开源项目:
 * Go-ethereum: `Geth` 目前使用最为广泛的以太坊客户端,又称Geth
 * CPP-ethereum: C++语言实现实现的版本. Windows,Linux和OS X等各个版本的操作系统以及多种硬件平台
@@ -285,12 +169,16 @@ npm install solc -g
 
 以太坊开发工具: 
 * `Web3.js`: 兼容以太坊核心功能的JavaScript库
-* Remix: 网页终端整合了Solidity代码的编写,调试和运行等功能
-* Truffle: 针对以太坊Dapp的开发框架, 对Solidity智能合约的开发,测试,部署等进行全流程的管理,帮助开发者更专业地开发以太坊DAPP
 * ENS-register: Ethereum name service 为以太坊账户提供域名注册服务
+* `Solc`: `命令行工具` (编译Solidity成字节码,提供一些智能合约相关的信息)
+* `Remix`: `网页终端`整合了`Solidity代码的编写`,调试和运行等功能
+* `Truffle`: 针对以太坊Dapp的开发框架, 对Solidity智能合约的开发,测试,部署等进行全流程的管理,帮助开发者更专业地开发以太坊DAPP
+* `testrpc`: 模拟以太坊
+* `Ganache`: 同上.良好的交互界面,能做到对Transaction的立即执行.
+* `TRUFFLE BOXES`: 构建更为复杂的,功能也更为强大的DApp
 
-<a id="markdown-73-架构" name="73-架构"></a>
-## 7.3. 架构
+<a id="markdown-33-架构" name="33-架构"></a>
+## 3.3. 架构
 
 ![](http://ouxarji35.bkt.clouddn.com/c98ff12076232f60ddccda38376baf1ffd4fe309.jpeg)
 
@@ -312,15 +200,15 @@ npm install solc -g
 * 以太坊官方钱包,`私钥和公钥`将会以`加密`的方式保存一份JSON文件,存储在keystore目录下,用户需要同事`备份Keystore`和`对应的Password`
 * BIP 39 ,随机生成12~24个比较容易记住的单词,该种子通过BIP-0032提案的方式生成确定性钱包??
 
-<a id="markdown-74-钱包" name="74-钱包"></a>
-## 7.4. 钱包
+<a id="markdown-34-钱包" name="34-钱包"></a>
+## 3.4. 钱包
 
 钱包:  
 
 目前有多种以太坊钱包, 如Mist以太坊钱包,Parity钱包,Etherwall钱包,Brain钱包等
 
-<a id="markdown-75-存储" name="75-存储"></a>
-## 7.5. 存储  
+<a id="markdown-35-存储" name="35-存储"></a>
+## 3.5. 存储  
 
 比特币中保存了一棵Merkle树, 以太坊对三种对象设计了3棵Merkle Patrcia树,融合了Merkle树和Trie树的优点
 * 状态树
@@ -344,8 +232,8 @@ npm install solc -g
 * 假如在某个合约中进行一笔交易,`交易的输出`是什么 -> `状态树`
 
 
-<a id="markdown-76-防止asci的算法" name="76-防止asci的算法"></a>
-## 7.6. 防止ASCI的算法
+<a id="markdown-36-防止asci的算法" name="36-防止asci的算法"></a>
+## 3.6. 防止ASCI的算法
 共识算法:
 
 以太坊有一个专门设计的PoW算法,Ethash算法 `(抵制ASIC)`
@@ -355,8 +243,8 @@ npm install solc -g
 * https://zhuanlan.zhihu.com/p/28830859
 
 
-<a id="markdown-77-gas-价格换算" name="77-gas-价格换算"></a>
-## 7.7. GAS 价格换算
+<a id="markdown-37-gas-价格换算" name="37-gas-价格换算"></a>
+## 3.7. GAS 价格换算
 
 大概就是使用种子产生一个16MB的伪随机缓存,基于缓存再生成一个1GB的数据集,称为DAG,挖矿可以概括为矿工从DAG中`随机`选择元素`并对其进行散列的过程`,DAG也可以理解为一个完整的搜索空间.
 
@@ -384,8 +272,8 @@ Gas Limit:
 
 换句话说 `GasPrice * GasLimit` 表示用户愿意为一笔交易支付的`最高金额`, 因为如果没有Gas Limit限制,那么某些恶意的用户可能会发送一个`数十亿步骤的交易`并且没有人能够处理它,所以会导致拒绝服务攻击.
 
-<a id="markdown-78-交易包含的信息" name="78-交易包含的信息"></a>
-## 7.8. 交易包含的信息
+<a id="markdown-38-交易包含的信息" name="38-交易包含的信息"></a>
+## 3.8. 交易包含的信息
 
 一条交易内容包含以下的信息:
 
@@ -424,8 +312,8 @@ Gas Limit:
 * 在域名持有期内,用户可以将域名绑定到自己的以太坊地址,转移域名的使用权,添加设置子域名等,甚至还可以转让域名的所有权
 
 
-<a id="markdown-79-公有链私有链联盟链" name="79-公有链私有链联盟链"></a>
-## 7.9. 公有链,私有链,联盟链
+<a id="markdown-39-公有链私有链联盟链" name="39-公有链私有链联盟链"></a>
+## 3.9. 公有链,私有链,联盟链
 
 以太坊公有链,联盟链,私有链特点对比
 
@@ -439,3 +327,198 @@ Gas Limit:
 区块链实现|以太坊协议(比特币核心)|企业级以太坊|企业级以太坊
 商业价值|高可用性,低成本的分布式账本|高可用性,低成本的分布式账本,无需中间保证金,透明结算|无需中间保证金,透明结算,直接结算
 
+
+公有链: 是世界上任何人都可以访问读取的,任何人都可以发送交易并且如果交易有效的话可以将之包括到区块中.
+
+加密数字经济采取工作量证明机制或股权证明机制等方式,将`经济奖励`和`密码学`结合起来. 公有链是真正意义上的完全去中心化的区块链,主要适用于`虚拟货币`,`面向大众的电子商务场景`. 公有链分为主网和测试网络.
+
+* 主网:   所有人都可以`随时地接入网络`,所有加入网络的全节点都可以加入到共识机制中,
+* 测试网络: 专门给用户用来开发,测试和调试用的区块链网络,
+
+
+联盟链: (Consortium Blockchain)
+
+共识过程收到一些预选节点控制的区块链,如`企业,银行`等.  节点`组成`一个`联盟`, 网络中的区块链和节点状态的改写更新由联盟中的各节点达成共识所决定. 而对于网络中其他`非联盟节点`,最多只能够`读取到联盟区快链`中的`全部或部分数据`.
+
+包括信息,金融,能源等多个领域的跨国企业,初创公司和研究机构都投入到`企业级联盟链`的`研发`中. 超级账本(Hyperledger)就属于联盟链架构
+
+联盟链是一种需要参与许可的区块链,是在一群值得新人的参与者中共享的区块链,基于以太坊协议开发的联盟区块链-`Quorum`
+
+在Go语言版本以太坊架构的基础上进行改进,使私有交易的数据只对指定的交易方可见.基于`Raft的一致性协议`和`Istanbul BFT协议`(类似PBFT协议) 
+
+
+使用这两个一致性协议就避免PoW或PoS的弊端.. 
+
+
+不过两种协议的使用场景还是有所区别的,在需要支持拜占庭容错的环境中,应该使用`Istanbul BFT`协议而非基于Raft的一致性协议
+
+私有交易:  
+
+网络中对所有节点都能在以太坊原有协议的基础上对`共有状态`达成`共识`,但`私有状态`的`数据库`就各不相同
+
+但是问题就是私有状态的更新无法被其他无关节点认可,所以Quorum在应用层上设计了一套解决方案,其在网络中引入一个`监督节点`. 使得监督节点备份了所有私有交易以及所有节点的私有状态
+
+
+私有链: 
+
+完全私有的区块链则是更接近于中心化的数据库,私有链的应用场景主要是公司内部的数据库管理,账目审计等. 私有链的主要价值是提供`区块链安全高效`,`公开透明`,`可追溯`,`不可篡改`的特性,
+
+<a id="markdown-4-实践联盟链搭建" name="4-实践联盟链搭建"></a>
+# 4. 实践联盟链搭建
+
+* https://github.com/ethereum/go-ethereum/wiki/Private-network (创建私有网络)
+
+```bash
+go get github.com/ethereum/go-ethereum
+cd ~/go/src/github.com/ethereum/go-ethereum
+make geth
+mv ./build/bin/geth ~/go/bin/
+
+mkdir -p /home/yq/resource/test/testeth
+cd /home/yq/resource/test/testeth
+cat > ./genesis.json << EOF
+{
+    "config": {
+        "chainId": 15,
+        "homesteadBlock": 0,
+        "eip155Block": 0,
+        "eip158Block": 0
+    },
+    "coinbase" : "0x0000000000000000000000000000000000000000",
+    "difficulty" : "0x40000",
+    "extraData" : "",
+    "gasLimit" : "0xffffffff",
+    "nonce" : "0x0000000000000042",
+    "mixhash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "timestamp" : "0x00",
+    "alloc": { }
+}
+EOF
+
+# 生成创世纪节点,并设置data目录
+geth --datadir ./data/00 init genesis.json
+
+# 开启
+geth --datadir ./data/00 --networkid 15 console
+
+# 查看账户
+eth.accounts
+
+# 创建
+personal.newAccount("123456")
+"0xa69f1eafbba46f23892d9e142db356de6a7c9d9b"
+
+# 开始挖矿
+miner.start(1)
+
+# 停止挖矿
+miner.stop()
+
+# 查看钱包
+eth.getBalance(eth.accounts[0]) 
+```
+
+在私有网络中建立多个node组成的集群,并互相发现,产生交易
+
+* 每个实例都有独立的数据目录`(--datadir)`
+* 每个示例运行都有独立的端口 `(--port和--rpcport)`
+* 在集群的情况下,示例之间都必须要知道彼此
+* 唯一的ipc通信端点,或者`禁用ipc`
+
+
+第二个节点与第一个节点连接
+```bash
+# 第一个节点
+geth --datadir ./data/00 --networkid 314590 --ipcdisable --port 61910 --rpcport 8200 console
+
+# 获取enode url
+admin.nodeInfo.enode
+
+"enode://9802f2078df03e036319d32006a9009a57c3d90328e641f247bcb29a8452a621532e734d2e541cfc236338bc152e816617bf364878e6c5888fbc8bdc81fd3aed@[::]:61910"
+
+# 第二个节点
+geth --datadir ./data/01 init ./genesis.json
+geth --datadir ./data/01 --networkid 314590 --ipcdisable --port 61911 --rpcport 8101 --bootnodes "enode://9802f2078df03e036319d32006a9009a57c3d90328e641f247bcb29a8452a621532e734d2e541cfc236338bc152e816617bf364878e6c5888fbc8bdc81fd3aed@127.0.0.1:61910" console
+
+# 打印初始节点
+admin.nodeInfo.enode
+
+# 也可以不加那个参数,通过以下把节点加进来
+admin.addPeer
+
+# 第二个节点输入
+admin.nodeInfo
+
+# 第一个节点输入
+net.peerCount
+admin.peers
+
+```
+
+转账测试
+```bash
+# 第二个节点创建账号
+personal.newAccount("123456")
+"0xc4c5255d8bad7fa64debcd9c9ea9a7a18084f7d9"
+
+# 第一个节点
+personal.unlockAccount(eth.accounts[0], "123456")
+
+# 转账
+eth.sendTransaction({from: "0xa69f1eafbba46f23892d9e142db356de6a7c9d9b", to: "0xc4c5255d8bad7fa64debcd9c9ea9a7a18084f7d9", value: web3.toWei(1, "ether")})
+
+# 查看派发的
+eth.pendingTransactions
+
+# 第二个节点查看资金
+eth.getBalance(eth.accounts[0]) 
+
+```
+
+<a id="markdown-5-实践智能合约" name="5-实践智能合约"></a>
+# 5. 实践智能合约
+
+<a id="markdown-truffle" name="truffle"></a>
+## truffle
+
+```bash
+# 编译器
+sudo npm install -g solc
+
+sudo npm install -g truffle
+sudo npm install -g ethereumjs-testrpc
+
+mkdir -p ~/resource/test/testtruffle
+cd ~/resource/test/testtruffle
+
+# 生成合约文件,测试文件和部署文件
+
+
+```
+
+* contracts/: 开发者`编写`的智能合约
+* migrations/: 用来存放`部署脚本`
+* tests/: 用来存放`测试`文件
+* truffle.js: Truffle `默认的配置文件`
+
+
+
+<a id="markdown-remix" name="remix"></a>
+## remix
+
+* https://github.com/ethereum/remix
+* https://github.com/ethereum/remix-ide
+* https://www.npmjs.com/package/remix-ide (安装方法)
+* https://remix.ethereum.org/
+
+```bash
+sudo cnpm install remix-ide -g
+
+cd /home/yq/resource/test
+remix-ide
+
+```
+
+智能合约属性:  
+参考: https://github.com/ethereum/wiki/wiki/JSON-RPC#the-default-block-parameter

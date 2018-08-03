@@ -32,6 +32,7 @@ categories: [business]
 * http://ipfser.org/author/wendury/ (汉化文章)
 * http://ipfser.org/ (国内官网)
 * https://github.com/filecoin-project (file-coin源码)
+* https://explore.ipld.io (这个超帅的!!!)
 
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
