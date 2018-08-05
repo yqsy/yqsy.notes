@@ -21,27 +21,25 @@ categories: [business]
     - [3.9. 公有链,私有链,联盟链](#39-公有链私有链联盟链)
 - [4. 实践联盟链搭建](#4-实践联盟链搭建)
 - [5. 实践智能合约](#5-实践智能合约)
-    - [truffle](#truffle)
-    - [remix](#remix)
+    - [5.1. truffle](#51-truffle)
+    - [5.2. remix](#52-remix)
+- [6. 智能合约注意点](#6-智能合约注意点)
+- [7. 优化知识](#7-优化知识)
+- [8. 适用场景](#8-适用场景)
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://github.com/ZtesoftCS/go-ethereum-code-analysis (源码分析!!!)
 * https://www.ethereum.org/greeter (开发入门)
-* https://ethereum.org/cli (安装cli)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
 * https://solidity.readthedocs.io/en/latest/ (所用语言,类似js)
-* https://www.cnblogs.com/tinyxiong/p/7878468.html (什么是智能合约?)
 * https://github.com/ethereum/wiki/wiki/White-Paper (以太坊白皮书)
 * https://github.com/ethereum/dapp-bin (示例)
-* https://blog.csdn.net/huangshulang1234/article/details/79374085 (讲的蛮清楚)
-* https://ethfans.org/posts/a-gentle-introduction-to-ethereum (基础介绍)
 * https://ethereum.org/token#the-code (货币)
 * https://ethereum.org/crowdsale#the-code (去中心知识库)
-* https://www.jianshu.com/p/a5158fbfaeb9 (ERC20)
+
 
 看代码行数
 ```
@@ -54,13 +52,17 @@ cloc ./ --exclude-dir=tests,vendor
 
 
 
-<a id="markdown-2-solidity" name="2-solidity"></a>
 # 2. solidity
 
 * http://wiki.jikexueyuan.com/project/solidity-zh/introduction-smart-contracts.html (简单学习)
 * http://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html (原版教程)
 * http://wiki.jikexueyuan.com/project/solidity-zh/units-globally-available-variables.html (全局变量)
 
+
+
+存储:
+* storage:  指针?
+* memory:  值?
 
 变量类型根据参数传递方式的不同可以分为两类: `值类型`和`引用类型`.  
 * 值类型在每次赋值或者作为`参数传递`时都会`创建一份拷贝`
@@ -78,6 +80,7 @@ cloc ./ --exclude-dir=tests,vendor
 * 数组: 包括固定长度的`数组Ｔ[k]`，以及运行时动态改变长度的`动态数组T[]`
 * 结构体: 结构体可以作为映射或者数组中的元素
 * Map: 键值对存储结构
+
 
 其他:
 * delete 只是赋值运算
@@ -129,10 +132,8 @@ cloc ./ --exclude-dir=tests,vendor
 * view: 告诉编译器这个函数进行的是只读操作
 * fallback: 当一个合约收到`无法匹配任何函数名的函数`调用或者仅仅用于转账的交易时,fallback函数将被自动执行
 
-<a id="markdown-3-详细介绍" name="3-详细介绍"></a>
 # 3. 详细介绍
 
-<a id="markdown-31-场景" name="31-场景"></a>
 ## 3.1. 场景
 
 * Golem 创造一个全球空闲计算资源的产消市场
@@ -154,7 +155,6 @@ cloc ./ --exclude-dir=tests,vendor
 链上交易,兑换过程可被立即确认,过程结束后也可追溯,并且用户无需更改以太坊底层协议或其他智能合约协议
 
 
-<a id="markdown-32-开源项目" name="32-开源项目"></a>
 ## 3.2. 开源项目
 开源项目:
 * Go-ethereum: `Geth` 目前使用最为广泛的以太坊客户端,又称Geth
@@ -166,6 +166,7 @@ cloc ./ --exclude-dir=tests,vendor
 浏览器:
 * Mist: 以太坊官方开发的工具,浏览各类 DApp的项目
 * MetaMask: 浏览器插件, 只需通过MetaMask便可在浏览器上连接以太坊网络,和运行以太坊DApp
+* `Etherscan`: 在以太坊以及去中心化智能合约上的区块浏览器
 
 以太坊开发工具: 
 * `Web3.js`: 兼容以太坊核心功能的JavaScript库
@@ -177,7 +178,13 @@ cloc ./ --exclude-dir=tests,vendor
 * `Ganache`: 同上.良好的交互界面,能做到对Transaction的立即执行.
 * `TRUFFLE BOXES`: 构建更为复杂的,功能也更为强大的DApp
 
-<a id="markdown-33-架构" name="33-架构"></a>
+安全:
+* Oyente: python,判断代码中有没有常见的漏洞
+* solidity-coverage: Node.js编写的Solidity代码覆盖率测试工具,需要结合测试网络使用
+* Solgraph: 将一个智能合约作为输入,输出一个DOT图文件
+
+
+
 ## 3.3. 架构
 
 ![](http://ouxarji35.bkt.clouddn.com/c98ff12076232f60ddccda38376baf1ffd4fe309.jpeg)
@@ -200,14 +207,12 @@ cloc ./ --exclude-dir=tests,vendor
 * 以太坊官方钱包,`私钥和公钥`将会以`加密`的方式保存一份JSON文件,存储在keystore目录下,用户需要同事`备份Keystore`和`对应的Password`
 * BIP 39 ,随机生成12~24个比较容易记住的单词,该种子通过BIP-0032提案的方式生成确定性钱包??
 
-<a id="markdown-34-钱包" name="34-钱包"></a>
 ## 3.4. 钱包
 
 钱包:  
 
 目前有多种以太坊钱包, 如Mist以太坊钱包,Parity钱包,Etherwall钱包,Brain钱包等
 
-<a id="markdown-35-存储" name="35-存储"></a>
 ## 3.5. 存储  
 
 比特币中保存了一棵Merkle树, 以太坊对三种对象设计了3棵Merkle Patrcia树,融合了Merkle树和Trie树的优点
@@ -232,7 +237,6 @@ cloc ./ --exclude-dir=tests,vendor
 * 假如在某个合约中进行一笔交易,`交易的输出`是什么 -> `状态树`
 
 
-<a id="markdown-36-防止asci的算法" name="36-防止asci的算法"></a>
 ## 3.6. 防止ASCI的算法
 共识算法:
 
@@ -243,7 +247,6 @@ cloc ./ --exclude-dir=tests,vendor
 * https://zhuanlan.zhihu.com/p/28830859
 
 
-<a id="markdown-37-gas-价格换算" name="37-gas-价格换算"></a>
 ## 3.7. GAS 价格换算
 
 大概就是使用种子产生一个16MB的伪随机缓存,基于缓存再生成一个1GB的数据集,称为DAG,挖矿可以概括为矿工从DAG中`随机`选择元素`并对其进行散列的过程`,DAG也可以理解为一个完整的搜索空间.
@@ -272,7 +275,6 @@ Gas Limit:
 
 换句话说 `GasPrice * GasLimit` 表示用户愿意为一笔交易支付的`最高金额`, 因为如果没有Gas Limit限制,那么某些恶意的用户可能会发送一个`数十亿步骤的交易`并且没有人能够处理它,所以会导致拒绝服务攻击.
 
-<a id="markdown-38-交易包含的信息" name="38-交易包含的信息"></a>
 ## 3.8. 交易包含的信息
 
 一条交易内容包含以下的信息:
@@ -312,7 +314,6 @@ Gas Limit:
 * 在域名持有期内,用户可以将域名绑定到自己的以太坊地址,转移域名的使用权,添加设置子域名等,甚至还可以转让域名的所有权
 
 
-<a id="markdown-39-公有链私有链联盟链" name="39-公有链私有链联盟链"></a>
 ## 3.9. 公有链,私有链,联盟链
 
 以太坊公有链,联盟链,私有链特点对比
@@ -363,7 +364,6 @@ Gas Limit:
 
 完全私有的区块链则是更接近于中心化的数据库,私有链的应用场景主要是公司内部的数据库管理,账目审计等. 私有链的主要价值是提供`区块链安全高效`,`公开透明`,`可追溯`,`不可篡改`的特性,
 
-<a id="markdown-4-实践联盟链搭建" name="4-实践联盟链搭建"></a>
 # 4. 实践联盟链搭建
 
 * https://github.com/ethereum/go-ethereum/wiki/Private-network (创建私有网络)
@@ -476,11 +476,9 @@ eth.getBalance(eth.accounts[0])
 
 ```
 
-<a id="markdown-5-实践智能合约" name="5-实践智能合约"></a>
 # 5. 实践智能合约
 
-<a id="markdown-truffle" name="truffle"></a>
-## truffle
+## 5.1. truffle
 
 ```bash
 # 编译器
@@ -493,7 +491,19 @@ mkdir -p ~/resource/test/testtruffle
 cd ~/resource/test/testtruffle
 
 # 生成合约文件,测试文件和部署文件
+truffle create 文件类型 文件名称
 
+# 获取指定的Truffle Box
+truffle unbox box名称
+
+# 将contracts目录下的sol文件进行编译
+truffle compile
+
+# 合约部署
+truffle migrate
+
+# 测试
+truffle test
 
 ```
 
@@ -504,8 +514,7 @@ cd ~/resource/test/testtruffle
 
 
 
-<a id="markdown-remix" name="remix"></a>
-## remix
+## 5.2. remix
 
 * https://github.com/ethereum/remix
 * https://github.com/ethereum/remix-ide
@@ -522,3 +531,39 @@ remix-ide
 
 智能合约属性:  
 参考: https://github.com/ethereum/wiki/wiki/JSON-RPC#the-default-block-parameter
+
+# 6. 智能合约注意点
+
+* 区块链上智能合约的`所有信息`都是`公开可见`的,即使被private标记的私有变量
+* 使用随机数是一件十分微妙的事情,基于安全性考虑,`尽可能避免使用随机数`
+* 注意智能合约循环调用问题: 把 `调用合约加钱+股权清零`的先后顺序改成`股权清零+调用合约加钱`
+* 注意使用msg.sender进行权限控制,而非tx.origin ??
+* 注意uint8,uint16等长度小的整型的溢出
+* var 会被编译器默认为uint8
+* data会被补齐为32字节
+
+开发建议
+
+* 严格按照 Checks-Effects-Interactions: `检查-生效-交互`
+* Fail-Safe 异常-安全,尽可能保障合约中数据的安全
+* 限制合约中数字资产的数量,= =  为了安全起见,`最好不要在智能合约中存储大量的数字资产`
+
+# 7. 优化知识
+
+(侧链SideChains): 它可以让比特币安全的从比特币主链转移到其他区块链,又可以从其他区块链安全地返回比特币主链. `外部嫁接到主链`
+
+分片技术 Sharing: 让以太坊从网络上的`每个节点`都要`验证`每一笔交易的模式,`转型到只需要小部分的节点来验证每一笔交易的模式`.  `将主链进行内部分割`
+
+雷电网络 Raiden Network: 设计源于比特币的`闪电网络(Lightning Network)`. 链下支付网络,不同于`分片`等致力于解决以太坊中`所有交易`的效率,雷电网络解决的是用户账户之间的以太币的转账问题. 不能追溯历史!
+
+下一代以太坊共识 Casper:  Pow消耗大量算力和电力,已经被广为诟病.因此以太坊基金会一直在积极地推进使用`股权证明PoS`替代PoW最为共识协议. 以太坊将它的Pos共识协议`称为Casper`.
+
+* Casper FFG: PoW/Pos混合的共识机制.
+* Casper CBC: ...
+
+# 8. 适用场景
+
+以太坊的主要目标是公有链,数字资产的安全是第一位的,`宁可损失性能,也要保证用户账本的安全`,对性能的任何优化都必须在系统安全的前提下进行
+
+...
+

@@ -19,7 +19,6 @@ categories: [business]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 
@@ -102,7 +101,6 @@ EOS引以为傲的是支持百万级别TPS,其中除了DPFS共识机制的功劳
 P2P技术还是比较完善的,只需要把这些`完善的技术以一种市场化的方法组合起来`,完善里面的经济激励就足够了.
 
 
-<a id="markdown-2-再介绍" name="2-再介绍"></a>
 # 2. 再介绍
 
 
@@ -184,7 +182,6 @@ Filecoin:
 
 ![](http://ouxarji35.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180725094636.png)
 
-<a id="markdown-3-安装ipfs" name="3-安装ipfs"></a>
 # 3. 安装ipfs
 
 ```bash
@@ -208,7 +205,6 @@ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
 
 ```
 
-<a id="markdown-4-存储原理" name="4-存储原理"></a>
 # 4. 存储原理
 
 * http://ipfser.org/2018/01/25/r20/ (ipfs版本管理 DAG)
@@ -272,7 +268,6 @@ Merkle DAG:
 
 
 
-<a id="markdown-5-实践" name="5-实践"></a>
 # 5. 实践
 
 基础实践
@@ -422,14 +417,12 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 ```
 
 
-<a id="markdown-6-ipld" name="6-ipld"></a>
 # 6. ipld
 
 
 * https://ipld.io/
 * https://github.com/ipld/ipld 
 
-<a id="markdown-7-filecoin" name="7-filecoin"></a>
 # 7. filecoin
 
 * https://filecoin.io/
@@ -490,14 +483,12 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 * 空间证明(Proof-of-Space,PoSpace): `PoSpace是PoW的一种`,不同的是PoW是用的是`计算的资源`,而PoSpace使用的是`存储的资源`
 
 
-<a id="markdown-8-ipfs私人网络" name="8-ipfs私人网络"></a>
 # 8. ipfs私人网络
 
 * https://blog.csdn.net/oscube/article/details/80598790
 * https://github.com/ipfs/go-ipfs/blob/master/docs/experimental-features.md#private-networks
 
 
-<a id="markdown-9-常用指令" name="9-常用指令"></a>
 # 9. 常用指令
 
 ```bash
