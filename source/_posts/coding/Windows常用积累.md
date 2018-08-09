@@ -140,6 +140,9 @@ npm install cnpm -g --registry=https://registry.npm.taobao.org
 * https://code.visualstudio.com/docs/languages/cpp (c++ auto complete)
 * "editor.formatOnSave": true,
 
+数学公式:
+* https://marketplace.visualstudio.com/items?itemName=goessner.mdmath
+
 <a id="markdown-5-putty配置" name="5-putty配置"></a>
 # 5. putty配置
 0.70版本
