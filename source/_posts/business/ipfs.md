@@ -33,6 +33,13 @@ categories: [business]
 * https://github.com/filecoin-project (file-coin源码)
 * https://explore.ipld.io (这个超帅的!!!)
 
+---
+
+论文:
+* https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf
+* https://filecoin.io/filecoin.pdf
+
+
 IPFS提供了一个p2p的网络传输层用于终端之间基于文件名称发现和共享文件,但是IPFS不提供和保证文件的存储,托管和带宽.
 
 IPFS团队为了解决这个文件,发布了`FileCoin区块链`,使用区块链的支付系统来`激励`拥有剩余存储空间的`人帮助提供稳定可靠文件的存储,托管和带宽`.

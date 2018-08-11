@@ -10,12 +10,14 @@ categories: [business]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://www.cnblogs.com/yuanfangyuan/p/9126365.html (eos + ipfs)
 * https://bitshuo.com/topic/5aa7fbfe7f5b19605c68e9b0 (eos架构分析)
 
+--- 
+论文:
+* https://eos.io/documents/EOS_An_Introduction.pdf
 
 EOS是一个DAPP平台,或者叫智能合约平台,可以认为它是一个跟以太坊功能类似的平台.可以在上面运行一个去中心化的区块链操作系统,以太坊上面运行的是`Solidity`,Eos用的是`c++`
 

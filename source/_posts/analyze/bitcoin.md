@@ -20,6 +20,9 @@ categories: [项目分析]
 * https://github.com/btcsuite/btcd (go实现)
 * https://github.com/bitcoin/bitcoin (c++实现)
 
+---
+* https://bitcoin.org/bitcoin.pdf (比特币论文)
+* https://wenku.baidu.com/view/c62c067cb307e87101f69642.html (翻译)
 
 ```bash
 # 搜入口

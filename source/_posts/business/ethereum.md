@@ -40,6 +40,9 @@ categories: [business]
 * https://ethereum.org/token#the-code (货币)
 * https://ethereum.org/crowdsale#the-code (去中心知识库)
 
+---
+* http://blockchainlab.com/pdf/Ethereum_white_paper-a_next_generation_smart_contract_and_decentralized_application_platform-vitalik-buterin.pdf (论文)
+
 
 看代码行数
 ```
