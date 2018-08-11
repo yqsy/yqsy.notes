@@ -13,12 +13,13 @@ categories: [项目分析]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* https://github.com/btcsuite/btcd (go)
-* https://github.com/bitcoin/bitcoin
-* https://blog.csdn.net/pure_lady/article/details/77623301 (别人的解析,看看能不能学到什么)
+* https://github.com/Jeiwan/blockchain_go (简易go实现区块链)
+* https://github.com/bitpay/copay (轻量实现)
+* https://github.com/btcsuite/btcd (go实现)
+* https://github.com/bitcoin/bitcoin (c++实现)
+
 
 ```bash
 # 搜入口
@@ -211,7 +212,7 @@ tree  -P "*.cpp|*.h"
 ├── memusage.h
 ├── merkleblock.cpp
 ├── merkleblock.h    #  验证某笔交易的合法性
-├── miner.cpp
+├── miner.cpp        # 铸币
 ├── miner.h
 ├── netaddress.cpp
 ├── netaddress.h
@@ -260,7 +261,7 @@ tree  -P "*.cpp|*.h"
 │   ├── blockchain.h
 │   ├── client.cpp
 │   ├── client.h
-│   ├── mining.cpp
+│   ├── mining.cpp      # 挖矿,生成区块
 │   ├── mining.h
 │   ├── misc.cpp
 │   ├── net.cpp
@@ -387,13 +388,45 @@ tree  -P "*.cpp|*.h"
 
 ```
 
-<a id="markdown-2-blocktransaction" name="2-blocktransaction"></a>
 # 2. block/transaction
+
+```c++
+// 区块头,80字节
+class CBlockHeader
+{
+    // 版本号
+    int32_t nVersion;
+    
+    // 上一个区块的hash值
+    uint256 hashPrevBlock;
+
+    // merkle tree 的根值
+    uint256 hashMerkleRoot;
+    
+    // 当前时间戳
+    uint32_t nTime;
+
+    // 当前挖矿的难度,越小,难度越大
+    uint32_t nBits;
+
+    // 随机数
+    uint32_t nNonce;
+}
+
+
+class CBlock : public CBlockHeader
+{
+    // 交易列表
+    std::vector<CTransactionRef> vtx;
+
+    // 不知道
+    mutable bool fChecked;
+}
+```
 
 ![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
 
 
-<a id="markdown-3-merkle-tree" name="3-merkle-tree"></a>
 # 3. merkle tree
 
 ![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
@@ -429,7 +462,23 @@ tree  -P "*.cpp|*.h"
 
 >>搜索　MSG_MERKLEBLOCK　
 
-<a id="markdown-4-pow" name="4-pow"></a>
 # 4. pow
+
+`generateBlocks 函数` 挖矿
+
+
+```c++
+// 不断变更nNonce来做hash
+// 如果小于当前难度值,算完成
+while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
+    ++pblock->nNonce;
+    --nMaxTries;
+}
+        
+```
+
+`CreateNewBlock 函数` 铸币,第一笔交易为奖励矿工获得奖励和手续费的特殊交易
+
+`CalculateNextWorkRequired 函数` 重新计算难度
 
 
