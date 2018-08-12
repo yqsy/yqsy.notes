@@ -31,7 +31,6 @@ categories: [business]
 
 # 1. 说明
 
-* https://github.com/ZtesoftCS/go-ethereum-code-analysis (源码分析!!!)
 * https://www.ethereum.org/greeter (开发入门)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
 * https://solidity.readthedocs.io/en/latest/ (所用语言,类似js)
@@ -42,16 +41,6 @@ categories: [business]
 
 ---
 * http://blockchainlab.com/pdf/Ethereum_white_paper-a_next_generation_smart_contract_and_decentralized_application_platform-vitalik-buterin.pdf (论文)
-
-
-看代码行数
-```
-# 拉代码
-go get -u github.com/ethereum/go-ethereum
-
-cd ~/go/src/github.com/ethereum/go-ethereum
-cloc ./ --exclude-dir=tests,vendor
-```
 
 
 

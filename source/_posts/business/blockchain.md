@@ -34,9 +34,9 @@ categories: [business]
 
 <!-- /TOC -->
 
-<a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 
+* https://github.com/Jeiwan/blockchain_go (简易go实现区块链)
 * https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
 * https://legacy.gitbook.com/book/yeasy/blockchain_guide (区块链原理设计与应用)
@@ -45,7 +45,6 @@ categories: [business]
 * https://mp.weixin.qq.com/s/VM2Orz4LuN9sBzoSbQSl2w (区块链在银行的作用)
 * https://learnblockchain.cn/2018/01/11/guide/#more (区块链技术学习指引,稍微看下把)
 
-<a id="markdown-2-梳理" name="2-梳理"></a>
 # 2. 梳理
 
 本质是什么?
@@ -104,7 +103,6 @@ categories: [business]
 * 在审计方面,公司不需要招聘专门审计人员来公司内部审核账本,`外部机构`通过跟踪这些区块链可以实时监控公司账本
 * 物联网,区块链技术在这些设备之间建立了低成本的互相直接沟通桥梁
 
-<a id="markdown-3-比特币私钥公钥钱包维度梳理" name="3-比特币私钥公钥钱包维度梳理"></a>
 # 3. 比特币私钥,公钥,钱包维度梳理
 
 * https://blog.csdn.net/jeason29/article/details/51576659 (有图,还可以)
@@ -146,7 +144,6 @@ categories: [business]
 
 ![](http://ouxarji35.bkt.clouddn.com/1-14112FU342.png)
 
-<a id="markdown-4-转账记录的存储与维护" name="4-转账记录的存储与维护"></a>
 # 4. 转账记录的存储与维护
 
 
@@ -203,7 +200,6 @@ categories: [business]
 一般情况下当交易记录所在的区块后面又添加了若干个新区块后才可以稳妥的认为自己的交易记录得到比特币网络的确认,若干个是多少个? 一般是1-2个,大额的交易一般是3-6个
 
 
-<a id="markdown-5-区块链细节" name="5-区块链细节"></a>
 # 5. 区块链细节
 
 * https://zhuanlan.zhihu.com/p/23243289 (具体细节)
@@ -219,7 +215,6 @@ categories: [business]
 * 区块体: 一定时间内所产生的交易信息,即`账本`
 
 
-<a id="markdown-6-utxo" name="6-utxo"></a>
 # 6. UTXO?
 
 * http://8btc.com/article-4381-1.html
@@ -248,27 +243,23 @@ categories: [business]
 
 
 
-<a id="markdown-7-锁定是什么意思" name="7-锁定是什么意思"></a>
 # 7. 锁定是什么意思?
 
 * https://zhuanlan.zhihu.com/p/33672729 (比特币的交易过程,还有源码)
 
 
 
-<a id="markdown-8-主链是啥意思" name="8-主链是啥意思"></a>
 # 8. 主链是啥意思?
 
 
 * https://www.blockchain.com/zh-cn/charts
 
 
-<a id="markdown-9-区块链信息越来越大了怎么办" name="9-区块链信息越来越大了怎么办"></a>
 # 9. 区块链信息越来越大了怎么办?
 
 * https://www.zhihu.com/question/39067000/answer/110878081
 
 
-<a id="markdown-10-交易速度的限制主要是什么每秒7笔怎么算的" name="10-交易速度的限制主要是什么每秒7笔怎么算的"></a>
 # 10. 交易速度的限制主要是什么?每秒7笔怎么算的
 
 * https://www.zhihu.com/question/41004649
@@ -289,12 +280,10 @@ categories: [business]
 
 但这里我有一个问题,如果1分钟之内记录不满一个区块怎么办?不够1MiB的区块也会广播到每个节点吗?是否是我的认知问题?全天每个时间点都有交易发生吗?
 
-<a id="markdown-11-个区块怎么确认一笔交易的真实性" name="11-个区块怎么确认一笔交易的真实性"></a>
 # 11. 个区块怎么确认一笔交易的真实性?
 
 * https://www.zhihu.com/question/55581569 
 
-<a id="markdown-12-比特币的根本技术" name="12-比特币的根本技术"></a>
 # 12. 比特币的根本技术
 
 
@@ -306,7 +295,6 @@ categories: [business]
 * 区块链的设计 + UTXO `Unspent Transaction Output`
 * 智能合约
 
-<a id="markdown-13-比特币和以以太坊的区别" name="13-比特币和以以太坊的区别"></a>
 # 13. 比特币和以以太坊的区别?
 
 * http://www.360doc.com/content/17/0720/23/34265476_672940504.shtml
@@ -371,7 +359,6 @@ categories: [business]
 * 以太坊的挖矿奖励制度是区块链奖励+叔块奖励+叔块引用奖励,出块时间是12-15秒,从挖矿的角度来说,POW
 
 
-<a id="markdown-14-区块链分布式存储" name="14-区块链分布式存储"></a>
 # 14. 区块链分布式存储?
 
 * http://baijiahao.baidu.com/s?id=1594153755560823127&wfr=spider&for=pc
@@ -387,7 +374,6 @@ categories: [business]
 
 
 
-<a id="markdown-15-eos是啥" name="15-eos是啥"></a>
 # 15. EOS是啥?
 
 * https://www.jianshu.com/p/a1dec7dd0427
@@ -397,7 +383,6 @@ categories: [business]
 * 每秒1W至10W笔交易处理能力的`石墨烯`技术,将使用并行化拓展网络,或将达到`每秒百万次`的交易处理能力
 * `以太坊`每次计算,存储操作,带宽使用都需要`GAS`费用,EOS采用所有权模式,如果用户拥有1%的代币,那么便可以访问1%网路带宽
 
-<a id="markdown-16-ipfs" name="16-ipfs"></a>
 # 16. ipfs
 
 * https://www.jianshu.com/p/a1dec7dd0427
@@ -420,7 +405,6 @@ IPFS借鉴了比特币的经济模型,开发了`Filecoin`,Filecoin之于IPFS就�
 
 和比特币不一样的是,Filecoin比拼的不是算力,而是存储和带宽资源 `1.存储矿工,提供存储资源`, `2.检索矿工,为客户提供数据检索服务`
 
-<a id="markdown-17-小蚁区块链" name="17-小蚁区块链"></a>
 # 17. 小蚁区块链
 
 * https://blog.csdn.net/rical730/article/details/72825958
@@ -437,7 +421,6 @@ IPFS借鉴了比特币的经济模型,开发了`Filecoin`,Filecoin之于IPFS就�
 
 
 
-<a id="markdown-18-我认为区块链数字货币的问题" name="18-我认为区块链数字货币的问题"></a>
 # 18. 我认为区块链数字货币的问题
 
 
@@ -467,13 +450,11 @@ IPFS借鉴了比特币的经济模型,开发了`Filecoin`,Filecoin之于IPFS就�
 但是没有规范的数据呢,例如二进制文件.那必须得有一个算法把文件之间的差异整成一个diff文件,这个二进制比上个二进制增加/减少了哪些东西,这个问题解决了,那么再配合DPOS超级节点便可以做到`分布式存储有历史的非版本账本数据`
 
 
-<a id="markdown-19-bittorrent和区块链的本质区别" name="19-bittorrent和区块链的本质区别"></a>
 # 19. bittorrent和区块链的本质区别
 
 * 就像上面所说,区块链存储的是有准确的历史的共识的数据,而bittorrent只是一个文件的快照,hash,以及具体文件(意思就是多了类似UTXO的概念)
 * !!!`没有奖励措施,愿意托管文件的者很少 `  这个是关键 (超级节点,矿池...)
 
-<a id="markdown-20-问题为啥要有多个区块和链" name="20-问题为啥要有多个区块和链"></a>
 # 20. 问题:为啥要有多个区块和链?
 
 应该是为了共识算法和奖励机制.
@@ -485,7 +466,6 @@ IPFS借鉴了比特币的经济模型,开发了`Filecoin`,Filecoin之于IPFS就�
 ipfs共识,.那就要研究ipfs了
 
 
-<a id="markdown-21-以太坊不用utxo那用的啥" name="21-以太坊不用utxo那用的啥"></a>
 # 21. 以太坊不用UTXO那用的啥?
 
 UTXO`未花费输出`就是 全民记账  交易记录塞区块 -> 区块广播 -> 每个节点连接区块
@@ -493,12 +473,10 @@ UTXO`未花费输出`就是 全民记账  交易记录塞区块 -> 区块广播 
 那如果不用UTXO,以太坊用的什么呢?
 
 
-<a id="markdown-22-版权这个事情" name="22-版权这个事情"></a>
 # 22. 版权这个事情
 
 * https://www.csdn.net/article/2013-04-25/2815042-source-code-intellectual-property-rights
 
-<a id="markdown-23-数字货币跨链交易" name="23-数字货币跨链交易"></a>
 # 23. 数字货币跨链交易
 
 * 法币交易: `法定货币` 购买usdt,btc,eth
@@ -512,7 +490,6 @@ UTXO`未花费输出`就是 全民记账  交易记录塞区块 -> 区块广播 
 * 该协议复杂,不便和缓慢
 * 防止偷盗货币,但是不能防范服务性攻击
   
-<a id="markdown-24-产权思考" name="24-产权思考"></a>
 # 24. 产权思考
 
 汽车: 汽车存储了遥控器的`公钥`,当遥控器请求开门的时候,汽车发送回随机数并要求遥控器用它`存储的私钥签名`,只有存储器准确回复了签名,车门才会被打开.

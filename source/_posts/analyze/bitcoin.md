@@ -8,14 +8,13 @@ categories: [项目分析]
 
 - [1. 说明](#1-说明)
 - [2. block/transaction](#2-blocktransaction)
-- [3. merkle tree](#3-merkle-tree)
+- [3. merkle tree spv轻量钱包验证](#3-merkle-tree-spv轻量钱包验证)
 - [4. pow](#4-pow)
 
 <!-- /TOC -->
 
 # 1. 说明
 
-* https://github.com/Jeiwan/blockchain_go (简易go实现区块链)
 * https://github.com/bitpay/copay (轻量实现)
 * https://github.com/btcsuite/btcd (go实现)
 * https://github.com/bitcoin/bitcoin (c++实现)
@@ -26,8 +25,6 @@ categories: [项目分析]
 
 ```bash
 # 搜入口
-grep -nr 'int main' --include="*.cpp"
-
 src/univalue/gen/gen.cpp:78:int main (int argc, char *argv[])
 src/qt/bitcoin.cpp:556:int main(int argc, char *argv[])
 src/bench/bench_bitcoin.cpp:49:int main(int argc, char** argv)
@@ -39,40 +36,26 @@ src/bitcoin-cli.cpp:514:int main(int argc, char* argv[])
 
 
 ```bash
-tree  -d .
-
 # 代码文件组织
-├── bench      # benchmark
-│   └── data
-├── compat     # 压缩
-├── consensus  # 共识, markle tree
-├── crypto     # 对称/非堆成 加密算法
-│   └── ctaes  # benchmark
-├── index      # blockchain的存储层
-├── interfaces # node接口,钱包接口  
-├── leveldb    # 引用的leveldb库 *
-├── policy     # 策略,费用计算
-├── primitives # 原始的 区块/交易
-├── qt         # 前台代码        *
-├── rpc        # json rpc 接口     
-├── script     # 脚本实现
-├── secp256k1  # 椭圆曲线加密算法 * 
-├── support    # 内存池
-│   └── allocators
-├── test       # 测试用例
-│   └── data
-├── univalue   # json          *
-├── wallet     # 钱包
-│   └── test
-└── zmq        # zeromq 接口
+./bench           # benchmark
+./compat          # 压缩　　
+./consensus       # 共识, markle tree
+./crypto          # 对称/非堆成 加密算法
+./index           # blockchain的存储层
+./interfaces      # node接口,钱包接口  
+./leveldb         # 引用的leveldb库 *
+./policy          # 策略,费用计算
+./primitives      # 区块/交易
+./qt              # 前台代码  *
+./rpc             # json rpc 接口 
+./script          # 脚本实现
+./secp256k1       # 椭圆曲线加密算法 * 
+./support         # 内存池
+./test            # 测试用例
+./univalue        # json *
+./wallet          # 钱包
+./zmq             # zeromq 接口
 
-# 统计实际代码行数 
-cloc ./ --exclude-dir=leveldb,qt,secp256k1,univalue
-
-# 统计每个文件夹的行数 (这个方法累)
-find .  -maxdepth 1 -type d  -exec bash -c 'echo $0 && cloc $0 --exclude-dir=.,leveldb,qt,secp256k1,univalue ' {} \;
-
-tree  -P "*.cpp|*.h"
 
 # 源码
 .
@@ -430,7 +413,7 @@ class CBlock : public CBlockHeader
 ![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
 
 
-# 3. merkle tree
+# 3. merkle tree spv轻量钱包验证
 
 ![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
 
@@ -480,8 +463,6 @@ while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pb
         
 ```
 
-`CreateNewBlock 函数` 铸币,第一笔交易为奖励矿工获得奖励和手续费的特殊交易
-
 `CalculateNextWorkRequired 函数` 重新计算难度
 
-
+`CreateNewBlock 函数` 铸币,第一笔交易为奖励矿工获得奖励和手续费的特殊交易
