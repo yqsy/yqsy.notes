@@ -9,7 +9,8 @@ categories: [项目分析]
 
 - [1. 说明](#1-说明)
 - [2. block/transaction](#2-blocktransaction)
-- [3. pow](#3-pow)
+- [3. merkle patricia trie](#3-merkle-patricia-trie)
+- [4. pow](#4-pow)
 
 <!-- /TOC -->
 
@@ -134,8 +135,10 @@ type Header struct {
 
 ![](http://ouxarji35.bkt.clouddn.com/eOwjD.png)
 
+# 3. merkle patricia trie
 
-# 3. pow
+
+# 4. pow
 
 
 > RAND(h, n) <= M / d

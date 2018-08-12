@@ -45,8 +45,8 @@ raft:
 
 允许正常节点(N为总数): n >= (N/2) + 1
 
-* 5台机器,必须3台正常. 
-* 100台机器,必须51台正常
+* 5台机器,错误机器<=2
+* 100台机器,错误机器<=49
 
 zab:
 * https://github.com/lshmouse/reading-papers/blob/master/distributed-system/Zab:%20High-performance%20broadcast%20for%0Aprimary-backup%20systems.pdf (论文)
@@ -57,11 +57,10 @@ pbft:
 * https://en.wikipedia.org/wiki/Byzantine_fault_tolerance
 * http://pmg.csail.mit.edu/papers/osdi99.pdf (论文)
 
-有t个错误节点时,正常节点n必须满足: n >= 3t + 1   ==> 设 t=N-n, 得 n >= (3N+1)/4
+有t个错误节点时,总节点N必须满足: N >= 3t + 1
 
-* 5台机器,必须4台正常
-* 100台机器,必须75台正常
-
+* 5台机器,错误机器<=1
+* 100台机器,错误机器<=33
 
 ## 1.3. 公有链
 
