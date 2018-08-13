@@ -8,9 +8,10 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
-- [2. filecoin](#2-filecoin)
-- [3. 实践](#3-实践)
-- [4. 常用指令](#4-常用指令)
+- [2. 自己的梳理](#2-自己的梳理)
+- [3. filecoin](#3-filecoin)
+- [4. 实践](#4-实践)
+- [5. 常用指令](#5-常用指令)
 
 <!-- /TOC -->
 
@@ -56,8 +57,26 @@ ipld:
 ![](http://ouxarji35.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180725094636.png)
 
 
-<a id="markdown-2-filecoin" name="2-filecoin"></a>
-# 2. filecoin
+<a id="markdown-2-自己的梳理" name="2-自己的梳理"></a>
+# 2. 自己的梳理
+
+* Identities 身份层, `S/Kademlia DHT网络,` 由Kademlia发展而来,做出两点提升 1. 防止Sybill attacks 2. 容错15%
+* Network 网络层, 使用WebRTC,uTP,`ICE NAT`,checksum,HMAC等技术保证可传输,可靠性,连通性,完整性,真实性
+* Routing 路由层, 基于1. S/Kademlia 2. Coral DSHT 的 `DSHT` (distributed sloppy hash table)
+* Block Exchange 块交换层, 升级于BitTorrent的`BitSwap`协议, 独特的信用体系,防止吸血鬼攻击
+* Objects 对象层,  使用`Merkle DAG `数据结构 1. 按内容hash寻址 2.防止篡改 3. 去重复
+* Files 文件层, 参照`GIT`的设计, 将底层存储分为 1. block 2. list 3. tree 4. commit . 实现版本的快照/管理
+* Naming 命名层, 使用hash来定位一切文件,文件永远存在
+
+---
+
+* Incentive 激励层, 基于 `proof-of-storage` 和 `proof-of-replication`的`去中心化存储算法市场`
+
+1. 客户端支付费用存储和检索数据
+2. 矿工提供存储/检索服务
+
+<a id="markdown-3-filecoin" name="3-filecoin"></a>
+# 3. filecoin
 
 
 * 女巫攻击 (Sybil Attacks): 利用n个身份，承诺存储n份数据D，`而实际上存储小于n份`（比如1份），但是`却提供了n份存储证明`，攻击成功
@@ -81,8 +100,8 @@ ipld:
 
 
 
-<a id="markdown-3-实践" name="3-实践"></a>
-# 3. 实践
+<a id="markdown-4-实践" name="4-实践"></a>
+# 4. 实践
 
 安装ipfs
 
@@ -256,14 +275,8 @@ http://127.0.0.1:8080/ipfs/QmZfycqAQViYGJ4eH2e63cgAD7J57VRcPeD3NkHfkxdbT8/
 ```
 
 
-
-
-
-
-
-
-<a id="markdown-4-常用指令" name="4-常用指令"></a>
-# 4. 常用指令
+<a id="markdown-5-常用指令" name="5-常用指令"></a>
+# 5. 常用指令
 
 ```bash
 # 连接的peer
