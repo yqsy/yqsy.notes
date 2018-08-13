@@ -16,22 +16,15 @@ categories: [business]
 <!-- /TOC -->
 
 
+<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* POW(Proof-of-Work) (比特币,莱特币,以太坊)
-* POS(Proof of Stake) 权益证明机制 
-* DPOS(Delegated Proof of Stake) 委托权益证明(股份授权证明机制)    EOS  (还是中心化咯?) 
-* PBFT(Practical Byzantine Fault Tolerance)  拜占庭容错算法 1999
-* DBFT (delegated BFT) 授权拜占庭容错 (小蚁区块链)
-* Paxos  希腊议会1990
-* Raft, 比paxos 更容易理解
-
----
 * https://blog.csdn.net/lsttoy/article/details/61624287 (csdn的资料)
 * https://en.wikipedia.org/wiki/Cryptocurrency (所有机制)
 * https://zhuanlan.zhihu.com/p/35847127 (美图的共识算法维度整理)
 * https://zhuanlan.zhihu.com/p/38627527 (美图dpos实现)
 
+<a id="markdown-11-私有链共识" name="11-私有链共识"></a>
 ## 1.1. 私有链共识
 paxos:
 * https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf (论文)
@@ -51,6 +44,7 @@ raft:
 zab:
 * https://github.com/lshmouse/reading-papers/blob/master/distributed-system/Zab:%20High-performance%20broadcast%20for%0Aprimary-backup%20systems.pdf (论文)
 
+<a id="markdown-12-联盟链共识" name="12-联盟链共识"></a>
 ## 1.2. 联盟链共识
 
 pbft:  
@@ -62,12 +56,14 @@ pbft:
 * 5台机器,错误机器<=1
 * 100台机器,错误机器<=33
 
+<a id="markdown-13-公有链" name="13-公有链"></a>
 ## 1.3. 公有链
 
 pow pos dpos:
 * https://bitfury.com/content/downloads/pos-vs-pow-1.0.2.pdf (论文 包括dpos)
 * https://www.jianshu.com/p/9a1b165129dd (论文翻译)
 
+<a id="markdown-2-继续总结" name="2-继续总结"></a>
 # 2. 继续总结
 
 ![](http://on-img.com/chart_image/5b66f7c3e4b025cf4936d7e2.png)
