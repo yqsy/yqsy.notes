@@ -81,8 +81,8 @@ pow pos dpos:
 各种解决方法解决一些问题又带来一些问题
 
 pow: 
-* 耗能源
-* 速度慢
+* spent on eletricity (耗能源)
+* slow (速度慢)
 
 pos:
 * Nothing at Stake Problem (`账本分叉`): PoS矿工往往会往`两个方向挖` -> dpos

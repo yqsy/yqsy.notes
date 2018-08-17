@@ -13,6 +13,7 @@ categories: [项目分析]
 
 <!-- /TOC -->
 
+<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://github.com/bitpay/copay (轻量实现)
@@ -374,6 +375,7 @@ src/bitcoin-cli.cpp:514:int main(int argc, char* argv[])
 
 ```
 
+<a id="markdown-2-blocktransaction" name="2-blocktransaction"></a>
 # 2. block/transaction
 
 ```c++
@@ -408,11 +410,21 @@ class CBlock : public CBlockHeader
     // 不知道
     mutable bool fChecked;
 }
+
+class CTransaction
+{
+    const std::vector<CTxIn> vin;
+    
+    const std::vector<CTxOut> vout;
+}
+
 ```
 
 ![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
 
+![](http://ouxarji35.bkt.clouddn.com/transactions-diagram.png)
 
+<a id="markdown-3-merkle-tree-spv轻量钱包验证" name="3-merkle-tree-spv轻量钱包验证"></a>
 # 3. merkle tree spv轻量钱包验证
 
 ![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
@@ -448,6 +460,7 @@ class CBlock : public CBlockHeader
 
 >>搜索　MSG_MERKLEBLOCK　
 
+<a id="markdown-4-pow" name="4-pow"></a>
 # 4. pow
 
 `generateBlocks 函数` 挖矿

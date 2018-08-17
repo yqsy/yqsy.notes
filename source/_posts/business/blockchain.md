@@ -36,6 +36,7 @@ categories: [business]
 <a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 
+* https://github.com/liuchengxu/blockchain-tutorial (很好的中文资料)
 * https://github.com/Jeiwan/blockchain_go (简易go实现区块链)
 * https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
