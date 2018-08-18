@@ -29,6 +29,7 @@ categories: [business]
 
 <!-- /TOC -->
 
+<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://www.ethereum.org/greeter (开发入门)
@@ -44,6 +45,7 @@ categories: [business]
 
 
 
+<a id="markdown-2-solidity" name="2-solidity"></a>
 # 2. solidity
 
 * http://wiki.jikexueyuan.com/project/solidity-zh/introduction-smart-contracts.html (简单学习)
@@ -124,8 +126,10 @@ categories: [business]
 * view: 告诉编译器这个函数进行的是只读操作
 * fallback: 当一个合约收到`无法匹配任何函数名的函数`调用或者仅仅用于转账的交易时,fallback函数将被自动执行
 
+<a id="markdown-3-详细介绍" name="3-详细介绍"></a>
 # 3. 详细介绍
 
+<a id="markdown-31-场景" name="31-场景"></a>
 ## 3.1. 场景
 
 * Golem 创造一个全球空闲计算资源的产消市场
@@ -147,6 +151,7 @@ categories: [business]
 链上交易,兑换过程可被立即确认,过程结束后也可追溯,并且用户无需更改以太坊底层协议或其他智能合约协议
 
 
+<a id="markdown-32-开源项目" name="32-开源项目"></a>
 ## 3.2. 开源项目
 开源项目:
 * Go-ethereum: `Geth` 目前使用最为广泛的以太坊客户端,又称Geth
@@ -177,6 +182,7 @@ categories: [business]
 
 
 
+<a id="markdown-33-架构" name="33-架构"></a>
 ## 3.3. 架构
 
 ![](http://ouxarji35.bkt.clouddn.com/c98ff12076232f60ddccda38376baf1ffd4fe309.jpeg)
@@ -199,12 +205,14 @@ categories: [business]
 * 以太坊官方钱包,`私钥和公钥`将会以`加密`的方式保存一份JSON文件,存储在keystore目录下,用户需要同事`备份Keystore`和`对应的Password`
 * BIP 39 ,随机生成12~24个比较容易记住的单词,该种子通过BIP-0032提案的方式生成确定性钱包??
 
+<a id="markdown-34-钱包" name="34-钱包"></a>
 ## 3.4. 钱包
 
 钱包:  
 
 目前有多种以太坊钱包, 如Mist以太坊钱包,Parity钱包,Etherwall钱包,Brain钱包等
 
+<a id="markdown-35-存储" name="35-存储"></a>
 ## 3.5. 存储  
 
 比特币中保存了一棵Merkle树, 以太坊对三种对象设计了3棵Merkle Patrcia树,融合了Merkle树和Trie树的优点
@@ -229,6 +237,7 @@ categories: [business]
 * 假如在某个合约中进行一笔交易,`交易的输出`是什么 -> `状态树`
 
 
+<a id="markdown-36-防止asci的算法" name="36-防止asci的算法"></a>
 ## 3.6. 防止ASCI的算法
 共识算法:
 
@@ -239,6 +248,7 @@ categories: [business]
 * https://zhuanlan.zhihu.com/p/28830859
 
 
+<a id="markdown-37-gas-价格换算" name="37-gas-价格换算"></a>
 ## 3.7. GAS 价格换算
 
 大概就是使用种子产生一个16MB的伪随机缓存,基于缓存再生成一个1GB的数据集,称为DAG,挖矿可以概括为矿工从DAG中`随机`选择元素`并对其进行散列的过程`,DAG也可以理解为一个完整的搜索空间.
@@ -267,6 +277,7 @@ Gas Limit:
 
 换句话说 `GasPrice * GasLimit` 表示用户愿意为一笔交易支付的`最高金额`, 因为如果没有Gas Limit限制,那么某些恶意的用户可能会发送一个`数十亿步骤的交易`并且没有人能够处理它,所以会导致拒绝服务攻击.
 
+<a id="markdown-38-交易包含的信息" name="38-交易包含的信息"></a>
 ## 3.8. 交易包含的信息
 
 一条交易内容包含以下的信息:
@@ -306,6 +317,7 @@ Gas Limit:
 * 在域名持有期内,用户可以将域名绑定到自己的以太坊地址,转移域名的使用权,添加设置子域名等,甚至还可以转让域名的所有权
 
 
+<a id="markdown-39-公有链私有链联盟链" name="39-公有链私有链联盟链"></a>
 ## 3.9. 公有链,私有链,联盟链
 
 以太坊公有链,联盟链,私有链特点对比
@@ -356,6 +368,7 @@ Gas Limit:
 
 完全私有的区块链则是更接近于中心化的数据库,私有链的应用场景主要是公司内部的数据库管理,账目审计等. 私有链的主要价值是提供`区块链安全高效`,`公开透明`,`可追溯`,`不可篡改`的特性,
 
+<a id="markdown-4-实践联盟链搭建" name="4-实践联盟链搭建"></a>
 # 4. 实践联盟链搭建
 
 * https://github.com/ethereum/go-ethereum/wiki/Private-network (创建私有网络)
@@ -468,8 +481,10 @@ eth.getBalance(eth.accounts[0])
 
 ```
 
+<a id="markdown-5-实践智能合约" name="5-实践智能合约"></a>
 # 5. 实践智能合约
 
+<a id="markdown-51-truffle" name="51-truffle"></a>
 ## 5.1. truffle
 
 ```bash
@@ -506,6 +521,7 @@ truffle test
 
 
 
+<a id="markdown-52-remix" name="52-remix"></a>
 ## 5.2. remix
 
 * https://github.com/ethereum/remix
@@ -524,6 +540,7 @@ remix-ide
 智能合约属性:  
 参考: https://github.com/ethereum/wiki/wiki/JSON-RPC#the-default-block-parameter
 
+<a id="markdown-6-智能合约注意点" name="6-智能合约注意点"></a>
 # 6. 智能合约注意点
 
 * 区块链上智能合约的`所有信息`都是`公开可见`的,即使被private标记的私有变量
@@ -540,6 +557,7 @@ remix-ide
 * Fail-Safe 异常-安全,尽可能保障合约中数据的安全
 * 限制合约中数字资产的数量,= =  为了安全起见,`最好不要在智能合约中存储大量的数字资产`
 
+<a id="markdown-7-优化知识" name="7-优化知识"></a>
 # 7. 优化知识
 
 (侧链SideChains): 它可以让比特币安全的从比特币主链转移到其他区块链,又可以从其他区块链安全地返回比特币主链. `外部嫁接到主链`
@@ -553,6 +571,7 @@ remix-ide
 * Casper FFG: PoW/Pos混合的共识机制.
 * Casper CBC: ...
 
+<a id="markdown-8-适用场景" name="8-适用场景"></a>
 # 8. 适用场景
 
 以太坊的主要目标是公有链,数字资产的安全是第一位的,`宁可损失性能,也要保证用户账本的安全`,对性能的任何优化都必须在系统安全的前提下进行
