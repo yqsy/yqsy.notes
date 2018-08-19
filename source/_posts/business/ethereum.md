@@ -32,6 +32,7 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* https://github.com/eoshackathon/ipfs_development_tutorial (培训教程)
 * https://www.ethereum.org/greeter (开发入门)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
 * https://solidity.readthedocs.io/en/latest/ (所用语言,类似js)
@@ -489,10 +490,10 @@ eth.getBalance(eth.accounts[0])
 
 ```bash
 # 编译器
-sudo npm install -g solc
+npm install -g solc
 
-sudo npm install -g truffle
-sudo npm install -g ethereumjs-testrpc
+npm install -g truffle
+npm install -g ethereumjs-testrpc
 
 mkdir -p ~/resource/test/testtruffle
 cd ~/resource/test/testtruffle
@@ -514,6 +515,45 @@ truffle test
 
 ```
 
+再实践
+```bash
+npm install -g truffle
+
+truffle init
+npm init
+npm install zeppelin-solidity
+
+# contracts 目录写合约
+
+# migrations 目录写部署脚本
+
+truffle develop
+
+# 编译
+compile
+
+# 部署
+migrate
+
+# 验证是否已被部署
+ERC20_A.deployed().then(instance => contract = instance)
+
+# 查看coinbase代币发行总数
+contract.balanceOf(web3.eth.coinbase)
+
+# 向账户#1打币，
+contract.transfer(web3.eth.accounts[1], 600000)
+
+# 查看#1账户余额
+contract.balanceOf(web3.eth.accounts[1])
+
+# 安装infura.io
+npm install truffle-hdwallet-provider --save
+
+# 部署
+truffle migrate --network ropsten
+```
+
 * contracts/: 开发者`编写`的智能合约
 * migrations/: 用来存放`部署脚本`
 * tests/: 用来存放`测试`文件
@@ -530,7 +570,7 @@ truffle test
 * https://remix.ethereum.org/
 
 ```bash
-sudo cnpm install remix-ide -g
+cnpm install remix-ide -g
 
 cd /home/yq/resource/test
 remix-ide

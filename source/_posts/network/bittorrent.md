@@ -64,7 +64,7 @@ DHT网络:
 
 ```bash
 # 安装
-sudo npm install -g parse-torrent
+npm install -g parse-torrent
 
 # 查看种子文件
 parse-torrent ./1.torrent

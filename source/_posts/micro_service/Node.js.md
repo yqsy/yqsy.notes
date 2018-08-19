@@ -49,6 +49,6 @@ Node.js是一个基于Chrome V8引擎的JavaScript运行环境,它使用了一�
 
 ```
 # 安装cnpm
-sudo npm install -g cnpm --registry=http://r.cnpmjs.org
+npm install -g cnpm --registry=http://r.cnpmjs.org
 
 ```
