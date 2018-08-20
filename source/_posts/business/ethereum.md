@@ -37,7 +37,7 @@ categories: [business]
 * https://ethgasstation.info/index.php (gas定价)
 
 ---
-* https://github.com/eoshackathon/ipfs_development_tutorial (培训教程)
+* https://github.com/eoshackathon/ipfs_development_tutorial (古哥培训教程)
 * https://www.ethereum.org/greeter (开发入门)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
 * https://solidity.readthedocs.io/en/latest/ (所用语言,类似js)
