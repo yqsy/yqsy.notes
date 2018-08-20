@@ -579,9 +579,9 @@ migrate --reset --network ropsten
 * https://remix.ethereum.org/
 
 ```bash
-cnpm install remix-ide -g
+npm install remix-ide -g
 
-cd /home/yq/resource/test
+cd /mnt/disk1/linux/reference/project/testsol
 remix-ide
 
 ```
