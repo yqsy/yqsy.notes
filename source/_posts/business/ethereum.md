@@ -519,6 +519,7 @@ truffle test
 ```bash
 npm install -g truffle
 
+mkdir testtruffle && cd testtruffle
 truffle init
 npm init
 npm install zeppelin-solidity
@@ -547,11 +548,19 @@ contract.transfer(web3.eth.accounts[1], 600000)
 # 查看#1账户余额
 contract.balanceOf(web3.eth.accounts[1])
 
+```
+
+```bash
 # 安装infura.io
 npm install truffle-hdwallet-provider --save
 
-# 部署
-truffle migrate --network ropsten
+# 部署至ropsten
+truffle develop
+compile
+migrate --network ropsten
+
+# 替换合约
+migrate --reset --network ropsten
 ```
 
 * contracts/: 开发者`编写`的智能合约
