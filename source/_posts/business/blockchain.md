@@ -20,7 +20,7 @@ categories: [business]
 
 ---
 
-* https://github.com/liuchengxu/blockchain-tutorial (很好的中文资料)
+* https://github.com/liuchengxu/blockchain-tutorial/blob/master/content/SUMMARY.md (很好的中文资料)
 * https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)

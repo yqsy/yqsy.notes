@@ -418,6 +418,19 @@ class CTransaction
     const std::vector<CTxOut> vout;
 }
 
+class CTxIn
+{
+    COutPoint prevout; // 包含1.前一笔交易的哈希 2.下标
+    CScript scriptSig;
+    uint32_t nSequence; 
+}
+
+class CTxOut
+{
+    CAmount nValue;
+    CScript scriptPubKey;
+}
+
 ```
 
 ![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
