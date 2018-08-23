@@ -279,7 +279,7 @@ src/bitcoin-cli.cpp:514:int main(int argc, char* argv[])
 │   ├── sigcache.cpp
 │   ├── sigcache.h
 │   ├── sign.cpp
-│   ├── sign.h
+│   ├── sign.h           # 签名
 │   ├── standard.cpp
 │   └── standard.h
 ├── secp256k1

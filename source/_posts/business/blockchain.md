@@ -11,6 +11,7 @@ categories: [business]
 - [2. 比特币私钥,公钥,钱包维度梳理](#2-比特币私钥公钥钱包维度梳理)
 - [3. 交易速度的限制主要是什么?每秒7笔怎么算的](#3-交易速度的限制主要是什么每秒7笔怎么算的)
 - [4. 比特币的根本技术](#4-比特币的根本技术)
+- [5. 为什么比特币地址要用公钥哈希而不直接使用公钥?](#5-为什么比特币地址要用公钥哈希而不直接使用公钥)
 
 <!-- /TOC -->
 
@@ -24,7 +25,7 @@ categories: [business]
 * https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
-
+* http://book.8btc.com/books/6/masterbitcoin2cn/_book/ (精通比特币书)
 
 <a id="markdown-2-比特币私钥公钥钱包维度梳理" name="2-比特币私钥公钥钱包维度梳理"></a>
 # 2. 比特币私钥,公钥,钱包维度梳理
@@ -93,3 +94,8 @@ categories: [business]
 中本聪自创的
 * 区块链的设计 + UTXO `Unspent Transaction Output`
 
+
+<a id="markdown-5-为什么比特币地址要用公钥哈希而不直接使用公钥" name="5-为什么比特币地址要用公钥哈希而不直接使用公钥"></a>
+# 5. 为什么比特币地址要用公钥哈希而不直接使用公钥?
+
+* https://zhuanlan.zhihu.com/p/28196364
