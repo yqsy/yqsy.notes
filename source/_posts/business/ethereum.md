@@ -32,9 +32,14 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* https://ropsten.etherscan.io/ (ROPSTEN网络)
 * https://etherscan.io/ (区块链浏览器)
 * https://ethplorer.io/ (web合约调用)
 * https://ethgasstation.info/index.php (gas定价)
+* https://etherconverter.online/ (换算)
+* https://faucet.ropsten.be/ (充钱)
+* https://faucet.metamask.io/ (充钱)
+* chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html#  (metamask网页)
 
 ---
 * https://github.com/eoshackathon/ipfs_development_tutorial (古哥培训教程)
@@ -492,6 +497,8 @@ eth.getBalance(eth.accounts[0])
 <a id="markdown-51-truffle" name="51-truffle"></a>
 ## 5.1. truffle
 
+* https://truffleframework.com/docs/truffle/reference/configuration (官方教程)
+* https://truffleframework.com/tutorials/using-infura-custom-provider (教程)
 
 
 再实践
