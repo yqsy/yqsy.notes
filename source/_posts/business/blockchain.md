@@ -8,10 +8,10 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 资源](#1-资源)
-- [2. 比特币私钥,公钥,钱包维度梳理](#2-比特币私钥公钥钱包维度梳理)
-- [3. 交易速度的限制主要是什么?每秒7笔怎么算的](#3-交易速度的限制主要是什么每秒7笔怎么算的)
-- [4. 比特币的根本技术](#4-比特币的根本技术)
-- [5. 为什么比特币地址要用公钥哈希而不直接使用公钥?](#5-为什么比特币地址要用公钥哈希而不直接使用公钥)
+- [2. 比特币的根本技术](#2-比特币的根本技术)
+- [3. 比特币私钥,公钥,公钥哈希,钱包维度简单梳理](#3-比特币私钥公钥公钥哈希钱包维度简单梳理)
+- [4. 比特币地址梳理](#4-比特币地址梳理)
+- [5. 比特币交易速度每秒7笔](#5-比特币交易速度每秒7笔)
 
 <!-- /TOC -->
 
@@ -27,8 +27,21 @@ categories: [business]
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ (精通比特币书)
 
-<a id="markdown-2-比特币私钥公钥钱包维度梳理" name="2-比特币私钥公钥钱包维度梳理"></a>
-# 2. 比特币私钥,公钥,钱包维度梳理
+<a id="markdown-2-比特币的根本技术" name="2-比特币的根本技术"></a>
+# 2. 比特币的根本技术
+
+
+* `POW` 工作量证明的共识达成机制是Adma在Hashcash里提出来的
+* 将`全部交易计入一本总账`,并给交易打时间戳来`防范双花攻击`(double-spend attack)的思想是的 b-money 和 Nick Szabo 的 Bitgold 提出来的
+* P2P技术比不上2001年出现的BitTorrent
+
+中本聪自创的
+* 区块链的设计 + UTXO `Unspent Transaction Output`
+
+
+
+<a id="markdown-3-比特币私钥公钥公钥哈希钱包维度简单梳理" name="3-比特币私钥公钥公钥哈希钱包维度简单梳理"></a>
+# 3. 比特币私钥,公钥,公钥哈希,钱包维度简单梳理
 
 * https://blog.csdn.net/jeason29/article/details/51576659 
 
@@ -63,9 +76,31 @@ categories: [business]
 ![](http://ouxarji35.bkt.clouddn.com/1-14112FU342.png)
 
 
+<a id="markdown-4-比特币地址梳理" name="4-比特币地址梳理"></a>
+# 4. 比特币地址梳理
 
-<a id="markdown-3-交易速度的限制主要是什么每秒7笔怎么算的" name="3-交易速度的限制主要是什么每秒7笔怎么算的"></a>
-# 3. 交易速度的限制主要是什么?每秒7笔怎么算的
+类型|方式|hex长度|byte长度
+-|-|-|-
+privateKeyBytes|ecdsa.GenerateKey|64|32
+publicKeyBytes|ecdsa.GenerateKey|128|64
+publicKeyHash|SHA256+RIPEMD160|40|20
+walletAddress|Base58Encode|`34`|17
+signature|ecdsa.Sign(私钥,hash(证书))|128|64
+txId|SHA256|64|32
+
+私钥的存储格式:
+![](./pic/privatekeysaveway.png)
+
+公钥的存储格式:
+* 未压缩格式: 04作为前缀,payload 128 hex, 一共130hex
+* 压缩格式: 02或03作为前缀,payload 64 hex, 一共66hex
+
+所有的钱包版本  
+![](./pic/all_base58_version.png)
+
+
+<a id="markdown-5-比特币交易速度每秒7笔" name="5-比特币交易速度每秒7笔"></a>
+# 5. 比特币交易速度每秒7笔
 
 * https://www.zhihu.com/question/41004649
 * https://www.zhihu.com/question/41004649/answer/145731141
@@ -83,19 +118,3 @@ categories: [business]
 4194 / 600 ≈ 7 (个/s) -- 大约7秒钟能交易一个比特币
 ```
 
-<a id="markdown-4-比特币的根本技术" name="4-比特币的根本技术"></a>
-# 4. 比特币的根本技术
-
-
-* `POW` 工作量证明的共识达成机制是Adma在Hashcash里提出来的
-* 将`全部交易计入一本总账`,并给交易打时间戳来`防范双花攻击`(double-spend attack)的思想是的 b-money 和 Nick Szabo 的 Bitgold 提出来的
-* P2P技术比不上2001年出现的BitTorrent
-
-中本聪自创的
-* 区块链的设计 + UTXO `Unspent Transaction Output`
-
-
-<a id="markdown-5-为什么比特币地址要用公钥哈希而不直接使用公钥" name="5-为什么比特币地址要用公钥哈希而不直接使用公钥"></a>
-# 5. 为什么比特币地址要用公钥哈希而不直接使用公钥?
-
-* https://zhuanlan.zhihu.com/p/28196364
