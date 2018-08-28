@@ -9,9 +9,7 @@ categories: [business]
 
 - [1. 资源](#1-资源)
 - [2. 比特币的根本技术](#2-比特币的根本技术)
-- [3. 比特币私钥,公钥,公钥哈希,钱包维度简单梳理](#3-比特币私钥公钥公钥哈希钱包维度简单梳理)
-- [4. 比特币地址梳理](#4-比特币地址梳理)
-- [5. 比特币交易速度每秒7笔](#5-比特币交易速度每秒7笔)
+- [3. 比特币交易速度每秒7笔](#3-比特币交易速度每秒7笔)
 
 <!-- /TOC -->
 
@@ -39,46 +37,8 @@ categories: [business]
 * 区块链的设计 + UTXO `Unspent Transaction Output`
 
 
-
-<a id="markdown-3-比特币私钥公钥公钥哈希钱包维度简单梳理" name="3-比特币私钥公钥公钥哈希钱包维度简单梳理"></a>
-# 3. 比特币私钥,公钥,公钥哈希,钱包维度简单梳理
-
-* https://blog.csdn.net/jeason29/article/details/51576659 
-
-![](http://ouxarji35.bkt.clouddn.com/1-14112FU345.png)
-
-![](http://ouxarji35.bkt.clouddn.com/1-14112FU348.png)
-
-![](http://ouxarji35.bkt.clouddn.com/1-14112FU350.png)
-
-![](http://ouxarji35.bkt.clouddn.com/1-14112FU342.png)
-
-
-<a id="markdown-4-比特币地址梳理" name="4-比特币地址梳理"></a>
-# 4. 比特币地址梳理
-
-类型|方式|hex长度|byte长度
--|-|-|-
-privateKeyBytes|ecdsa.GenerateKey|64|32
-publicKeyBytes|ecdsa.GenerateKey|128|64
-publicKeyHash|SHA256+RIPEMD160|40|20
-walletAddress|Base58Encode|`34`|17
-signature|ecdsa.Sign(私钥,hash(证书))|128|64
-txId|SHA256|64|32
-
-私钥的存储格式:
-![](./pic/privatekeysaveway.png)
-
-公钥的存储格式:
-* 未压缩格式: 04作为前缀,payload 128 hex, 一共130hex
-* 压缩格式: 02或03作为前缀,payload 64 hex, 一共66hex
-
-所有的钱包版本  
-![](./pic/all_base58_version.png)
-
-
-<a id="markdown-5-比特币交易速度每秒7笔" name="5-比特币交易速度每秒7笔"></a>
-# 5. 比特币交易速度每秒7笔
+<a id="markdown-3-比特币交易速度每秒7笔" name="3-比特币交易速度每秒7笔"></a>
+# 3. 比特币交易速度每秒7笔
 
 * https://www.zhihu.com/question/41004649
 * https://www.zhihu.com/question/41004649/answer/145731141
@@ -95,4 +55,3 @@ txId|SHA256|64|32
 
 4194 / 600 ≈ 7 (个/s) -- 大约7秒钟能交易一个比特币
 ```
-
