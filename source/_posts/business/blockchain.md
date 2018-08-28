@@ -68,8 +68,9 @@ categories: [business]
 <a id="markdown-5-钱包提议" name="5-钱包提议"></a>
 # 5. 钱包提议
 
-* BIP32 (多组keypairs?) http://bip32.org/
+* `BIP32 (HD钱包)` http://bip32.org/
 * BIP38 (纸钱包) https://bitcoinpaperwallet.com/bip38-password-encrypted-wallets/
-* BIP39 (单词) https://iancoleman.io/bip39/
-* BIP44 (基于BIP32支持多币种) https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+* `BIP39 (助记码)` https://iancoleman.io/bip39/
+* `BIP43 (多用途HD钱包结构)`
+* `BIP44 (基于BIP32支持多币种)` https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 * BIP49 (P2WPKH-nested-in-P2SH) https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki
