@@ -18,6 +18,7 @@ categories: [项目分析]
 
 * https://github.com/bitpay/copay (轻量实现)
 * https://github.com/btcsuite/btcd (go实现)
+* https://github.com/btcsuite/btcd/blob/master/docs/README.md (go实现文档)
 * https://github.com/bitcoin/bitcoin (c++实现)
 
 ---
