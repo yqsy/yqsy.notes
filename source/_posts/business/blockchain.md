@@ -12,6 +12,7 @@ categories: [business]
 - [3. 比特币交易速度每秒7笔](#3-比特币交易速度每秒7笔)
 - [4. P2PkH P2SH](#4-p2pkh-p2sh)
 - [5. 钱包提议](#5-钱包提议)
+- [6. script](#6-script)
 
 <!-- /TOC -->
 
@@ -74,3 +75,8 @@ categories: [business]
 * `BIP43 (多用途HD钱包结构)`
 * `BIP44 (基于BIP32支持多币种)` https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 * BIP49 (P2WPKH-nested-in-P2SH) https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki
+
+<a id="markdown-6-script" name="6-script"></a>
+# 6. script
+
+* https://en.bitcoin.it/wiki/Script
