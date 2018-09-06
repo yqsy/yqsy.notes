@@ -11,6 +11,7 @@ categories: [business]
 - [2. 比特币的根本技术](#2-比特币的根本技术)
 - [3. 比特币交易速度每秒7笔](#3-比特币交易速度每秒7笔)
 - [4. 钱包提议](#4-钱包提议)
+- [5. BIP](#5-bip)
 
 <!-- /TOC -->
 
@@ -61,10 +62,24 @@ categories: [business]
 <a id="markdown-4-钱包提议" name="4-钱包提议"></a>
 # 4. 钱包提议
 
-* `BIP32 (HD钱包)` http://bip32.org/
+* `BIP32 (HD钱包)` http://bip32.org/ (以特定规则生成私钥,只需要存储少量的种子,就能推算出无数个可用的私钥)
 * BIP38 (纸钱包) https://bitcoinpaperwallet.com/bip38-password-encrypted-wallets/
-* `BIP39 (助记码)` https://iancoleman.io/bip39/
-* `BIP43 (多用途HD钱包结构)`
-* `BIP44 (基于BIP32支持多币种)` https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+* `BIP39 (助记码)` https://iancoleman.io/bip39/ (用有意义的助记词代替无意义的数字)
+* `BIP43 (多用途HD钱包结构)` (提出了BIP32的规范)
+* `BIP44` https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki (BIP43的特殊的应用)
 * BIP49 (P2WPKH-nested-in-P2SH) https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki
+
+
+BIP32  
+![](https://www.puzzle.ch/wp-content/uploads/2018/03/bip32-489x480.png)
+
+
+BIP39  
+![](https://upload-images.jianshu.io/upload_images/4973506-de36ca63e801e4cb.png)
+
+
+<a id="markdown-5-bip" name="5-bip"></a>
+# 5. BIP
+
+* https://en.bitcoin.it/wiki/Category:BIP
 
