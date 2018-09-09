@@ -26,12 +26,16 @@ categories: [business]
 - [6. 智能合约注意点](#6-智能合约注意点)
 - [7. 优化知识](#7-优化知识)
 - [8. 适用场景](#8-适用场景)
+- [9. 常用指令](#9-常用指令)
 
 <!-- /TOC -->
 
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* https://openzeppelin.org/api/docs/get-started.html (solidity安全合约的使用说明)
+* https://openzeppelin.org/api/docs/learn-about-tokens.html (openzeppelin关于token的说明)
+* https://github.com/comaeio/porosity (反编译)
 * https://ropsten.etherscan.io/ (ROPSTEN网络)
 * https://etherscan.io/ (区块链浏览器)
 * https://ethplorer.io/ (web合约调用)
@@ -42,6 +46,7 @@ categories: [business]
 * chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html#  (metamask网页)
 
 ---
+* https://github.com/ethereum/wiki/wiki/JavaScript-API (js api)
 * https://github.com/eoshackathon/ipfs_development_tutorial (古哥培训教程)
 * https://www.ethereum.org/greeter (开发入门)
 * http://ethdocs.org/en/latest/contracts-and-transactions/contracts.html (什么是合约)
@@ -499,43 +504,56 @@ eth.getBalance(eth.accounts[0])
 
 * https://truffleframework.com/docs/truffle/reference/configuration (官方教程)
 * https://truffleframework.com/tutorials/using-infura-custom-provider (教程)
+*  https://truffleframework.com/docs/truffle/reference/configuration (testrpc)
+* https://truffleframework.com/tutorials/building-testing-frontend-app-truffle-3 (前置)
+* https://truffleframework.com/ganache (ganache)
 
-
-再实践
+127.0.0.1:9545
 ```bash
 npm install -g truffle
-
 mkdir testtruffle && cd testtruffle
 truffle init
-npm init
-npm install zeppelin-solidity
-
+npm init -y
+npm install --save-exact openzeppelin-solidity@next
 # contracts 目录写合约
-
 # migrations 目录写部署脚本
-
 truffle develop
-
 # 编译
 compile
-
 # 部署
 migrate
+# 重新部署
+migrate --reset
 
-# 验证是否已被部署
-ERC20_A.deployed().then(instance => contract = instance)
-
-# 查看coinbase代币发行总数
-contract.balanceOf(web3.eth.coinbase)
-
-# 向账户#1打币，
-contract.transfer(web3.eth.accounts[1], 600000)
-
-# 查看#1账户余额
-contract.balanceOf(web3.eth.accounts[1])
-
+# 加载合约
+StagesToken.deployed().then(instance => contract = instance)
 ```
 
+127.0.0.1:8545
+```bash
+# testrpc
+npm install -g ethereumjs-testrpc
+
+truffle compile
+truffle migrate
+truffle console
+```
+
+127.0.0.1:7545 (web测试 ganache)
+```bash
+truffle unbox webpack
+
+truffle compile
+truffle migrate --network ganache
+truffle test
+npm run lint
+npm run dev
+npm run build
+    
+```
+
+
+发布到ropsten
 ```bash
 # 安装infura.io
 npm install truffle-hdwallet-provider --save
@@ -548,6 +566,30 @@ migrate --network ropsten
 # 替换合约
 migrate --reset --network ropsten
 ```
+
+truffle.js配置
+```
+var HDWalletProvider = require("truffle-hdwallet-provider");
+
+var infura_apikey = "50a4afb18ee44d649ad9548c1828ca79";
+var mnemonic = "embody save subway region brass benefit eager bike advice ocean favorite have";
+
+module.exports = {
+    networks: {
+        development: {
+            host: "localhost",
+            port: 8545,
+            network_id: "*"
+        },
+        ropsten: {
+            provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/" + infura_apikey),
+            network_id: 3,
+            gas: 4500000
+        }
+    }
+};
+```
+
 
 * contracts/: 开发者`编写`的智能合约
 * migrations/: 用来存放`部署脚本`
@@ -613,3 +655,56 @@ remix-ide
 
 ...
 
+<a id="markdown-9-常用指令" name="9-常用指令"></a>
+# 9. 常用指令
+
+```bash
+
+# 修改账户
+web3.eth.defaultAccount = web3.eth.accounts[1]
+
+
+# 所属者
+contract.owner()
+
+# ERC20Detailed
+contract.name()
+contract.symbol()
+contract.decimals()
+
+# ERC20
+
+# 1. 发行量
+contract.totalSupply()
+
+# 2. 某个账户的余额
+contract.balanceOf(web3.eth.coinbase)
+contract.balanceOf(web3.eth.accounts[1])
+
+# 3. 查询允许别人花多少自己的钱
+contract.allowance(web3.eth.coinbase,web3.eth.accounts[1]) 
+
+# 4. 转账
+contract.transfer(web3.eth.accounts[1], 5)
+
+# 5. 允许别人转自己多少钱
+contract.approve(web3.eth.accounts[1], 5)
+
+# 6. 从from转到to(并且msg.sender必须有数额),并且需要(approve的)
+contract.transferFrom(web3.eth.coinbase, web3.eth.accounts[1], 5)
+
+# 7. 增加别人花自己钱的数量
+contract.increaseAllowance(web3.eth.accounts[1], 5)
+
+# 8. 减少别人花自己钱的数量
+contract.increaseAllowance(web3.eth.accounts[1], 5)
+
+# ERC20Burnable
+
+# 1. 燃烧自己的
+contract.burn(100)
+
+# 2. 燃烧_allowed (并且msg.sender必须有数额)
+contract.burnFrom(web3.eth.coinbase, 100)
+
+```

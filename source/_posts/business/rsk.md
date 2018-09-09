@@ -8,9 +8,9 @@ categories: [business]
 
 - [1. 说明](#1-说明)
 - [2. 双向锚定的问题](#2-双向锚定的问题)
-- [3. docker搭建](#3-docker搭建)
-- [4. 简单测试](#4-简单测试)
-- [5. 部署到实际测试网络](#5-部署到实际测试网络)
+- [3. 简单测试](#3-简单测试)
+- [4. 部署到实际测试网络](#4-部署到实际测试网络)
+- [5. 挖矿](#5-挖矿)
 - [6. 其他指令](#6-其他指令)
 
 <!-- /TOC -->
@@ -18,10 +18,8 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* https://github.com/rsksmart/rskj (源码)
-* https://github.com/rsksmart/artifacts/tree/master/Dockerfiles/RSK-Node (docker的readme)
-* https://github.com/rsksmart/rskj/wiki (wiki)
 
+* https://github.com/rsksmart/rskj/wiki (wiki)
 
 部署节点   
 * https://github.com/rsksmart/rskj/wiki/Install-RskJ-and-join-the-RSK-Orchid-Mainnet-Beta (安装)
@@ -76,15 +74,9 @@ categories: [business]
 * https://github.com/rsksmart/rskj/wiki/Running-your-own-mining-local-network (本地出矿网络)
 
 
-浏览器:  
-* https://explorer.testnet.rsk.co/
-* https://explorer.rsk.co/
-
 双向锚定:
 * https://github.com/rsksmart/rskj/wiki/BTC-SBTC-conversion
 
-比特币私钥 -> rsk私钥:  
-* https://utils.rsk.co/
 
 json-prc接口:
 * https://github.com/rsksmart/rskj/wiki/JSON-RPC-API-compatibility-matrix
@@ -129,21 +121,9 @@ json-prc接口:
 
 
 
-<a id="markdown-3-docker搭建" name="3-docker搭建"></a>
-# 3. docker搭建
-```bash
-cd /mnt/disk1/linux/reference/refer
 
-git clone https://github.com/rsksmart/artifacts
-cd artifacts/Dockerfiles/RSK-Node
-
-docker build -t testnet -f Dockerfile.TestNet .
-docker run -d --name testnet-node-01  -p 4444:4444 -p 50505:50505 testnet
-```
-
-
-<a id="markdown-4-简单测试" name="4-简单测试"></a>
-# 4. 简单测试
+<a id="markdown-3-简单测试" name="3-简单测试"></a>
+# 3. 简单测试
 
 简单部署到本地
 
@@ -187,8 +167,8 @@ simpleStorage.get().then(bn => bn.toNumber())
 
 ```
 
-<a id="markdown-5-部署到实际测试网络" name="5-部署到实际测试网络"></a>
-# 5. 部署到实际测试网络
+<a id="markdown-4-部署到实际测试网络" name="4-部署到实际测试网络"></a>
+# 4. 部署到实际测试网络
 
 ```js
 var HDWalletProvider = require('truffle-hdwallet-provider')
@@ -242,6 +222,48 @@ SimpleStorage.deployed().then(instance => contract = instance)
 contract.set(1)
 
 contract.get()
+```
+
+<a id="markdown-5-挖矿" name="5-挖矿"></a>
+# 5. 挖矿
+```bash
+
+# 安装docker image
+cd /mnt/disk1/linux/reference/refer
+git clone https://github.com/rsksmart/artifacts
+cd artifacts/Dockerfiles/RSK-Node
+docker build -t testnet -f Dockerfile.TestNet .
+
+# 部署目录准备
+cd /mnt/disk1/linux/env
+mkdir -p rsk && cd rsk
+mkdir -p ./etc/rsk
+
+# 复制配置文件以及删除容器
+docker run -d --name testnet-node-01 \
+    -p 4444:4444 \
+    -p 50505:50505 \
+    -v `pwd`/etc/rsk:/mnt/disk1 \
+    testnet
+
+dbash testnet-node-01
+cd /etc/rsk
+cp ./* /mnt/disk1
+drmf
+
+# 修改配置文件
+sudo notepadqq testnet.conf
+
+# 重新启动
+docker run -d --name testnet-node-01 \
+    -p 4444:4444 \
+    -p 50505:50505 \
+    -v `pwd`/etc/rsk:/etc/rsk \
+    testnet
+
+# 监听:4444
+# 监听:50505
+
 ```
 
 <a id="markdown-6-其他指令" name="6-其他指令"></a>
