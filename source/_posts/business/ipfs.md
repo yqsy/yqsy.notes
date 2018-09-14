@@ -112,7 +112,7 @@ cd $GOPATH/src/github.com/ipfs/go-ipfs
 # 这个通过ipfs网络下载不到? 被墙了(因为官网被墙了)?
 make install
 
-cd /home/yq/installpack
+cd /mnt/disk1/linux/installpack
 wget https://dist.ipfs.io/go-ipfs/v0.4.16/go-ipfs_v0.4.16_linux-amd64.tar.gz
 tar -xvzf go-ipfs_v0.4.16_linux-amd64.tar.gz
 cd go-ipfs

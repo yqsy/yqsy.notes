@@ -33,6 +33,7 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* http://www.tryblockchain.org/Solidity-source-mapping.html (solidity 语法说明)
 * https://openzeppelin.org/api/docs/get-started.html (solidity安全合约的使用说明)
 * https://openzeppelin.org/api/docs/learn-about-tokens.html (openzeppelin关于token的说明)
 * https://github.com/comaeio/porosity (反编译)
@@ -502,8 +503,12 @@ eth.getBalance(eth.accounts[0])
 <a id="markdown-51-truffle" name="51-truffle"></a>
 ## 5.1. truffle
 
+* https://web3js.readthedocs.io/en/1.0/web3-eth-accounts.html (web3开发手册)
+* https://github.com/ethereum/wiki/wiki/JavaScript-API (web3接口)
+* https://truffleframework.com/boxes/webpack
+* https://truffle-box.github.io/ (truffle box)
 * https://truffleframework.com/docs/truffle/reference/configuration (官方教程)
-* https://truffleframework.com/tutorials/using-infura-custom-provider (教程)
+* https://truffleframework.com/tutorials/using-infura-custom-provider (infura教程)
 *  https://truffleframework.com/docs/truffle/reference/configuration (testrpc)
 * https://truffleframework.com/tutorials/building-testing-frontend-app-truffle-3 (前置)
 * https://truffleframework.com/ganache (ganache)
