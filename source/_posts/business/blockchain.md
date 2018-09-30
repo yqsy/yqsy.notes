@@ -8,14 +8,11 @@ categories: [business]
 <!-- TOC -->
 
 - [1. 资源](#1-资源)
-- [2. 比特币的根本技术](#2-比特币的根本技术)
-- [3. 比特币交易速度每秒7笔](#3-比特币交易速度每秒7笔)
-- [4. 钱包提议](#4-钱包提议)
-- [5. BIP](#5-bip)
+- [2. 问题积累](#2-问题积累)
+- [3. 钱包提议](#3-钱包提议)
 
 <!-- /TOC -->
 
-<a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 * https://www.blockchain.com/zh-cn/explorer (比特币区块链浏览器)
 
@@ -26,9 +23,11 @@ categories: [business]
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ (精通比特币书)
+* https://en.bitcoin.it/wiki/Category:BIP (bip)
 
-<a id="markdown-2-比特币的根本技术" name="2-比特币的根本技术"></a>
-# 2. 比特币的根本技术
+# 2. 问题积累
+
+> 比特币的根本技术是什么?
 
 
 * `POW` 工作量证明的共识达成机制是Adma在Hashcash里提出来的
@@ -39,10 +38,8 @@ categories: [business]
 * 区块链的设计 + UTXO `Unspent Transaction Output`
 
 
-<a id="markdown-3-比特币交易速度每秒7笔" name="3-比特币交易速度每秒7笔"></a>
-# 3. 比特币交易速度每秒7笔
+> 比特币交易速度每秒7笔怎么算出来的?
 
-* https://www.zhihu.com/question/41004649
 * https://www.zhihu.com/question/41004649/answer/145731141
 
 ---
@@ -58,9 +55,20 @@ categories: [business]
 4194 / 600 ≈ 7 (个/s) -- 大约7秒钟能交易一个比特币
 ```
 
+> 比特币一笔交易的占用大小是多少?
 
-<a id="markdown-4-钱包提议" name="4-钱包提议"></a>
-# 4. 钱包提议
+
+> 比特币当前的区块容量是多少? 
+
+
+> 比特币当前的区块头占用空间是多少?
+
+
+> 比特币当前的全量区块占用空间是多少?
+
+
+
+# 3. 钱包提议
 
 * `BIP32 (HD钱包)` http://bip32.org/ (以特定规则生成私钥,只需要存储少量的种子,就能推算出无数个可用的私钥)
 * BIP38 (纸钱包) https://bitcoinpaperwallet.com/bip38-password-encrypted-wallets/
@@ -76,10 +84,3 @@ BIP32
 
 BIP39  
 ![](https://upload-images.jianshu.io/upload_images/4973506-de36ca63e801e4cb.png)
-
-
-<a id="markdown-5-bip" name="5-bip"></a>
-# 5. BIP
-
-* https://en.bitcoin.it/wiki/Category:BIP
-

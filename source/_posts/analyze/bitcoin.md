@@ -13,7 +13,6 @@ categories: [项目分析]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://github.com/bitpay/copay (轻量实现)
@@ -25,7 +24,6 @@ categories: [项目分析]
 
 
 
-<a id="markdown-2-blocktransaction" name="2-blocktransaction"></a>
 # 2. block/transaction
 
 ```c++
@@ -87,7 +85,6 @@ class CTxOut
 
 ![](http://ouxarji35.bkt.clouddn.com/transactions-diagram.png)
 
-<a id="markdown-3-merkle-tree-spv轻量钱包验证" name="3-merkle-tree-spv轻量钱包验证"></a>
 # 3. merkle tree spv轻量钱包验证
 
 ![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
@@ -123,7 +120,6 @@ class CTxOut
 
 >>搜索　MSG_MERKLEBLOCK　
 
-<a id="markdown-4-pow" name="4-pow"></a>
 # 4. pow
 
 `generateBlocks 函数` 挖矿
@@ -142,3 +138,4 @@ while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pb
 `CalculateNextWorkRequired 函数` 重新计算难度
 
 `CreateNewBlock 函数` 铸币,第一笔交易为奖励矿工获得奖励和手续费的特殊交易
+
