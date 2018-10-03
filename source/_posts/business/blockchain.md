@@ -18,6 +18,15 @@ categories: [business]
 
 ---
 
+* https://bitcoin.org/en/developer-documentation (教程列表)
+* https://bitcoin.org/en/developer-guide
+* https://bitcoin.org/en/developer-reference
+* https://bitcoin.org/en/developer-examples
+* https://bitcoincore.org/en/doc/0.16.3/ (rpc接口说明)
+* http://chainquery.com/bitcoin-api/getblockchaininfo (rpc接口测试网页)
+
+---
+
 * https://github.com/liuchengxu/blockchain-tutorial/blob/master/content/SUMMARY.md (很好的中文资料)
 * https://www.zhihu.com/question/27687960/answer/148814714 (知乎资料索引)
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
