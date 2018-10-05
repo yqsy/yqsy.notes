@@ -13,10 +13,9 @@ categories: [business]
 
 <!-- /TOC -->
 
+<a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
-* https://www.blockchain.com/zh-cn/explorer (比特币区块链浏览器)
 
----
 
 * https://bitcoin.org/en/developer-documentation (教程列表)
 * https://bitcoin.org/en/developer-guide
@@ -24,6 +23,15 @@ categories: [business]
 * https://bitcoin.org/en/developer-examples
 * https://bitcoincore.org/en/doc/0.16.3/ (rpc接口说明)
 * http://chainquery.com/bitcoin-api/getblockchaininfo (rpc接口测试网页)
+* https://live.blockcypher.com/btc-testnet/decodetx/ (decode transaction)
+
+---
+
+钱包:
+* https://bitcoin.org/en/wallets/mobile/android/bitcoinwallet/
+
+浏览器:
+* https://www.blockchain.com/zh-cn/explorer
 
 ---
 
@@ -34,6 +42,7 @@ categories: [business]
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ (精通比特币书)
 * https://en.bitcoin.it/wiki/Category:BIP (bip)
 
+<a id="markdown-2-问题积累" name="2-问题积累"></a>
 # 2. 问题积累
 
 > 比特币的根本技术是什么?
@@ -77,6 +86,7 @@ categories: [business]
 
 
 
+<a id="markdown-3-钱包提议" name="3-钱包提议"></a>
 # 3. 钱包提议
 
 * `BIP32 (HD钱包)` http://bip32.org/ (以特定规则生成私钥,只需要存储少量的种子,就能推算出无数个可用的私钥)
