@@ -6,29 +6,78 @@ categories: [项目分析]
 
 <!-- TOC -->
 
-- [1. 源码拉取](#1-源码拉取)
-- [2. 代码组织](#2-代码组织)
-- [3. 有用的文档](#3-有用的文档)
-- [4. 源码详细](#4-源码详细)
+- [1. 源码编译](#1-源码编译)
+- [2. 安装](#2-安装)
+- [3. 代码组织](#3-代码组织)
+- [4. 有用的文档](#4-有用的文档)
+- [5. 源码详细](#5-源码详细)
 
 <!-- /TOC -->
 
-<a id="markdown-1-源码拉取" name="1-源码拉取"></a>
-# 1. 源码拉取
+<a id="markdown-1-源码编译" name="1-源码编译"></a>
+# 1. 源码编译
 
 
 v0.17.0
 
+* https://www.cnblogs.com/mfryf/p/8284790.html (cmake引用所有源文件)
+* https://gist.github.com/gubatron/36784ee38e45cb4bf4c7a82ecc87b6a8 (debug编译bitcoind)
+* https://stackoverflow.com/questions/19215177/how-to-solve-ptrace-operation-not-permitted-when-trying-to-attach-gdb-to-a-pro (cmake不允许附加)
 
 ```bash
+# 获取v0.17.0源码
 cd /mnt/disk1/linux/reference/refer
 git clone https://github.com/bitcoin/bitcoin
 cd bitcoin
-git checkout tags/v0.17.0 -b pkc
+git checkout tags/v0.17.0 -b readerbranch
+
+# 编译调试版本
+# ...依赖请参考 https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/build-unix.md
+
+./autogen.sh
+./configure --enable-debug
+make -j 8 && sudo make install
+
+# 开启附加调试
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+# 修改configure.ac 关闭优化,改成-O0
+252:    [-Og],
+253:    [[DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -Og"]],
+611:  CXXFLAGS="$CXXFLAGS -Og"
+
 ```
 
-<a id="markdown-2-代码组织" name="2-代码组织"></a>
-# 2. 代码组织
+```c++
+// 暂停代码
+char buf[100] = {};
+fgets(buf , 80, stdin);
+```
+
+```bash
+# 显示PID
+bitcoind -regtest -daemon & echo $! && fg
+```
+
+<a id="markdown-2-安装" name="2-安装"></a>
+# 2. 安装
+
+* https://bitcoincore.org/en/download/
+* https://bitcoin.org/en/full-node#ubuntu-1604
+* https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin
+
+```bash
+# 安装
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update -y
+sudo apt-get install bitcoin-qt bitcoind -y
+
+# 卸载
+sudo apt remove bitcoin-qt bitcoind -y
+```
+
+<a id="markdown-3-代码组织" name="3-代码组织"></a>
+# 3. 代码组织
 ```bash
 
 # 代码文件组织 .cpp .c .h
@@ -54,8 +103,8 @@ git checkout tags/v0.17.0 -b pkc
 
 ```
 
-<a id="markdown-3-有用的文档" name="3-有用的文档"></a>
-# 3. 有用的文档
+<a id="markdown-4-有用的文档" name="4-有用的文档"></a>
+# 4. 有用的文档
 
 ```bash
 .
@@ -96,7 +145,6 @@ git checkout tags/v0.17.0 -b pkc
 
 ```
 
-<a id="markdown-4-源码详细" name="4-源码详细"></a>
-# 4. 源码详细
-
+<a id="markdown-5-源码详细" name="5-源码详细"></a>
+# 5. 源码详细
 

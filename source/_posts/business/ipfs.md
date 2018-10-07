@@ -18,6 +18,10 @@ categories: [business]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* http://www.btcjiucai.com/jiucai/1839.html (要给去中心化存储打上问号)
+
+
+--- 
 
 * http://ipfser.org/2018/06/27/r45/ (书)
 * https://github.com/ipfs/ipfs (官方文档)
