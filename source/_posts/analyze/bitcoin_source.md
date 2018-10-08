@@ -20,11 +20,16 @@ categories: [项目分析]
 
 v0.17.0
 
-* https://www.cnblogs.com/mfryf/p/8284790.html (cmake引用所有源文件)
+* https://www.cnblogs.com/mfryf/p/8284790.html (bitcoin源码解析)
 * https://gist.github.com/gubatron/36784ee38e45cb4bf4c7a82ecc87b6a8 (debug编译bitcoind)
 * https://stackoverflow.com/questions/19215177/how-to-solve-ptrace-operation-not-permitted-when-trying-to-attach-gdb-to-a-pro (cmake不允许附加)
 
 ```bash
+# 获取阅读源码 (基于v0.17.0)
+git clone git@github.com:yqsy/bitcoin
+git fetch origin readerbranch
+git checkout readerbranch
+
 # 获取v0.17.0源码
 cd /mnt/disk1/linux/reference/refer
 git clone https://github.com/bitcoin/bitcoin
