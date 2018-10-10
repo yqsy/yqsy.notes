@@ -52,8 +52,8 @@ EOF
 ```
 外部输入错误,   1. object无key 2. 类型不对    捕获panic  ??   (范围,数值类型其他判断普通error) ??? 不能捕获的,这是runtime-error!!!
 https://blog.golang.org/defer-panic-and-recover
-
 ```
+
 * 内部处理错误, return error
 * 重要错误,无法挽救 panic
 
@@ -61,17 +61,19 @@ https://blog.golang.org/defer-panic-and-recover
 <a id="markdown-4-对于jsonbencode如何处理" name="4-对于jsonbencode如何处理"></a>
 # 4. 对于json,bencode如何处理
 
-像go这样的静态语言
+三种方案
+1. `反射到静态定义的类型上 (例如: go json官方解析库, protobuf)`
+2. 包一层object来给接口调用 (例如:c++)
+3. 解析到内置动态类型(例如:go interface, js 原生类型),并提供检查接口 1. 类型 2. key
 
-1. `反射到类型 (标准库)  像bencode,缺点是要实现MarshalBinary, UnmarshalBinary`
-2. 包一层object来给接口调用 (默认值)  https://github.com/buger/jsonparser
-3. 解析到内置类型,并提供检查接口 1. 类型 2. key
-
-其实(3.)还是比较适合动态语言,代码写起来很啰嗦的
+(3.)代码写起来很啰嗦的(有异常会好一些)
 1. interface{} 类型判断
 2. object key 判断
+
 
 <a id="markdown-5-interface使用场景" name="5-interface使用场景"></a>
 # 5. interface使用场景
 
-* 
+* json,bencode (上面地第三种方案,将动态的外部类型转换到内部的`原生的动态类型上`)
+* 范型(容器类(blockqueue),类型分发(codec)) -- `c++范型可以编译期决定,go interface 延迟到运行期`
+* 接口 --  `c++实现 范式 class : class , 将具体的实现延迟到运行期`
