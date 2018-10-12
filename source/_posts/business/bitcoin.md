@@ -12,6 +12,8 @@ categories: [business]
 - [3. 钱包提议](#3-钱包提议)
 - [4. block/transaction](#4-blocktransaction)
 - [5. merkle tree spv轻量钱包验证](#5-merkle-tree-spv轻量钱包验证)
+- [6. 硬分叉 软分叉](#6-硬分叉-软分叉)
+- [7. P2K P2PKH P2WPKH P2SH P2WSH ...](#7-p2k-p2pkh-p2wpkh-p2sh-p2wsh-)
 
 <!-- /TOC -->
 
@@ -26,9 +28,6 @@ categories: [business]
 * https://bitcoincore.org/en/doc/0.16.3/ (rpc接口说明)
 * http://chainquery.com/bitcoin-api/getblockchaininfo (rpc接口测试网页)
 * https://live.blockcypher.com/btc-testnet/decodetx/ (decode transaction)
-* https://en.bitcoin.it/wiki/Script (opcode)
-* https://siminchen.github.io/bitcoinIDE/build/editor.html (脚本编辑调试)
-* https://bitcoin-script-debugger.visvirial.com/ (常见交易种类)
 * https://github.com/bitcoin/bips (bip 列表)
 
 ---
@@ -92,10 +91,15 @@ categories: [business]
 
 > timestamp为uint32_t 未来有什么危机?
 
-> 比特比是否宕机过?
+> 比特币是否宕机过?
 
-> 算力中心化问题如何解决?
+> 比特币的问题?
 
+* 算力集中化
+* 私钥丢失
+* 隐私
+* public key 量子攻击
+* 粉尘攻击
 
 <a id="markdown-3-钱包提议" name="3-钱包提议"></a>
 # 3. 钱包提议
@@ -161,3 +165,147 @@ BIP39
 * https://bitcoin.org/en/developer-reference#merkleblock
 
 >>搜索　MSG_MERKLEBLOCK　
+
+<a id="markdown-6-硬分叉-软分叉" name="6-硬分叉-软分叉"></a>
+# 6. 硬分叉 软分叉
+
+* https://bitcoin.org/en/glossary/hard-fork
+* https://bitcoin.org/en/glossary/soft-fork
+
+
+<a id="markdown-7-p2k-p2pkh-p2wpkh-p2sh-p2wsh-" name="7-p2k-p2pkh-p2wpkh-p2sh-p2wsh-"></a>
+# 7. P2K P2PKH P2WPKH P2SH P2WSH ...
+
+* https://en.bitcoin.it/wiki/Script (opcode)
+* https://siminchen.github.io/bitcoinIDE/build/editor.html (脚本编辑调试)
+* https://bitcoin-script-debugger.visvirial.com/ (常见交易种类)
+* https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/descriptors.md (列表)
+
+---
+* scriptPubKey (加锁)
+* scriptSig (解锁)
+
+P2K
+
+```bash
+# scriptPubKey (prev out)
+OP_CHECKSIG
+<pubKey>
+
+# scriptSig (in)
+<sig>
+```
+
+P2PKH
+
+```bash
+# scriptPubKey (prev out)
+OP_CHECKSIG
+OP_EQUALVERIFY
+<pubkeyHash>
+OP_HASH160
+OP_DUP
+
+# scriptSig (in)
+<pubKey>
+<sig>
+```
+
+P2SH (BIP13 16)
+
+```bash
+# 单一签名
+# scriptPubKey (prev out)
+OP_EQUAL
+[20-byte-hash of {[pubkey] OP_CHECKSIG} ]
+OP_HASH160
+
+# scriptSig (in)
+{[pubkey] OP_CHECKSIG}
+[signature]
+
+# 3个签名
+{2 [pubkey1] [pubkey2] [pubkey3] 3 OP_CHECKMULTISIG}
+ 
+# 22个签名?
+{OP_CHECKSIG OP_IF OP_CHECKSIGVERIFY OP_ELSE OP_CHECKMULTISIGVERIFY OP_ENDIF}
+```
+
+Multisig outputs (BIP 11)
+
+```bash
+# scriptPubKey (prev out)
+OP_CHECKMULTISIG
+n
+{pubkey}...{pubkey}
+m
+
+# scriptSig (in)
+...signatures...
+OP_0
+```
+
+OP_RETURN (存数据)
+```bash
+# scriptPubKey (prev out)
+<data2>
+<data1>
+OP_RETURN
+
+# scriptSig (in)
+# 空
+```
+
+Anyone-Can-Spend (不在p2p网络上传播)
+
+```bash
+OP_TRUE
+```
+
+Transaction Puzzle (猜谜吗)
+
+```bash
+# scriptPubKey (prev out)
+OP_EQUAL
+<given_hash>
+OP_HASH256
+
+# scriptSig (in)
+<data> ?
+```
+
+Freezing funds until a time in the future (锁定一段时间)
+
+```bash
+# scriptPubKey (prev out)
+OP_CHECKSIG
+OP_EQUALVERIFY
+<pubKeyHash>
+OP_HASH160
+OP_DUP
+OP_DROP
+OP_CHECKLOCKTIMEVERIFY
+<expiry time>
+
+# scriptSig (in)
+<pubKey>
+<sig>
+```
+
+Incentivized finding of hash collisions
+
+```bash
+# scriptPubKey (prev out)
+OP_EQUAL
+OP_SHA1
+OP_SWAP
+OP_SHA1
+OP_VERIFY
+OP_NOT
+OP_EQUAL
+OP_2DUP
+
+# scriptSig (in)
+<preimage2>
+<preimage1>
+```
