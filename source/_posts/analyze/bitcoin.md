@@ -1,141 +1,155 @@
 ---
-title: bitcoin
+title: bitcoin_source
 date: 2018-08-09 11:51:23
 categories: [项目分析]
 ---
 
 <!-- TOC -->
 
-- [1. 说明](#1-说明)
-- [2. block/transaction](#2-blocktransaction)
-- [3. merkle tree spv轻量钱包验证](#3-merkle-tree-spv轻量钱包验证)
-- [4. pow](#4-pow)
+- [1. 源码编译](#1-源码编译)
+- [2. 安装](#2-安装)
+- [3. 代码组织](#3-代码组织)
+- [4. 有用的文档](#4-有用的文档)
+- [5. 源码详细](#5-源码详细)
 
 <!-- /TOC -->
 
-# 1. 说明
-
-* https://github.com/bitpay/copay (轻量实现)
-* https://github.com/bitcoin/bitcoin (c++实现)
-
----
-* https://bitcoin.org/bitcoin.pdf (比特币论文)
-* https://wenku.baidu.com/view/c62c067cb307e87101f69642.html (翻译)
+<a id="markdown-1-源码编译" name="1-源码编译"></a>
+# 1. 源码编译
 
 
+v0.17.0
 
-# 2. block/transaction
+* https://www.cnblogs.com/mfryf/p/8284790.html (bitcoin源码解析)
+* https://gist.github.com/gubatron/36784ee38e45cb4bf4c7a82ecc87b6a8 (debug编译bitcoind)
+* https://stackoverflow.com/questions/19215177/how-to-solve-ptrace-operation-not-permitted-when-trying-to-attach-gdb-to-a-pro (cmake不允许附加)
 
-```c++
-// 区块头,80字节
-class CBlockHeader
-{
-    // 版本号
-    int32_t nVersion;
-    
-    // 上一个区块的hash值
-    uint256 hashPrevBlock;
+```bash
+# 获取阅读源码 (基于v0.17.0)
+git clone git@github.com:yqsy/bitcoin
+git fetch origin readerbranch
+git checkout readerbranch
 
-    // merkle tree 的根值
-    uint256 hashMerkleRoot;
-    
-    // 当前时间戳
-    uint32_t nTime;
+# 获取v0.17.0源码
+cd /mnt/disk1/linux/reference/refer
+git clone https://github.com/bitcoin/bitcoin
+cd bitcoin
+git checkout tags/v0.17.0 -b readerbranch
 
-    // 当前挖矿的难度,越小,难度越大
-    uint32_t nBits;
+# 编译调试版本
+# ...依赖请参考 https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/build-unix.md
 
-    // 随机数
-    uint32_t nNonce;
-}
+./autogen.sh
+./configure --enable-debug
+make -j 8 && sudo make install
 
+# 开启附加调试
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
-class CBlock : public CBlockHeader
-{
-    // 交易列表
-    std::vector<CTransactionRef> vtx;
-
-    // 不知道
-    mutable bool fChecked;
-}
-
-class CTransaction
-{
-    const std::vector<CTxIn> vin;
-    
-    const std::vector<CTxOut> vout;
-}
-
-class CTxIn
-{
-    COutPoint prevout; // 包含1.前一笔交易的哈希 2.下标
-    CScript scriptSig;
-    uint32_t nSequence; 
-}
-
-class CTxOut
-{
-    CAmount nValue;
-    CScript scriptPubKey;
-}
+# 修改configure.ac 关闭优化,改成-O0
+252:    [-Og],
+253:    [[DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -Og"]],
+611:  CXXFLAGS="$CXXFLAGS -Og"
 
 ```
 
-![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
-
-![](http://ouxarji35.bkt.clouddn.com/transactions-diagram.png)
-
-# 3. merkle tree spv轻量钱包验证
-
-![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
-
-比特币验证分为:
-
-* 支付验证: 非常复杂 1. 余额是否可供支出 2. 是否存在双花 3. 脚本是否能通过
-* 交易验证: 只判断支付的交易是否已经被验证过
-
-验证一笔交易时只需要验证:
-
-* 交易hash
-* 树根hash
-* merkle path(我理解为关键branch的hash)
-
-
-相关资料:
-
-* https://en.wikipedia.org/wiki/Merkle_tree (wiki)
-* https://media.consensys.net/ever-wonder-how-merkle-trees-work-c2f8b7100ed3 (香蕉演示)
-* https://github.com/richpl/merkletree (java-验证特性呢?)
-* https://github.com/c-geek/merkle (js-验证特性呢?)
-
-
-问题, merkle path在验证时怎么得到?
-
-* https://bitcoin.stackexchange.com/questions/50674/why-is-the-full-merkle-path-needed-to-verify-a-transaction/50680(提问)
-
->> In order to verify that a transaction is included in a block, without having to download all the transactions in the block, they use an authentication path, or a merkle path. 
-
-参考
-* https://bitcoin.org/en/developer-reference#merkleblock
-
->>搜索　MSG_MERKLEBLOCK　
-
-# 4. pow
-
-`generateBlocks 函数` 挖矿
-
-
 ```c++
-// 不断变更nNonce来做hash
-// 如果小于当前难度值,算完成
-while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
-    ++pblock->nNonce;
-    --nMaxTries;
-}
-        
+// 暂停代码
+char buf[100] = {};
+fgets(buf , 80, stdin);
 ```
 
-`CalculateNextWorkRequired 函数` 重新计算难度
+```bash
+# 显示PID
+bitcoind -regtest -daemon & echo $! && fg
+```
 
-`CreateNewBlock 函数` 铸币,第一笔交易为奖励矿工获得奖励和手续费的特殊交易
+<a id="markdown-2-安装" name="2-安装"></a>
+# 2. 安装
+
+* https://bitcoincore.org/en/download/
+* https://bitcoin.org/en/full-node#ubuntu-1604
+* https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin
+
+```bash
+# 安装
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update -y
+sudo apt-get install bitcoin-qt bitcoind -y
+
+# 卸载
+sudo apt remove bitcoin-qt bitcoind -y
+```
+
+<a id="markdown-3-代码组织" name="3-代码组织"></a>
+# 3. 代码组织
+```bash
+
+# 代码文件组织 .cpp .c .h
+./qt                 280723     # qt *
+./bench              126491     # bench mark
+./test               92572      # test
+./secp256k1          18712      # 椭圆曲线加密算法 * 
+./wallet             17493      # 钱包
+./rpc                7734       # rpc
+./leveldb            6200       # 引用的leveldb库 *
+./script             6031       # 脚本实现
+./crypto             5712       # 对称/非堆成 加密算法
+./univalue           2401       # json *
+./policy             1860       # 策略,费用计算
+./interfaces         1438       # node接口,钱包接口  
+./support            864        # 内存池
+./index              716        # blockchain的存储层
+./primitives         708        # 区块/交易
+./consensus          669        # 共识, markle tree
+./zmq                652        # zeromq 接口
+./compat             539        # 压缩　　
+./config             434        # 配置
+
+```
+
+<a id="markdown-4-有用的文档" name="4-有用的文档"></a>
+# 4. 有用的文档
+
+```bash
+.
+├── assets-attribution.md     # 开源库的使用
+├── benchmarking.md           # 密码相关函数的评测
+├── bips.md                   # 实现的? BIPS协议规范
+├── bitcoin_logo_doxygen.png 
+├── build-freebsd.md          # freebsd的编译方法
+├── build-netbsd.md           # netbsd的编译方法
+├── build-openbsd.md          # openbsd的编译方法
+├── build-osx.md              # osx的编译方法
+├── build-unix.md             # unix的编译方法
+├── build-windows.md          # windows的编译方法
+├── dependencies.md           # 依赖库的清单
+├── descriptors.md            # rpc scantxoutset 检索说明
+├── developer-notes.md        # 编程规范
+├── dnsseed-policy.md         # dns seed 规则 
+├── Doxyfile.in          
+├── files.md                  # 在~./bitcoin/中的各个配置文件作用的说明
+├── fuzzing.md                # 模糊测试?
+├── gitian-building.md        # 交叉编译?
+├── init.md                   # 初始化脚本的配置和说明
+├── man                       #
+├── README.md                 # 索引
+├── README_osx.md
+├── README_windows.txt
+├── reduce-traffic.md      # 减少带宽
+├── release-notes          # 版本更新说明
+├── release-notes.md       # 发布升级说明
+├── release-process.md     # 升级过程?
+├── REST-interface.md      # rest接口
+├── shared-libraries.md    # 提供验证的借口
+├── tor.md                 # 对接洋葱头
+├── translation_process.md # 国际化
+├── translation_strings_policy.md # 国际化
+├── travis-ci.md           # 持续集成
+└── zmq.md                 # 通过zeromq广播?
+
+```
+
+<a id="markdown-5-源码详细" name="5-源码详细"></a>
+# 5. 源码详细
 

@@ -10,6 +10,8 @@ categories: [business]
 - [1. 资源](#1-资源)
 - [2. 问题积累](#2-问题积累)
 - [3. 钱包提议](#3-钱包提议)
+- [4. block/transaction](#4-blocktransaction)
+- [5. merkle tree spv轻量钱包验证](#5-merkle-tree-spv轻量钱包验证)
 
 <!-- /TOC -->
 
@@ -24,6 +26,10 @@ categories: [business]
 * https://bitcoincore.org/en/doc/0.16.3/ (rpc接口说明)
 * http://chainquery.com/bitcoin-api/getblockchaininfo (rpc接口测试网页)
 * https://live.blockcypher.com/btc-testnet/decodetx/ (decode transaction)
+* https://en.bitcoin.it/wiki/Script (opcode)
+* https://siminchen.github.io/bitcoinIDE/build/editor.html (脚本编辑调试)
+* https://bitcoin-script-debugger.visvirial.com/ (常见交易种类)
+* https://github.com/bitcoin/bips (bip 列表)
 
 ---
 
@@ -41,7 +47,7 @@ categories: [business]
 * https://github.com/chaozh/awesome-blockchain-cn (所有资料)
 * https://bbs.huaweicloud.com/community/usersnew/id_1518334573351109 (讲比特币的专栏)
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ (精通比特币书)
-* https://en.bitcoin.it/wiki/Category:BIP (bip)
+
 
 <a id="markdown-2-问题积累" name="2-问题积累"></a>
 # 2. 问题积累
@@ -76,15 +82,19 @@ categories: [business]
 
 > 比特币一笔交易的占用大小是多少?
 
-
 > 比特币当前的区块容量是多少? 
-
 
 > 比特币当前的区块头占用空间是多少?
 
-
 > 比特币当前的全量区块占用空间是多少?
 
+> 2100万是否真能挖完
+
+> timestamp为uint32_t 未来有什么危机?
+
+> 比特比是否宕机过?
+
+> 算力中心化问题如何解决?
 
 
 <a id="markdown-3-钱包提议" name="3-钱包提议"></a>
@@ -104,3 +114,50 @@ BIP32
 
 BIP39  
 ![](https://upload-images.jianshu.io/upload_images/4973506-de36ca63e801e4cb.png)
+
+
+<a id="markdown-4-blocktransaction" name="4-blocktransaction"></a>
+# 4. block/transaction
+
+![](./pic/bitcoin.png)
+
+![](http://ouxarji35.bkt.clouddn.com/ukuq0.png)
+
+![](http://ouxarji35.bkt.clouddn.com/transactions-diagram.png)
+
+
+<a id="markdown-5-merkle-tree-spv轻量钱包验证" name="5-merkle-tree-spv轻量钱包验证"></a>
+# 5. merkle tree spv轻量钱包验证
+
+![](http://ouxarji35.bkt.clouddn.com/2Ep7y.png)
+
+比特币验证分为:
+
+* 支付验证: 非常复杂 1. 余额是否可供支出 2. 是否存在双花 3. 脚本是否能通过
+* 交易验证: 只判断支付的交易是否已经被验证过
+
+验证一笔交易时只需要验证:
+
+* 交易hash
+* 树根hash
+* merkle path(我理解为关键branch的hash)
+
+
+相关资料:
+
+* https://en.wikipedia.org/wiki/Merkle_tree (wiki)
+* https://media.consensys.net/ever-wonder-how-merkle-trees-work-c2f8b7100ed3 (香蕉演示)
+* https://github.com/richpl/merkletree (java-验证特性呢?)
+* https://github.com/c-geek/merkle (js-验证特性呢?)
+
+
+问题, merkle path在验证时怎么得到?
+
+* https://bitcoin.stackexchange.com/questions/50674/why-is-the-full-merkle-path-needed-to-verify-a-transaction/50680(提问)
+
+>> In order to verify that a transaction is included in a block, without having to download all the transactions in the block, they use an authentication path, or a merkle path. 
+
+参考
+* https://bitcoin.org/en/developer-reference#merkleblock
+
+>>搜索　MSG_MERKLEBLOCK　
