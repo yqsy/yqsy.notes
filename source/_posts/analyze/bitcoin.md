@@ -10,7 +10,8 @@ categories: [项目分析]
 - [2. 安装](#2-安装)
 - [3. 代码组织](#3-代码组织)
 - [4. 有用的文档](#4-有用的文档)
-- [5. 源码详细](#5-源码详细)
+- [5. 框架](#5-框架)
+- [6. 源码详细](#6-源码详细)
 
 <!-- /TOC -->
 
@@ -150,7 +151,27 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
-<a id="markdown-5-源码详细" name="5-源码详细"></a>
-# 5. 源码详细
+<a id="markdown-5-框架" name="5-框架"></a>
+# 5. 框架
+
+![](./pic/overall_framework.png)
 
 
+
+<a id="markdown-6-源码详细" name="6-源码详细"></a>
+# 6. 源码详细
+
+```bash
+# 创建新区块
+generate -> generateBlocks -> BlockAssembler(Params()).CreateNewBlock() return  CBlockTemplate
+
+# 创建新区块时的区块的版本计算
+BlockAssembler::CreateNewBlock -> ComputeBlockVersion -> VersionBitsState -> VersionBitsConditionChecker::GetStateFor() return ThresholdState
+
+VersionBitsConditionChecker 实现-> AbstractThresholdConditionChecker
+WarningBitsConditionChecker 实现-> AbstractThresholdConditionChecker
+
+# 初始化参数
+class CMainParams : public CChainParams
+
+```
