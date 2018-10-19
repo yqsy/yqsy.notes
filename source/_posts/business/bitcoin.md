@@ -20,7 +20,7 @@ categories: [business]
 <a id="markdown-1-资源" name="1-资源"></a>
 # 1. 资源
 
-
+* https://bitinfocharts.com/top-100-richest-bitcoin-addresses.html (top100 rich address)
 * https://bitcoin.org/en/developer-documentation (教程列表)
 * https://bitcoin.org/en/developer-guide
 * https://bitcoin.org/en/developer-reference
