@@ -1,5 +1,5 @@
 ---
-title: hash
+title: pow
 date: 2018-01-02 14:15:28
 categories: [math]
 ---
