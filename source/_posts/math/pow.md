@@ -32,19 +32,10 @@ categories: [math]
 # 2. cuckoo cycle
 * https://github.com/tromp/cuckoo (源码)
 * https://bc-2.jp/cuckoo-profile.pdf (评测)
-* https://github.com/bitcoin/bips/blob/master/bip-0154.mediawiki (bitcoin的提案)
-* https://aeternity.com/aeternity-blockchain-whitepaper.pdf (欧洲以太坊)
-* https://max.book118.com/html/2017/0315/95524458.shtm (研究生论文)
 * https://en.wikipedia.org/wiki/Cuckoo_hashing (维基百科)
-
-```bash
-git clone https://github.com/tromp/cuckoo
-
-cd ./cuckoo/src/
-export LD_LIBRARY_PATH="$PWD/crypto:$LD_LIBRARY_PATH"
-make
-
-```
+* http://grin-tech.org/ (grin rust)
+* http://www.aeternity.com/ (ae erlang)
+* https://github.com/bitcoin/bips/blob/master/bip-0154.mediawiki (bitcoin的提案)
 
 
 <a id="markdown-3-sha256" name="3-sha256"></a>
