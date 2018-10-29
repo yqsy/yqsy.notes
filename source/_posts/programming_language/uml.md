@@ -21,17 +21,21 @@ categories: [编程语言]
 * https://zhuanlan.zhihu.com/p/22717889 (类图-继承、实现、泛化、依赖、关联、聚合、组合)
 
 
-![](https://pic3.zhimg.com/80/v2-210b63fc2770591a3f1dbb2925d0c169_hd.jpg)
+![](https://pic3.zhimg.com/80/v2-210b63fc2770591a3f1dbb2925d0c169_hd.jpg)  
 
-![](https://pic2.zhimg.com/80/v2-32bbb1eac0f327d90461441dd14671e8_hd.jpg)
+![](https://pic2.zhimg.com/80/v2-32bbb1eac0f327d90461441dd14671e8_hd.jpg)  
 
-![](https://pic2.zhimg.com/80/v2-71a518c254924b7723a533752899cdcb_hd.jpg)
+依赖: A类的方法中,形参是B类的变量,或者B类指针或者B类的引用,A依赖于B  
+![](https://pic2.zhimg.com/80/v2-71a518c254924b7723a533752899cdcb_hd.jpg)  
 
-![](https://pic2.zhimg.com/80/v2-e1dee21b7274e566d0dcd36f59d1e5da_hd.jpg)
+关联: A类有成员变量是B的类型,或者B类的指针类型,则A类关联于B  
+![](https://pic2.zhimg.com/80/v2-e1dee21b7274e566d0dcd36f59d1e5da_hd.jpg)  
 
-![](https://pic2.zhimg.com/80/v2-34057fc8fe4bbcee939a6982b9f6d3de_hd.jpg)
+聚合(关联的特例): 整体与部分的关系,整体和部分可以分开:  
+![](https://pic2.zhimg.com/80/v2-34057fc8fe4bbcee939a6982b9f6d3de_hd.jpg)  
 
-![](https://pic4.zhimg.com/80/v2-6eacb1a4d9f56c3c09bd805c2c8db01d_hd.jpg)
+组合(关联的特例): 整体与部分的关系,整体和部分不可以分开:  
+![](https://pic4.zhimg.com/80/v2-6eacb1a4d9f56c3c09bd805c2c8db01d_hd.jpg)  
 
 
 
