@@ -15,7 +15,6 @@ categories: [项目分析]
 
 <!-- /TOC -->
 
-<a id="markdown-1-源码编译" name="1-源码编译"></a>
 # 1. 源码编译
 
 
@@ -51,7 +50,25 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 252:    [-Og],
 253:    [[DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -Og"]],
 611:  CXXFLAGS="$CXXFLAGS -Og"
+```
 
+阅读源码的CMakeFile.txt
+```
+cmake_minimum_required(VERSION 3.12)
+project(src)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(${PROJECT_SOURCE_DIR}/secp256k1/include
+        ${PROJECT_SOURCE_DIR}/leveldb/include
+        ${PROJECT_SOURCE_DIR}/univalue/include
+        ${PROJECT_SOURCE_DIR}
+        )
+
+
+file(GLOB_RECURSE SRCS *.cpp *,h)
+
+add_executable(src ${SRCS})
 ```
 
 ```c++
@@ -65,7 +82,6 @@ fgets(buf , 80, stdin);
 bitcoind -regtest -daemon & echo $! && fg
 ```
 
-<a id="markdown-2-安装" name="2-安装"></a>
 # 2. 安装
 
 * https://bitcoincore.org/en/download/
@@ -82,7 +98,6 @@ sudo apt-get install bitcoin-qt bitcoind -y
 sudo apt remove bitcoin-qt bitcoind -y
 ```
 
-<a id="markdown-3-代码组织" name="3-代码组织"></a>
 # 3. 代码组织
 ```bash
 
@@ -109,7 +124,6 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
-<a id="markdown-4-有用的文档" name="4-有用的文档"></a>
 # 4. 有用的文档
 
 ```bash
@@ -151,27 +165,38 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
-<a id="markdown-5-框架" name="5-框架"></a>
 # 5. 框架
 
 ![](./pic/overall_framework.png)
 
 
 
-<a id="markdown-6-源码详细" name="6-源码详细"></a>
 # 6. 源码详细
 
 ```bash
 # 创建新区块
 generate -> generateBlocks -> BlockAssembler(Params()).CreateNewBlock() return  CBlockTemplate
 
-# 创建新区块时的区块的版本计算
-BlockAssembler::CreateNewBlock -> ComputeBlockVersion -> VersionBitsState -> VersionBitsConditionChecker::GetStateFor() return ThresholdState
+# 该区块的版本(功能实现)
+BlockAssembler::CreateNewBlock ->  pblock->nVersion = ComputeBlockVersion() -> VersionBitsState -> VersionBitsConditionChecker::GetStateFor() return ThresholdState
 
 VersionBitsConditionChecker 实现-> AbstractThresholdConditionChecker
 WarningBitsConditionChecker 实现-> AbstractThresholdConditionChecker
 
+# 难度调整:
+ pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
+
+# 交易打包
+BlockAssembler::addPackageTxs
+
 # 初始化参数
+# 主网
 class CMainParams : public CChainParams
+
+# 本地测试网络
+class CRegTestParams : public CChainParams
+
+# 测试网络
+class CTestNetParams : public CChainParam
 
 ```
