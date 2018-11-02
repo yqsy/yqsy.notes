@@ -17,7 +17,6 @@ categories: [math]
 
 <!-- /TOC -->
 
-<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * https://github.com/tromp/cuckoo
@@ -44,15 +43,14 @@ make
 * mean.cu (NVIDA gpu)
 * simple.cpp (simple implement)
 
-<a id="markdown-2-leanhpp-memory-latency-bound" name="2-leanhpp-memory-latency-bound"></a>
 # 2. lean.hpp (memory latency bound)
 
 宏|默认值|描述
 -|-|-
 HEADERLEN|80|
 PART_BITS|0|
-EDGEBITS|29|
-PROOFSIZE|42|
+`EDGEBITS`|29|决定图的大小
+`PROOFSIZE`|42|寻找到环的length
 NEDGES|((word_t)1 << EDGEBITS) (29 - 536870912) (19 - 524288)|
 NSIPHASH|1|
 SIZEOF_TWICE_ATOM|4|
@@ -69,8 +67,8 @@ TWICE_ATOMS|TWICE_BYTES / sizeof(atwice) (29 - 33554432) (19 - 32768)
 
 选项|类型|变量|默认值|描述
 -|-|-|-|-
--h|char [HEADERLEN]|header|""|80字节被计算对象
--n|uint32_t|nonce|0|累计数
+-h|char [HEADERLEN]|`header`|""|80字节被计算对象
+-n|uint32_t|`nonce`|0|累计数
 -r|uint32_t|range|1|在累计数上累加对少次来解难题
 -m|uint32_t|ntrims|1 + (PART_BITS+3)*(PART_BITS+4)/2;|
 -t|uint32_t|nthreads|1|多线程数量
@@ -115,14 +113,12 @@ Solution 21ce 5240 d304 d34c f756 faf5 16c9f 1a349 1d3d9 2096a 22036 2589b 2e2ed
 
 ```
 
-<a id="markdown-21-bench-mark" name="21-bench-mark"></a>
 ## 2.1. bench mark
 
 * Ubuntu 18.04.1 LTS
 * Intel(R) Xeon(R) CPU E5-2603 v4 @ 1.70GHz
 * 32 GB
 
-<a id="markdown-211-所占内存空间与edgebits的关系" name="211-所占内存空间与edgebits的关系"></a>
 ### 2.1.1. 所占内存空间与EDGEBITS的关系
 
 ```bash
@@ -153,7 +149,6 @@ done
 
 占用内存与EDGEBITS配置为`2^N`复杂度.
 
-<a id="markdown-212-计算每nonce消耗时间与内存的关系" name="212-计算每nonce消耗时间与内存的关系"></a>
 ### 2.1.2. 计算每nonce消耗时间与内存的关系
 
 
@@ -161,7 +156,6 @@ done
 
 每nonce消耗时间与占用内存为`2^N`复杂度.
 
-<a id="markdown-213-平均找到目标cycle的时间与内存的关系" name="213-平均找到目标cycle的时间与内存的关系"></a>
 ### 2.1.3. 平均找到目标cycle的时间与内存的关系
 
 ```bash
@@ -191,12 +185,10 @@ time ./lean28 -h helloworld -r 5 > /tmp/10.txt 2>&1
 
 不过一个结论还是可以得出的: `内存越大,寻找到目标cycle所消耗的时间越多.`
 
-<a id="markdown-214-多线程数量与nonce消耗时间的关系" name="214-多线程数量与nonce消耗时间的关系"></a>
 ### 2.1.4. 多线程数量与nonce消耗时间的关系
 
 目前虚拟机核心数量太少,等待测试.TODO
 
-<a id="markdown-215-难度调整控制出块时间" name="215-难度调整控制出块时间"></a>
 ### 2.1.5. 难度调整控制出块时间
 
 内置的代码没有调整难度的代码,可以参考: https://github.com/mimblewimble/grin/blob/master/doc/pow/pow.md
