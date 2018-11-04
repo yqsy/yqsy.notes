@@ -175,7 +175,7 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```bash
 # 创建新区块
-generate -> generateBlocks -> BlockAssembler(Params()).CreateNewBlock() return  CBlockTemplate
+generate(generatetoaddress) -> generateBlocks -> BlockAssembler(Params()).CreateNewBlock() return  CBlockTemplate
 
 # 该区块的版本(功能实现)
 BlockAssembler::CreateNewBlock ->  pblock->nVersion = ComputeBlockVersion() -> VersionBitsState -> VersionBitsConditionChecker::GetStateFor() return ThresholdState
