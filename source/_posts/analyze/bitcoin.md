@@ -40,7 +40,7 @@ git checkout tags/v0.17.0 -b readerbranch
 # ...依赖请参考 https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/build-unix.md
 
 ./autogen.sh
-./configure --enable-debug
+./configure --enable-debug --without-gui
 make -j 8 && sudo make install
 
 # 开启附加调试
