@@ -15,6 +15,7 @@ categories: [项目分析]
 <!-- /TOC -->
 
 
+<a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
 * http://blog.51cto.com/11821908/2059711 (pow角度解析)
@@ -81,6 +82,7 @@ cloc ./ --exclude-dir=tests,vendor
 
 ```
 
+<a id="markdown-2-blocktransaction" name="2-blocktransaction"></a>
 # 2. block/transaction
 
 * https://ethereum.stackexchange.com/questions/268/ethereum-block-architecture (框架图)
@@ -135,9 +137,11 @@ type Header struct {
 
 ![](http://ouxarji35.bkt.clouddn.com/eOwjD.png)
 
+<a id="markdown-3-merkle-patricia-trie" name="3-merkle-patricia-trie"></a>
 # 3. merkle patricia trie
 
 
+<a id="markdown-4-pow" name="4-pow"></a>
 # 4. pow
 
 

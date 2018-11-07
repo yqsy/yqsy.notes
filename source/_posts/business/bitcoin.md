@@ -14,15 +14,17 @@ categories: [business]
 - [5. 比特币当前的区块头占用空间是多少?](#5-比特币当前的区块头占用空间是多少)
 - [6. 比特币当前的全量区块占用空间是多少?](#6-比特币当前的全量区块占用空间是多少)
 - [7. timestamp为uint32_t 未来有什么危机?](#7-timestamp为uint32_t-未来有什么危机)
-- [9. 比特币分为哪几种节点?](#9-比特币分为哪几种节点)
-- [10. 比特币的问题](#10-比特币的问题)
+- [8. 比特币分为哪几种节点?](#8-比特币分为哪几种节点)
+- [9. 比特币的问题](#9-比特币的问题)
 
 <!-- /TOC -->
 
 
+<a id="markdown-1-问题积累" name="1-问题积累"></a>
 # 1. 问题积累
 
 
+<a id="markdown-2-比特币交易速度每秒7笔怎么算出来的" name="2-比特币交易速度每秒7笔怎么算出来的"></a>
 # 2. 比特币交易速度每秒7笔怎么算出来的?
 
 * https://www.zhihu.com/question/41004649/answer/145731141
@@ -40,10 +42,13 @@ categories: [business]
 4194 / 600 ≈ 7 (个/s) -- 大约7秒钟能交易一个比特币
 ```
 
+<a id="markdown-3-比特币一笔交易的占用大小是多少" name="3-比特币一笔交易的占用大小是多少"></a>
 # 3. 比特币一笔交易的占用大小是多少?
 
+<a id="markdown-4-比特币当前的区块容量是多少" name="4-比特币当前的区块容量是多少"></a>
 # 4. 比特币当前的区块容量是多少? 
 
+<a id="markdown-5-比特币当前的区块头占用空间是多少" name="5-比特币当前的区块头占用空间是多少"></a>
 # 5. 比特币当前的区块头占用空间是多少?
 
 ```c++
@@ -66,11 +71,14 @@ class CBlockHeader
 52500 * 80 = 4MB
 ```
 
+<a id="markdown-6-比特币当前的全量区块占用空间是多少" name="6-比特币当前的全量区块占用空间是多少"></a>
 # 6. 比特币当前的全量区块占用空间是多少?
 
+<a id="markdown-7-timestamp为uint32_t-未来有什么危机" name="7-timestamp为uint32_t-未来有什么危机"></a>
 # 7. timestamp为uint32_t 未来有什么危机?
 
-# 9. 比特币分为哪几种节点?
+<a id="markdown-8-比特币分为哪几种节点" name="8-比特币分为哪几种节点"></a>
+# 8. 比特币分为哪几种节点?
 
 
 Reference Client (Bitcoin Core) (比特币核心客户端)
@@ -90,7 +98,8 @@ Reference Client (Bitcoin Core) (比特币核心客户端)
 * Mining Nodes (矿池) --- 矿工 + pool mining nodes 或 矿工 + Stratum nodes
 * Lightweight (SPV) Stratum wallet --- 钱包+Stratum nodes
 
-# 10. 比特币的问题
+<a id="markdown-9-比特币的问题" name="9-比特币的问题"></a>
+# 9. 比特币的问题
 
 * 算力集中化
 * 私钥丢失
