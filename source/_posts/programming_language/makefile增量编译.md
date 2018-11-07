@@ -50,7 +50,7 @@ bdefine.o: bdefine.cpp ../buinc/stdafx.h ../buinc/bdefine.h \
 <a id="markdown-3-依赖关系" name="3-依赖关系"></a>
 # 3. 依赖关系
 
-![](http://ouxarji35.bkt.clouddn.com/snipaste_20171125_214801.png)
+![](./pic/snipaste_20171125_214801.png)
 
 * (1) .o依赖.cpp
 * (2) .o依赖.d
@@ -138,7 +138,7 @@ cleandep:
 
 <a id="markdown-4-sqc-文件" name="4-sqc-文件"></a>
 # 4. sqc 文件
-![](http://ouxarji35.bkt.clouddn.com/snipaste_20171125_223706.png)
+![](./pic//snipaste_20171125_223706.png)
 
 如图黄色内容,增加
 ```

@@ -203,8 +203,7 @@ git cat-file -p SHA1
 * https://github.com/pluralsight/git-internals-pdf
 * https://github.com/ChainBook/IPFS-For-Chinese/blob/master/IPFS%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/Git%E5%8E%9F%E7%90%86.md
 
-![](http://ouxarji35.bkt.clouddn.com/20180719210954.png)
-
+![](./pic/frame.png)
 
 
 
@@ -232,7 +231,7 @@ tag|refs/tags/`<version>`|hash|tag相应的tag hash
 tree|objects/`<hash>`|object|对象,包括commit,tree,blob和tag
 blob|objects/`<hash>`|object|同上
 
-![](http://ouxarji35.bkt.clouddn.com/20180719225914.png)
+![](./pic/example.png)
 
 
 ```bash
@@ -498,7 +497,7 @@ send-pack进程会判断那些commit是它所拥有但服务端没有的,针对�
 * https://github.com/rovaughn/git-remote-grave (案例)
 * https://git-scm.com/docs/git-remote-helpers (官方文档)
 
-![](http://ouxarji35.bkt.clouddn.com/git-remote-helper-1.png)
+![](./pic//git-remote-helper-1.png)
 
 * push: 把差异发送到remote
 * fetch: 把差异拉取到本地 (pull = fetch + reset)
