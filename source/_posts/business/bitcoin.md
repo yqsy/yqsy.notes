@@ -94,6 +94,7 @@ Reference Client (Bitcoin Core) (比特币核心客户端)
 * Lightweight (SPV) Wallet (轻量级钱包) --- 钱包 + 路由网络
 
 ---
+
 * Pool Protocol Servers (协议服务器)--- 1. pool mining nodes 2. Stratum nodes
 * Mining Nodes (矿池) --- 矿工 + pool mining nodes 或 矿工 + Stratum nodes
 * Lightweight (SPV) Stratum wallet --- 钱包+Stratum nodes
@@ -102,8 +103,7 @@ Reference Client (Bitcoin Core) (比特币核心客户端)
 # 9. 比特币的问题
 
 * 算力集中化
-* 私钥丢失
+* 私钥丢失/盗窃
 * 隐私
 * public key 量子攻击
 * 粉尘攻击
-
