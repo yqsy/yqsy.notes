@@ -51,6 +51,10 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 252:    [-Og],
 253:    [[DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -Og"]],
 611:  CXXFLAGS="$CXXFLAGS -Og"
+
+
+# 加上我的调试帮助
+git apply debughelper.diff
 ```
 
 阅读源码的CMakeFile.txt

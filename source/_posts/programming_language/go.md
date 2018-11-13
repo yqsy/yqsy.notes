@@ -62,7 +62,7 @@ https://blog.golang.org/defer-panic-and-recover
 # 4. 对于json,bencode如何处理
 
 三种方案
-1. `反射到静态定义的类型上 (例如: go json官方解析库, protobuf)`
+1. 反射到静态定义的类型上 (例如: go json官方解析库, protobuf)
 2. 包一层object来给接口调用 (例如:c++)
 3. 解析到内置动态类型(例如:go interface, js 原生类型),并提供检查接口 1. 类型 2. key
 
