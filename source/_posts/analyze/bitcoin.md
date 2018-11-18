@@ -4,16 +4,7 @@ date: 2018-08-09 11:51:23
 categories: [项目分析]
 ---
 
-<!-- TOC -->
-
-- [1. 源码编译](#1-源码编译)
-- [2. 安装](#2-安装)
-- [3. 代码组织](#3-代码组织)
-- [4. 有用的文档](#4-有用的文档)
-- [5. 框架](#5-框架)
-- [6. 源码详细](#6-源码详细)
-
-<!-- /TOC -->
+<!-- TOC -->autoauto- [1. 源码编译](#1-源码编译)auto- [2. 安装](#2-安装)auto- [3. 代码组织](#3-代码组织)auto- [4. 有用的文档](#4-有用的文档)auto- [5. 框架](#5-框架)auto- [6. 源码详细](#6-源码详细)autoauto<!-- /TOC -->
 
 <a id="markdown-1-源码编译" name="1-源码编译"></a>
 # 1. 源码编译
@@ -207,5 +198,74 @@ class CRegTestParams : public CChainParams
 
 # 测试网络
 class CTestNetParams : public CChainParam
+
+# 监听网络
+main -> AppInit -> AppInitMain -> CConnman::Start -> CConnman::InitBinds -> CConnman::Bind ->  CConnman::BindListenPort
+
+# 启动线程
+main -> AppInit -> AppInitMain -> CConnman::Start
+
+* CConnman::ThreadSocketHandler        监听8333,select处理node的读写
+* CConnman::ThreadDNSAddressSeed       睡眠11秒,解析种子节点域名至IP  (加入局域网规则不适用处)
+* CConnman::ThreadOpenAddedConnections
+* CConnman::ThreadOpenConnections      连接seed nodes
+* CConnman::ThreadMessageHandler       信号量或等待100毫秒处理node读取到的消息
+
+# 增加Nodes到vector
+main -> AppInit -> AppInitMain -> CConnman::Start -> CConnman::ThreadSocketHandler -> CConnman::AcceptConnection
+
+# 处理消息
+main -> AppInit -> AppInitMain -> CConnman::Start ->  CConnman::ThreadMessageHandler -> PeerLogicValidation::ProcessMessages -> ProcessMessage
+
+# 配置方式连接 seed node
+main -> AppInitMain -> CConnman::Start -> CConnman::ThreadOpenConnections -> ProcessOneShot -> OpenNetworkConnection -> CConnman::OpenNetworkConnection -> CConnman::ConnectNode
+
+# 接受新区块时的body检查 (NetMsgType::CMPCTBLOCK)
+main -> AppInitMain -> CConnman::Start -> CConnman::ThreadMessageHandler -> PeerLogicValidation::ProcessMessages -> ProcessMessage -> ProcessNewBlock -> CChainState::AcceptBlock -> CheckBlock 
+
+# 接受新区块时的头部检查
+ProcessMessage -> ProcessNewBlockHeaders -> g_chainstate.AcceptBlockHeader -> CheckBlockHeader
+
+# 判断最长链的逻辑 TODO
+generate -> generateBlocks -> ProcessNewBlock -> CChainState::ActivateBestChain -> CChainState::ActivateBestChainStep -> CChainState::ConnectTip -> CChainState::ConnectBlock
+
+# 计算得到CBlockIndex (关键是nChainWork的计算)
+ProcessMessage -> ProcessNewBlock -> CChainState::AcceptBlock -> CChainState::AcceptBlockHeader -> CChainState::AddToBlockIndex 
+
+# 初始化BlockIndex ()
+main -> AppInit -> AppInitMain -> LoadBlockIndex -> LoadBlockIndexDB -> LoadBlockIndex -> GetBlockProof (计算工作量)
+
+
+# 写死代码方式连接
+ThreadOpenConnections -> OpenNetworkConnection
+
+# 命令行addnode 链接 
+OpenNetworkConnection
+
+# 提示正在下载
+1. 对方发送p2p指令NetMsgType::GETHEADERS
+2. bitcoin-cli getblocktemplate
+
+IsInitialBlockDownload
+
+# p2p protocol
+VERSION
+VERACK
+
+GETADDR
+SENDHEADERS
+SENDCMPCT
+SENDCMPCT
+
+PING
+FEEFILTER
+PONG
+
+# 见证指令
+OP_CHECKSIG
+OP_CHECKSIGVERIFY
+OP_CHECKMULTISIG
+OP_CHECKMULTISIGVERIFY
+
 
 ```

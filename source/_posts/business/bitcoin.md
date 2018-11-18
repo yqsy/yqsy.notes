@@ -77,6 +77,12 @@ class CBlockHeader
 <a id="markdown-7-timestamp为uint32_t-未来有什么危机" name="7-timestamp为uint32_t-未来有什么危机"></a>
 # 7. timestamp为uint32_t 未来有什么危机?
 
+```
+2 ^ 32 = 4 294 967 296, uint32_t 支持范围为 0 ~ 4294967295
+
+2106年2月7日SundayAM6点28分时间将会溢出,重新归0,代码中与时间计算相关的逻辑会失灵.
+```
+
 <a id="markdown-8-比特币分为哪几种节点" name="8-比特币分为哪几种节点"></a>
 # 8. 比特币分为哪几种节点?
 
