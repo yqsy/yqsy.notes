@@ -53,17 +53,20 @@ HEADERLEN|80|
 PART_BITS|0|
 `EDGEBITS`|29|决定图的大小
 `PROOFSIZE`|42|寻找到环的length
-NEDGES|((word_t)1 << EDGEBITS) (29 - 536870912) (19 - 524288)|
+NEDGES|((word_t)1 << EDGEBITS) (19 - 524288)|
 NSIPHASH|1|
 SIZEOF_TWICE_ATOM|4|
+IDXSHIFT|(PART_BITS + 6) (6)|
+PART_BITS|0|
 
 ---
 
 常量|默认值|描述
 -|-|-
-ONCE_BITS|NEDGES >> PART_BITS (29 - 536870912) (19 - 524288)|
-TWICE_BYTES|(2 * ONCE_BITS) / 8 (29 - 134217728) (19 - 131072)|
-TWICE_ATOMS|TWICE_BYTES / sizeof(atwice) (29 - 33554432) (19 - 32768)
+ONCE_BITS|NEDGES >> PART_BITS  (19 - 524288)|
+TWICE_BYTES|(2 * ONCE_BITS) / 8  (19 - 131072)|
+TWICE_ATOMS|TWICE_BYTES / sizeof(atwice)  (19 - 32768)
+
 
 ---
 
@@ -74,6 +77,14 @@ TWICE_ATOMS|TWICE_BYTES / sizeof(atwice) (29 - 33554432) (19 - 32768)
 -r|uint32_t|range|1|在累计数上累加对少次来解难题
 -m|uint32_t|ntrims|1 + (PART_BITS+3)*(PART_BITS+4)/2;|
 -t|uint32_t|nthreads|1|多线程数量
+
+
+---
+
+变量|长度
+-|-
+CUCKOO_SIZE|NEDGES >> (IDXSHIFT-1) (16384)
+cuckoo| CUCKOO_SIZE*sizeof(au64) (131072)
 
 
 ```bash
