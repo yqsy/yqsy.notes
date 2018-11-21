@@ -14,6 +14,8 @@ categories: [math]
         - [2.1.3. 平均找到目标cycle的时间与内存的关系](#213-平均找到目标cycle的时间与内存的关系)
         - [2.1.4. 多线程数量与nonce消耗时间的关系](#214-多线程数量与nonce消耗时间的关系)
         - [2.1.5. 难度调整控制出块时间](#215-难度调整控制出块时间)
+- [3. 原理](#3-原理)
+    - [3.1. 图的寻找](#31-图的寻找)
 
 <!-- /TOC -->
 
@@ -21,6 +23,7 @@ categories: [math]
 # 1. 说明
 
 * https://github.com/tromp/cuckoo
+* https://github.com/tromp/cuckoo/blob/master/doc/cuckoo.pdf?raw=true (论文)
 
 ```bash
 # 编译
@@ -66,8 +69,8 @@ PART_BITS|0|
 ONCE_BITS|NEDGES >> PART_BITS  (19 - 524288)|
 TWICE_BYTES|(2 * ONCE_BITS) / 8  (19 - 131072)|
 TWICE_ATOMS|TWICE_BYTES / sizeof(atwice)  (19 - 32768)
-
-
+NODEBITS|EDGEBITS + 1 (19 - 20)|
+MAXPATHLEN| 8 << (NODEBITS/3) (19 - 512)|
 ---
 
 选项|类型|变量|默认值|描述
@@ -211,3 +214,15 @@ time ./lean28 -h helloworld -r 5 > /tmp/10.txt 2>&1
 ### 2.1.5. 难度调整控制出块时间
 
 内置的代码没有调整难度的代码,可以参考: https://github.com/mimblewimble/grin/blob/master/doc/pow/pow.md
+
+<a id="markdown-3-原理" name="3-原理"></a>
+# 3. 原理
+
+<a id="markdown-31-图的寻找" name="31-图的寻找"></a>
+## 3.1. 图的寻找
+
+
+论文的例子:
+
+![](./pic/cuckoo1.png)
+
