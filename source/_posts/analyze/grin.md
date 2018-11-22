@@ -39,6 +39,15 @@ git clone https://github.com/mimblewimble/grin
 ./doc                0 
 ```
 
+```bash
+# 编译
+
+sudo apt-get install build-essential cmake git libgit2-dev clang libncurses5-dev libncursesw5-dev zlib1g-dev pkg-config libssl-dev llvm -y
+
+
+
+```
+
 <a id="markdown-2-源码详细" name="2-源码详细"></a>
 # 2. 源码详细
 

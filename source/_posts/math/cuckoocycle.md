@@ -1,5 +1,5 @@
 ---
-title: pow
+title: cuckoocycle
 date: 2018-10-26 14:15:28
 categories: [math]
 ---
@@ -15,7 +15,8 @@ categories: [math]
         - [2.1.4. 多线程数量与nonce消耗时间的关系](#214-多线程数量与nonce消耗时间的关系)
         - [2.1.5. 难度调整控制出块时间](#215-难度调整控制出块时间)
 - [3. 原理](#3-原理)
-    - [3.1. 图的寻找](#31-图的寻找)
+    - [3.2. 图的寻找](#32-图的寻找)
+    - [3.3. 找不到时](#33-找不到时)
 
 <!-- /TOC -->
 
@@ -24,6 +25,7 @@ categories: [math]
 
 * https://github.com/tromp/cuckoo
 * https://github.com/tromp/cuckoo/blob/master/doc/cuckoo.pdf?raw=true (论文)
+* https://grincon.org/ (youtube 视频)
 
 ```bash
 # 编译
@@ -71,6 +73,11 @@ TWICE_BYTES|(2 * ONCE_BITS) / 8  (19 - 131072)|
 TWICE_ATOMS|TWICE_BYTES / sizeof(atwice)  (19 - 32768)
 NODEBITS|EDGEBITS + 1 (19 - 20)|
 MAXPATHLEN| 8 << (NODEBITS/3) (19 - 512)|
+CUCKOO_SIZE|NEDGES >> (IDXSHIFT-1) (16384)|
+cuckoo| CUCKOO_SIZE*sizeof(au64) (131072)|
+CUCKOO_MASK| CUCKOO_SIZE - 1 (16383)|
+EDGEMASK| ((word_t)NEDGES - 1) (524287) |
+NODEMASK|(EDGEMASK << 1) \| (word_t)1  (1048575)|
 ---
 
 选项|类型|变量|默认值|描述
@@ -80,14 +87,6 @@ MAXPATHLEN| 8 << (NODEBITS/3) (19 - 512)|
 -r|uint32_t|range|1|在累计数上累加对少次来解难题
 -m|uint32_t|ntrims|1 + (PART_BITS+3)*(PART_BITS+4)/2;|
 -t|uint32_t|nthreads|1|多线程数量
-
-
----
-
-变量|长度
--|-
-CUCKOO_SIZE|NEDGES >> (IDXSHIFT-1) (16384)
-cuckoo| CUCKOO_SIZE*sizeof(au64) (131072)
 
 
 ```bash
@@ -218,11 +217,15 @@ time ./lean28 -h helloworld -r 5 > /tmp/10.txt 2>&1
 <a id="markdown-3-原理" name="3-原理"></a>
 # 3. 原理
 
-<a id="markdown-31-图的寻找" name="31-图的寻找"></a>
-## 3.1. 图的寻找
-
+<a id="markdown-32-图的寻找" name="32-图的寻找"></a>
+## 3.2. 图的寻找
 
 论文的例子:
 
 ![](./pic/cuckoo1.png)
+
+<a id="markdown-33-找不到时" name="33-找不到时"></a>
+## 3.3. 找不到时
+
+![](./pic/cuckoo2.png)
 
