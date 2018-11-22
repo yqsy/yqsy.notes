@@ -17,6 +17,8 @@ categories: [项目分析]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
+* https://github.com/mimblewimble/grin/blob/master/doc/build.md (构建说明)
+
 ```bash
 git clone https://github.com/mimblewimble/grin
 
@@ -44,7 +46,8 @@ git clone https://github.com/mimblewimble/grin
 
 sudo apt-get install build-essential cmake git libgit2-dev clang libncurses5-dev libncursesw5-dev zlib1g-dev pkg-config libssl-dev llvm -y
 
-
+cd /mnt/disk1/linux/reference/refer/grin
+cargo build --release
 
 ```
 
