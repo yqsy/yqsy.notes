@@ -18,6 +18,8 @@ categories: [项目分析]
 # 1. 说明
 
 * https://github.com/mimblewimble/grin/blob/master/doc/build.md (构建说明)
+* http://www.grinmint.com/pages/index.html (grin的矿池)
+* http://www.grinmint.com/explorer/ (浏览器)
 
 ```bash
 git clone https://github.com/mimblewimble/grin
@@ -48,7 +50,6 @@ sudo apt-get install build-essential cmake git libgit2-dev clang libncurses5-dev
 
 cd /mnt/disk1/linux/reference/refer/grin
 cargo build --release
-
 ```
 
 <a id="markdown-2-源码详细" name="2-源码详细"></a>
@@ -132,3 +133,9 @@ Mainnet|CUT_THROUGH_HORIZON(10080) WEEK_HEIGHT
 
 * state_sync_threshold
 
+
+```bash
+
+
+
+```

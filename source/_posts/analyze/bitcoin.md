@@ -4,8 +4,18 @@ date: 2018-08-09 11:51:23
 categories: [项目分析]
 ---
 
-<!-- TOC -->autoauto- [1. 源码编译](#1-源码编译)auto- [2. 安装](#2-安装)auto- [3. 代码组织](#3-代码组织)auto- [4. 有用的文档](#4-有用的文档)auto- [5. 框架](#5-框架)auto- [6. 源码详细](#6-源码详细)autoauto<!-- /TOC -->
+<!-- TOC -->
 
+- [1. 源码编译](#1-源码编译)
+- [2. 安装](#2-安装)
+- [3. 代码组织](#3-代码组织)
+- [4. 有用的文档](#4-有用的文档)
+- [5. 源码详细](#5-源码详细)
+
+<!-- /TOC -->
+
+
+<a id="markdown-1-源码编译" name="1-源码编译"></a>
 <a id="markdown-1-源码编译" name="1-源码编译"></a>
 # 1. 源码编译
 
@@ -78,6 +88,7 @@ bitcoind -regtest -daemon & echo $! && fg
 ```
 
 <a id="markdown-2-安装" name="2-安装"></a>
+<a id="markdown-2-安装" name="2-安装"></a>
 # 2. 安装
 
 * https://bitcoincore.org/en/download/
@@ -94,6 +105,7 @@ sudo apt-get install bitcoin-qt bitcoind -y
 sudo apt remove bitcoin-qt bitcoind -y
 ```
 
+<a id="markdown-3-代码组织" name="3-代码组织"></a>
 <a id="markdown-3-代码组织" name="3-代码组织"></a>
 # 3. 代码组织
 ```bash
@@ -121,6 +133,7 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
+<a id="markdown-4-有用的文档" name="4-有用的文档"></a>
 <a id="markdown-4-有用的文档" name="4-有用的文档"></a>
 # 4. 有用的文档
 
@@ -163,15 +176,10 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
-<a id="markdown-5-框架" name="5-框架"></a>
-# 5. 框架
-
-![](./pic/overall_framework.png)
-
-
 
 <a id="markdown-6-源码详细" name="6-源码详细"></a>
-# 6. 源码详细
+<a id="markdown-5-源码详细" name="5-源码详细"></a>
+# 5. 源码详细
 
 ```bash
 # 创建新区块
