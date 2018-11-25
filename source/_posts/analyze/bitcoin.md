@@ -16,7 +16,6 @@ categories: [项目分析]
 
 
 <a id="markdown-1-源码编译" name="1-源码编译"></a>
-<a id="markdown-1-源码编译" name="1-源码编译"></a>
 # 1. 源码编译
 
 
@@ -88,7 +87,6 @@ bitcoind -regtest -daemon & echo $! && fg
 ```
 
 <a id="markdown-2-安装" name="2-安装"></a>
-<a id="markdown-2-安装" name="2-安装"></a>
 # 2. 安装
 
 * https://bitcoincore.org/en/download/
@@ -105,7 +103,6 @@ sudo apt-get install bitcoin-qt bitcoind -y
 sudo apt remove bitcoin-qt bitcoind -y
 ```
 
-<a id="markdown-3-代码组织" name="3-代码组织"></a>
 <a id="markdown-3-代码组织" name="3-代码组织"></a>
 # 3. 代码组织
 ```bash
@@ -133,7 +130,6 @@ sudo apt remove bitcoin-qt bitcoind -y
 
 ```
 
-<a id="markdown-4-有用的文档" name="4-有用的文档"></a>
 <a id="markdown-4-有用的文档" name="4-有用的文档"></a>
 # 4. 有用的文档
 
@@ -177,7 +173,6 @@ sudo apt remove bitcoin-qt bitcoind -y
 ```
 
 
-<a id="markdown-6-源码详细" name="6-源码详细"></a>
 <a id="markdown-5-源码详细" name="5-源码详细"></a>
 # 5. 源码详细
 

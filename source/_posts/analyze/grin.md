@@ -4,14 +4,12 @@ date: 2018-08-09 11:51:23
 categories: [项目分析]
 ---
 
-
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
 - [2. 源码详细](#2-源码详细)
 
 <!-- /TOC -->
-
 
 
 <a id="markdown-1-说明" name="1-说明"></a>
@@ -50,15 +48,27 @@ sudo apt-get install build-essential cmake git libgit2-dev clang libncurses5-dev
 
 cd /mnt/disk1/linux/reference/refer/grin
 cargo build --release
+
+# 调试版本
+cargo build
+
+# 调试代码
+use std::io;
+
+let mut input = String::new();
+
+match io::stdin().read_line(&mut input) {
+	Ok(n) => {
+	}
+	Err(error) => println!("error: {}", error),
+};
+
 ```
+
 
 <a id="markdown-2-源码详细" name="2-源码详细"></a>
 # 2. 源码详细
 
-```bash
-# 挖矿
-main -> real_main -> server_command -> start_server -> start_server_tui -> Server::start -> start_stratum_server -> run_loop -> get_block -> build_block
-```
 
 * min_edge_bits
 * base_edge_bits
@@ -135,7 +145,21 @@ Mainnet|CUT_THROUGH_HORIZON(10080) WEEK_HEIGHT
 
 
 ```bash
+# 难度调整 
+Digishield  和 GravityWave  , 与ZCash类似
 
+# 生成区块(难度)
+main -> real_main -> server_command -> start_server -> start_server_tui -> Server::start -> start_stratum_server -> run_loop -> get_block -> build_block
+
+# 测试挖矿?
+main -> real_main -> server_command -> start_server -> start_server_tui -> Server::start -> start_test_miner -> run_loop -> inner_mining_loop
+
+```
+
+指令
+```bash
+# 开启
+./target/debug/grin server run
 
 
 ```
