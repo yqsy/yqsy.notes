@@ -223,21 +223,6 @@ main -> AppInit -> AppInitMain -> CConnman::Start ->  CConnman::ThreadMessageHan
 # 配置方式连接 seed node
 main -> AppInitMain -> CConnman::Start -> CConnman::ThreadOpenConnections -> ProcessOneShot -> OpenNetworkConnection -> CConnman::OpenNetworkConnection -> CConnman::ConnectNode
 
-# 接受新区块时的body检查 (NetMsgType::CMPCTBLOCK)
-main -> AppInitMain -> CConnman::Start -> CConnman::ThreadMessageHandler -> PeerLogicValidation::ProcessMessages -> ProcessMessage -> ProcessNewBlock -> CChainState::AcceptBlock -> CheckBlock 
-
-# 接受新区块时的头部检查
-ProcessMessage -> ProcessNewBlockHeaders -> g_chainstate.AcceptBlockHeader -> CheckBlockHeader
-
-# 判断最长链的逻辑 TODO
-generate -> generateBlocks -> ProcessNewBlock -> CChainState::ActivateBestChain -> CChainState::ActivateBestChainStep -> CChainState::ConnectTip -> CChainState::ConnectBlock
-
-# 计算得到CBlockIndex (关键是nChainWork的计算)
-ProcessMessage -> ProcessNewBlock -> CChainState::AcceptBlock -> CChainState::AcceptBlockHeader -> CChainState::AddToBlockIndex 
-
-# 初始化BlockIndex ()
-main -> AppInit -> AppInitMain -> LoadBlockIndex -> LoadBlockIndexDB -> LoadBlockIndex -> GetBlockProof (计算工作量)
-
 
 # 写死代码方式连接
 ThreadOpenConnections -> OpenNetworkConnection
