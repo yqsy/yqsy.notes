@@ -7,13 +7,14 @@ categories: [business, bitcoin]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
+- [2. 参考资料](#2-参考资料)
 
 <!-- /TOC -->
 
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-* https://en.bitcoin.it/wiki/Controlled_supply
+
 
 ```
 产生速度:
@@ -58,4 +59,9 @@ for i in range(0, 33):
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(t)))
 
 ```
+
+<a id="markdown-2-参考资料" name="2-参考资料"></a>
+# 2. 参考资料
+
+* https://en.bitcoin.it/wiki/Controlled_supply
 
