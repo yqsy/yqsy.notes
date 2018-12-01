@@ -415,6 +415,17 @@ calcdiff_str(600.0, 7158278.0)
 generate -> generateBlocks -> BlockAssembler::CreateNewBlock 
 
 pblock->nBits  = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
+
+class CMainParams : public CChainParams:
+
+# 难度调整区间理应花费的时间(2周)
+consensus.nPowTargetTimespan = 14 * 24 * 60 * 60;
+
+# 出块时间(10分钟)
+consensus.nPowTargetSpacing = 10 * 60; 
+
+# 难度调整区间的理应区块高度累计(2016块)
+int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
 ```
     
 <a id="markdown-51-cmainparams-主网" name="51-cmainparams-主网"></a>
