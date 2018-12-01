@@ -1,5 +1,5 @@
 ---
-title: nBits
+title: 神奇的nBits
 date: 2018-02-01 13:29:12
 categories: [business, bitcoin]
 ---
