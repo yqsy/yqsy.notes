@@ -126,7 +126,7 @@ current_epoch = beginepoch
 
 summined = 0
 
-print("%15s %10s %10s %18s %15s %18s %18s %18s %18s %18s", ("Date reached", "Block","Reward Era", "BTC/block", "Year (estimate)", "Start BTC", "BTC Added", "End BTC", "BTC Increase", "End BTC % of Limit"))
+print("%15s %10s %10s %18s %15s %18s %18s %18s %18s %18s" % ("Date reached", "Block","Reward Era", "BTC/block", "Year (estimate)", "Start BTC", "BTC Added", "End BTC", "BTC Increase", "End BTC % of Limit"))
 
 for i in range (0, all_sectio_nnum):
     # 每一轮打印4年
