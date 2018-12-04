@@ -7,7 +7,7 @@ categories: [business, bitcoin]
 
 <!-- TOC -->
 
-- [1. 神奇的4字节 nBits](#1-神奇的4字节-nbits)
+- [1. 说明](#1-说明)
 - [2. nBits与target的转换](#2-nbits与target的转换)
     - [2.1. SetCompact](#21-setcompact)
     - [2.2. GetCompact](#22-getcompact)
@@ -23,8 +23,8 @@ categories: [business, bitcoin]
 
 <!-- /TOC -->
 
-<a id="markdown-1-神奇的4字节-nbits" name="1-神奇的4字节-nbits"></a>
-# 1. 神奇的4字节 nBits
+<a id="markdown-1-说明" name="1-说明"></a>
+# 1. 说明
 
 ```c++
 CBlockHeader
@@ -463,6 +463,61 @@ int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowT
 综上我们要把等式右边的分子分母互换以适应这样的逻辑.
 
 
+`打印调整区块难度的块数:`
+```python
+# 当前区块高度是552481, 打印540000后难度调整的区块并与区块链浏览器做对比
+
+nPowTargetTimespan = 14 * 24 * 60 * 60
+nPowTargetSpacing = 10 * 60
+interval = nPowTargetTimespan / nPowTargetSpacing # (2016)
+
+def print_adjustblock(beginblock, adjustblocknum):
+        if beginblock % interval != 0:
+                beginblock  += interval - (beginblock % interval)
+        i = beginblock
+        while i < beginblock + adjustblocknum * interval:
+                print(i)                
+                i += interval
+
+print_adjustblock(540000, 10)
+```
+
+`手动计算难度调整:`
+```python
+# 举例:
+# 调整难度块: 552384 Bits: 389142908, Time: 1543838368
+# 起始块: 550368 Bits: 388648495, Time: 1542412284
+# 终止块: 552383 Bits: 388648495, TIme: 1543837587
+# nbits2target 与 target2bits函数请翻阅上文
+
+nPowTargetTimespan = 14 * 24 * 60 * 60
+nPowTargetSpacing = 10 * 60
+
+def getnextworkrequired(oldbits, begintime, endtime):
+        actual_timespan = endtime - begintime
+        
+        if actual_timespan < nPowTargetTimespan / 4:
+                actual_timespan = nPowTargetTimespan / 4
+        if actual_timespan > nPowTargetTimespan * 4:
+                actual_timespan = nPowTargetTimespan * 4
+
+        new = nbits2target(oldbits)
+        
+        # 请注意,如果结果算得不对,那么可能是难度太小
+        # 使得bitcoin的arith_uint256截位了
+        new *= actual_timespan
+        new /= nPowTargetTimespan
+        
+        # 忽略最小难度
+        
+        return target2bits(new)
+
+def getnextworkrequired_str(oldbits, begintime, endtime):
+        newnBits = getnextworkrequired(oldbits, begintime, endtime)
+        print("%d" % newnBits)
+
+getnextworkrequired_str(388648495, 1542412284, 1543837587)
+```
 
 <a id="markdown-52-ctestnetparams测试网络" name="52-ctestnetparams测试网络"></a>
 ## 5.2. CTestNetParams(测试网络)
