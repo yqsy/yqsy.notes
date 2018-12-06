@@ -45,50 +45,61 @@ GetBlockSubsidy
 
 总量计算:
 ```python
-sum = 0
+from decimal import *
+        
+base_reward = 50 * 10 ** 8
+adjust_section = 210000
+all_sectio_num = 33
 
-for i in range (0, 33):
-    nSubsidy = 50 * 10 ** 8
+def get_decimal_str(num):
+        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        
+sum = 0
+     
+for i in range (0, all_sectio_num):
+    nSubsidy = base_reward
     nSubsidy = nSubsidy >> i
-    sum = sum + 210000 * nSubsidy
-print(sum * 1.0 / 10 ** 8)
+    sum += adjust_section * nSubsidy
+
+print("sum: %s" % sum)
+print("sum decimal: %s" % get_decimal_str(sum))
 ```
 
 分阶段打印:
 ```python
-sum = 20999999.9769
+from decimal import *
+
+sum = 2099999997690000
 base_reward = 50 * 10 ** 8
 adjust_section = 210000
-all_sectio_nnum = 34
+all_sectio_num = 33 + 1
 
-def divide(a, b):
-    if (abs(b - 0.0) < 0.000001):
+def get_decimal_str(num):
+        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        
+def percentage(a, b):
+    if (abs(1.0 * b - 0.0) < 0.000001):
         return "infinite"
     else:
-        return ("%.8f%%" % (a / b * 100))
-
-def todouble(coin):
-    return coin * 1.0 / 10 ** 8
+        return ("%.8f%%" % (1.0 * a / b * 100))
 
 summined = 0
 
 
-print("%10s %10s %18s %18s %18s %18s %18s %18s" % ("Block", "Reward Era", "BTC/block", "Start BTC", "BTC Added", "End BTC", "BTC Increase", "End BTC %% of Limit"))
+print("%10s %10s %18s %18s %18s %18s %18s %18s" % ("Block", "Reward Era", "BTC/block", "Start BTC", "BTC Added", "End BTC", "BTC Increase", "End BTC % of Limit"))
 
-for i in range(0 , all_sectio_nnum):
+for i in range(0 , all_sectio_num):
     block = i * adjust_section
     
     nSubsidy = base_reward
     nSubsidy = nSubsidy >> i
-    
     currentmined = adjust_section * nSubsidy 
     endedbtc = summined + currentmined
     
-    increase = divide(todouble(currentmined), todouble(summined))
-    
-    endedbtcoflimit = divide(todouble(endedbtc), sum)
+    increase = percentage(currentmined, summined)
+    endedbtcoflimit = percentage(endedbtc, sum)
 
-    print("%10d %10d %18.8f %18.8f %18.8f %18.8f %18s %18s" %( block, i+1, todouble(nSubsidy), todouble(summined), todouble(currentmined), todouble(endedbtc), increase, endedbtcoflimit))
+    print("%10d %10d %18s %18s %18s %18s %18s %18s" %(block, i+1, get_decimal_str(nSubsidy), get_decimal_str(summined), get_decimal_str(currentmined), get_decimal_str(endedbtc), increase, endedbtcoflimit))
 
     summined = summined + currentmined
 
@@ -99,24 +110,25 @@ for i in range(0 , all_sectio_nnum):
 比特币的减半是由明确的210000个区块数量决定的.而每4年奖励减半只是根据这个前提所推断出来的.根据以下脚本推算出如果挖矿算力保持不变,大约2140年所有的比特币都会被开采完毕
 
 ```python
+from decimal import *
 import datetime
 
-sum = 20999999.9769
+sum = 2099999997690000
 base_reward = 50 * 10 ** 8
 adjust_section = 210000
-all_sectio_nnum = 34
+all_sectio_num = 33 + 1
 beginepoch = 1231006505 # GMT+08:00: 2009年1月4日星期日凌晨2点15分
 
 oneyear = 60 * 60 * 24 * 365 
 
-def divide(a, b):
-    if (abs(b - 0.0) < 0.000001):
+def get_decimal_str(num):
+        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        
+def percentage(a, b):
+    if (abs(1.0 * b - 0.0) < 0.000001):
         return "infinite"
     else:
-        return ("%.8f%%" % (a / b * 100))
-        
-def todouble(coin):
-    return coin * 1.0 / 10 ** 8
+        return ("%.8f%%" % (1.0 * a / b * 100))
 
 # GMT+08:00
 def getepochstr(epoch):
@@ -128,7 +140,7 @@ summined = 0
 
 print("%15s %10s %10s %18s %15s %18s %18s %18s %18s %18s" % ("Date reached", "Block","Reward Era", "BTC/block", "Year (estimate)", "Start BTC", "BTC Added", "End BTC", "BTC Increase", "End BTC % of Limit"))
 
-for i in range (0, all_sectio_nnum):
+for i in range (0, all_sectio_num):
     # 每一轮打印4年
     
     for j in range(0, 4):
@@ -139,13 +151,12 @@ for i in range (0, all_sectio_nnum):
         currentmined = adjust_section / 4  * nSubsidy 
         endedbtc = summined + currentmined
         
-        increase = divide(todouble(currentmined), todouble(summined))
-         
-        endedbtcoflimit = divide(todouble(endedbtc), sum)
+        increase = percentage(currentmined, summined)
+        endedbtcoflimit = percentage(endedbtc, sum)
         
         estimate = current_epoch + oneyear
 
-        print("%15s %10d %10d %18.8f %15s %18.8f %18.8f %18.8f %18s %18s" % (getepochstr(current_epoch), block, i+1, todouble(nSubsidy), getepochstr(estimate), todouble(summined),todouble(currentmined), todouble(endedbtc),increase, endedbtcoflimit ))
+        print("%15s %10d %10d %18s %15s %18s %18s %18s %18s %18s" % (getepochstr(current_epoch), block, i+1, get_decimal_str(nSubsidy), getepochstr(estimate), get_decimal_str(summined), get_decimal_str(currentmined), get_decimal_str(endedbtc),increase, endedbtcoflimit))
 
         current_epoch = current_epoch + oneyear
 

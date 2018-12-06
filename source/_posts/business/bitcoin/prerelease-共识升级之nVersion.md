@@ -7,13 +7,13 @@ categories: [business, bitcoin]
 
 <!-- TOC -->
 
-- [1. 共识软件升级之nVersion](#1-共识软件升级之nversion)
+- [1. 说明](#1-说明)
 
 <!-- /TOC -->
 
 
-<a id="markdown-1-共识软件升级之nversion" name="1-共识软件升级之nversion"></a>
-# 1. 共识软件升级之nVersion
+<a id="markdown-1-说明" name="1-说明"></a>
+# 1. 说明
 
 
 ```c++
