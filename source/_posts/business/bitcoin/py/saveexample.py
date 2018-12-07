@@ -1,3 +1,5 @@
+import struct
+
 # int nFile;
 # unsigned int nPos;
 class DiskBlockPos(object):
@@ -30,7 +32,27 @@ class BlockFileInfo(object):
             self.nHeightLast = nHeight
         if (nTime > self.nTimeLast):
             self.nTimeLast = nTime
-        
+    
+    def __str__(self):
+        return "CBlockDiskPos(nFile=%d, nPos=%d)".format(nFile, nPos)
+
+
+def CheckDiskSpace(nAdditionalBytes):
+    return true
+
+def OpenBlockFile(pos):
+    path = "/tmp/block/%s%05u.dat".format("blk", pos.nFile)
+    dir = os.path.dirnamepath(path)
+    os.makedirs(dir)
+    f = open(path, "wb+")
+    if (pos.nPos):
+        f.seek(pos.nPos)    
+    return f
+
+
+def AllocateFileRange(f, offset, length):
+    nEndPos = offset + length
+    os.posix_fallocate(f.fileno(), 0, nEndPos)
 
 # BlockFileInfo vector  
 # (索引会持久化到leveldb中,这里不做示范)
@@ -39,7 +61,6 @@ vinfoBlockFile = []
 # 上一个写入的nFile (文件序号)
 nLastBlockFile = 0
 
-
 MAX_BLOCKFILE_SIZE = 0x8000000 # 128 MiB
 BLOCKFILE_CHUNK_SIZE = 0x1000000 # 16 MiB
 def FindBlockPos(nAddSize, nHeight, nTime):
@@ -47,7 +68,6 @@ def FindBlockPos(nAddSize, nHeight, nTime):
     if len(vinfoBlockFile) <= nFile:
         vinfoBlockFile.append(BlockFileInfo())
 
-    # 这个判断应该是 > 吧, 不然不能够存储满128MiB了
     while(vinfoBlockFile[nFile].nSize + nAddSize >= MAX_BLOCKFILE_SIZE):
         nFile += 1
         if len(vinfoBlockFile) <= nFile:
@@ -56,21 +76,41 @@ def FindBlockPos(nAddSize, nHeight, nTime):
         pos.nPos = vinfoBlockFile[nFile].nSize
 
     if (nFile != nLastBlockFile):
-        print("nLastBlockFile changed")
+        print("Leaving block file %d: %s\n", nLastBlockFile, str(vinfoBlockFile[nLastBlockFile]))
         nLastBlockFile = nFile
 
     vinfoBlockFile[nFile].addblock(nHeight, nTime)
     vinfoBlockFile[nFile].nSize += nAddSize
 
     nOldChunks = (pos.pos + BLOCKFILE_CHUNK_SIZE - 1) / BLOCKFILE_CHUNK_SIZE
+    nNewChunks = (vinfoBlockFile[nFile].nSize + BLOCKFILE_CHUNK_SIZE - 1) / BLOCKFILE_CHUNK_SIZE
+    
+    if (nNewChunks > nOldChunks):
+        if(CheckDiskSpace(nNewChunks * BLOCKFILE_CHUNK_SIZE - pos.nPos)):
+            print("Pre-allocating up to position 0x%x in blk%05u.dat",  nNewChunks * BLOCKFILE_CHUNK_SIZE, pos.nFile)
+            f = OpenBlockFile(pos)
+            AllocateFileRange(f, pos.npos, nNewChunks * BLOCKFILE_CHUNK_SIZE - pos.nPos)
+            f.close()
+
+def WriteBlockToDisk(block, pos, messageStart):
+    f = OpenBlockFile(pos)
+    nSize = len(block)
+    f.write(messageStart)
+    f.write(struct.pack("<I", nSize))
+
+    fileOutPos = f.ftell()
+    pos.nPos = fileOutPos
+    f.write(block)
 
 
-
+for i in range(0, )
 
 # 1. GetSerializeSize 获取存储区块的大小
 nBlockSize = 285
 
 nBlockWithPrefixSize = nBlockSize + 8
-
 # 2. FindBlockPos 寻找到存储的位置
 
+if (FindBlockPos(nBlockWithPrefixSize, ))
+
+# 3. WriteBlockToDisk 写到磁盘上
