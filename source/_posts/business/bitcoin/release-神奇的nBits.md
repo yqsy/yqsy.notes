@@ -491,7 +491,6 @@ print_adjustblock(540000, 10)
 # nbits2target 与 target2bits函数请翻阅上文
 
 nPowTargetTimespan = 14 * 24 * 60 * 60
-nPowTargetSpacing = 10 * 60
 
 def getnextworkrequired(oldbits, begintime, endtime):
         actual_timespan = endtime - begintime
@@ -514,7 +513,7 @@ def getnextworkrequired(oldbits, begintime, endtime):
 
 def getnextworkrequired_str(oldbits, begintime, endtime):
         newnBits = getnextworkrequired(oldbits, begintime, endtime)
-        print("%d" % newnBits)
+        print("%x" % newnBits)
 
 getnextworkrequired_str(388648495, 1542412284, 1543837587)
 ```

@@ -64,6 +64,8 @@ nLastBlockFile = 0
 MAX_BLOCKFILE_SIZE = 0x8000000 # 128 MiB
 BLOCKFILE_CHUNK_SIZE = 0x1000000 # 16 MiB
 def FindBlockPos(nAddSize, nHeight, nTime):
+    pos = DiskBlockPos()
+
     nFile = nLastBlockFile
     if len(vinfoBlockFile) <= nFile:
         vinfoBlockFile.append(BlockFileInfo())
@@ -91,6 +93,10 @@ def FindBlockPos(nAddSize, nHeight, nTime):
             f = OpenBlockFile(pos)
             AllocateFileRange(f, pos.npos, nNewChunks * BLOCKFILE_CHUNK_SIZE - pos.nPos)
             f.close()
+        else:
+            raise Exception("out of disk space")   
+    return 
+
 
 def WriteBlockToDisk(block, pos, messageStart):
     f = OpenBlockFile(pos)
@@ -103,14 +109,27 @@ def WriteBlockToDisk(block, pos, messageStart):
     f.write(block)
 
 
-for i in range(0, )
 
-# 1. GetSerializeSize 获取存储区块的大小
-nBlockSize = 285
 
-nBlockWithPrefixSize = nBlockSize + 8
-# 2. FindBlockPos 寻找到存储的位置
+def SaveBlockToDisk(block, nHeight, nTime):
+    # 1. GetSerializeSize 获取存储区块的大小
+    nBlockSize = len(block)
 
-if (FindBlockPos(nBlockWithPrefixSize, ))
+    nBlockWithPrefixSize = nBlockSize + 8
+    # 2. FindBlockPos 寻找到存储的位置
+    FindBlockPos(nBlockWithPrefixSize, nHeight, nTime)
 
-# 3. WriteBlockToDisk 写到磁盘上
+    # if (FindBlockPos(nBlockWithPrefixSize, ))
+
+    # 3. WriteBlockToDisk 写到磁盘上
+
+
+
+# 每个区块写死285字节
+BLOCK_SIZE = 285
+
+# 存储满两个文件的区块数量
+BLOCK_NUM = 128 * 2 * 1024 * 1024 / 285
+
+for i in range(0, BLOCK_NUM):
+    

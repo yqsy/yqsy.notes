@@ -46,13 +46,14 @@ GetBlockSubsidy
 总量计算:
 ```python
 from decimal import *
-        
-base_reward = 50 * 10 ** 8
+
+COIN = 10 ** 8        
+base_reward = 50 * COIN
 adjust_section = 210000
 all_sectio_num = 33
 
 def get_decimal_str(num):
-        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        return "{0:.8f}".format(((Decimal(num) / COIN).quantize(Decimal('0.00000000'))))
         
 sum = 0
      
@@ -70,12 +71,13 @@ print("sum decimal: %s" % get_decimal_str(sum))
 from decimal import *
 
 sum = 2099999997690000
-base_reward = 50 * 10 ** 8
+COIN = 10 ** 8        
+base_reward = 50 * COIN
 adjust_section = 210000
 all_sectio_num = 33 + 1
 
 def get_decimal_str(num):
-        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        return "{0:.8f}".format(((Decimal(num) / COIN).quantize(Decimal('0.00000000'))))
         
 def percentage(a, b):
     if (abs(1.0 * b - 0.0) < 0.000001):
@@ -114,7 +116,8 @@ from decimal import *
 import datetime
 
 sum = 2099999997690000
-base_reward = 50 * 10 ** 8
+COIN = 10 ** 8        
+base_reward = 50 * COIN
 adjust_section = 210000
 all_sectio_num = 33 + 1
 beginepoch = 1231006505 # GMT+08:00: 2009年1月4日星期日凌晨2点15分
@@ -122,7 +125,7 @@ beginepoch = 1231006505 # GMT+08:00: 2009年1月4日星期日凌晨2点15分
 oneyear = 60 * 60 * 24 * 365 
 
 def get_decimal_str(num):
-        return "{0:.8f}".format(((Decimal(num) / (10 ** 8)).quantize(Decimal('0.00000000'))))
+        return "{0:.8f}".format(((Decimal(num) / COIN).quantize(Decimal('0.00000000'))))
         
 def percentage(a, b):
     if (abs(1.0 * b - 0.0) < 0.000001):
