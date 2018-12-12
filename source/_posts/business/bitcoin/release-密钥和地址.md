@@ -7,7 +7,9 @@ categories: [business, bitcoin]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
-- [2. 参考资料](#2-参考资料)
+- [2. libbitcoin梳理P2PKH地址的关系](#2-libbitcoin梳理p2pkh地址的关系)
+- [3. libbitcoin梳理P2SH地址的关系](#3-libbitcoin梳理p2sh地址的关系)
+- [4. 参考资料](#4-参考资料)
 
 <!-- /TOC -->
 
@@ -22,65 +24,153 @@ categories: [business, bitcoin]
 流程图:  
 ![](./pic/address-generation-extra.png)
 
-(以上图片截取自互联网)
+(图片来源: 互联网)
 
-由于椭圆曲线生成的公钥可以被压缩,所以如下图我们按照两个线路来梳理私钥,公钥,公钥哈希,钱包地址的关系.
+![](https://en.bitcoin.it/w/images/en/4/48/Address_map.jpg)
 
-![](./pic/convert.png)
+(图片来源: https://en.bitcoin.it/wiki/Address)
 
-
-安装libbitcoin-explorer
+<a id="markdown-2-libbitcoin梳理p2pkh地址的关系" name="2-libbitcoin梳理p2pkh地址的关系"></a>
+# 2. libbitcoin梳理P2PKH地址的关系
+安装libbitcoin-explorer:
 ```bash
 wget https://github.com/libbitcoin/libbitcoin-explorer/releases/download/v3.2.0/bx-linux-x64-qrcode
 sudo mv bx-linux-x64-qrcode /usr/local/bin/bx
 chmod +x /usr/local/bin/bx
 ```
 
-公钥未压缩:
-```bash
-PRIKEY=`bx seed | bx ec-new`
-PRIKEYWIF=`bx ec-to-wif -u $PRIKEY`
-PUBKEY=`bx wif-to-public $PRIKEYWIF`
-PUBKEYHASH=`bx sha256 $PUBKEY | bx ripemd160`
-ADDRESS=`bx ec-to-address $PUBKEY`
-URL=`bx uri-encode $ADDRESS`
-QRCODE=`bx qrcode -p $ADDRESS`
-echo 私钥: $PRIKEY &&
-echo 私钥WIF: $PRIKEYWIF &&
-echo 公钥: $PUBKEY  &&
-echo 公钥hash: $PUBKEYHASH  &&
-echo 地址: $ADDRESS &&
-echo URL: $URL
+提供以下shell脚本方便日常使用:  
 
-# 生成二维码
-echo $QRCODE > /tmp/1.png
+* parse_privkey 解析私钥
+* parse_privkeywif 解析私钥wif
+* parse_pubkey_uncompressed 解析未压缩公钥
+* parse_pubkey_compressed 解析压缩公钥
+* parse_pubkeyhash 公钥哈系 -> 钱包地址
+* parse_address  钱包地址 -> 公钥哈系
+
+```bash
+# 私钥 -> 公钥 -> 公钥哈系 -> 钱包地址:
+parse_privkey() {
+    PRIKEY=$1
+    PRIKEY_WIF_UNCOMPRESSED=`bx ec-to-wif -u $PRIKEY`
+    PUBKEY_UNCOMPRESSED=`bx wif-to-public $PRIKEY_WIF_UNCOMPRESSED`
+    PUBKEYHASH_UNCOMPRESSED=`bx sha256 $PUBKEY_UNCOMPRESSED | bx ripemd160`
+    P2PKHADDRESS_UNCOMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_UNCOMPRESSED`
+    URI_UNCOMPRESSED=`bx uri-encode $P2PKHADDRESS_UNCOMPRESSED`
+    QRCODE_UNCOMPRESSED=`bx qrcode -p $P2PKHADDRESS_UNCOMPRESSED`
+
+    echo "[未压缩]" &&
+    echo 私钥: $PRIKEY &&
+    echo 私钥WIF: $PRIKEY_WIF_UNCOMPRESSED &&
+    echo 公钥: $PUBKEY_UNCOMPRESSED &&
+    echo 公钥hash: $PUBKEYHASH_UNCOMPRESSED &&
+    echo P2PKH地址: $P2PKHADDRESS_UNCOMPRESSED &&
+    echo URI: $URI_UNCOMPRESSED 
+
+    echo $QRCODE_UNCOMPRESSED > /tmp/uncompressed.png
+
+    PRIKEY_WIF_COMPRESSED=`bx ec-to-wif $PRIKEY`
+    PUBKEY_COMPRESSED=`bx wif-to-public $PRIKEY_WIF_COMPRESSED`
+    PUBKEYHASH_COMPRESSED=`bx sha256 $PUBKEY_COMPRESSED | bx ripemd160`
+    P2PKHADDRESS_COMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_COMPRESSED`
+    URI_COMPRESSED=`bx uri-encode $P2PKHADDRESS_COMPRESSED`
+    QRCODE_COMPRESSED=`bx qrcode -p $P2PKHADDRESS_COMPRESSED`
+
+    echo "[压缩]" &&
+    echo 私钥: $PRIKEY &&
+    echo 私钥WIF: $PRIKEY_WIF_COMPRESSED &&
+    echo 公钥: $PUBKEY_COMPRESSED &&
+    echo 公钥hash: $PUBKEYHASH_COMPRESSED &&
+    echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
+    echo URI: $URI_COMPRESSED 
+
+    echo $QRCODE_COMPRESSED > /tmp/compressed.png
+} 
+
+# 私钥wif -> 私钥 -> 公钥 -> 公钥哈系 -> 钱包地址:
+parse_privkeywif() {
+    PRIKEYWIF=$1
+    parse_privkey `bx wif-to-ec $PRIKEYWIF`
+}
+
+# 公钥[未压缩] -> 公钥哈系 -> 钱包地址
+parse_pubkey_uncompressed() {
+    PUBKEY_UNCOMPRESSED=$1
+    PUBKEYHASH_UNCOMPRESSED=`bx sha256 $PUBKEY_UNCOMPRESSED | bx ripemd160`
+    P2PKHADDRESS_UNCOMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_UNCOMPRESSED`
+    URI_UNCOMPRESSED=`bx uri-encode $P2PKHADDRESS_UNCOMPRESSED`
+    echo "[未压缩]" &&
+    echo 公钥: $PUBKEY_UNCOMPRESSED &&
+    echo 公钥hash: $PUBKEYHASH_UNCOMPRESSED &&
+    echo P2PKH地址: $P2PKHADDRESS_UNCOMPRESSED &&
+    echo URI: $URI_UNCOMPRESSED 
+}
+
+# 公钥[压缩] -> 公钥哈系 -> 钱包地址
+parse_pubkey_compressed() {
+    PUBKEY_COMPRESSED=$1
+    PUBKEYHASH_COMPRESSED=`bx sha256 $PUBKEY_COMPRESSED | bx ripemd160`
+    P2PKHADDRESS_COMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_COMPRESSED`
+    URI_COMPRESSED=`bx uri-encode $P2PKHADDRESS_COMPRESSED`
+    echo "[压缩]" &&
+    echo 公钥: $PUBKEY_COMPRESSED &&
+    echo 公钥hash: $PUBKEYHASH_COMPRESSED &&
+    echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
+    echo URI: $URI_COMPRESSED 
+}
+
+# 公钥哈系 -> 钱包地址
+parse_pubkeyhash() {
+    PUBKEYHASH=$1
+    P2PKHADDRESS=`bx address-encode -v 0 $PUBKEYHASH`
+    URI=`bx uri-encode $P2PKHADDRESS`
+    echo 公钥hash: $PUBKEYHASH &&
+    echo P2PKH地址: $P2PKHADDRESS &&
+    echo URI: $URI 
+}
+
+# 钱包地址 -> 公钥哈系
+parse_address() {
+    P2PKHADDRESS=$1
+    PUBKEYHASH=`bx address-decode  $P2PKHADDRESS`
+    URI=`bx uri-encode $P2PKHADDRESS`
+    echo 公钥hash: $PUBKEYHASH &&
+    echo P2PKH地址: $P2PKHADDRESS &&
+    echo URI: $URI 
+}
+
+# 创建新私钥
+parse_privkey `bx seed | bx ec-new`
 ```
 
-公钥压缩:
-```bash
-PRIKEY=`bx seed | bx ec-new`
-PRIKEYWIF=`bx ec-to-wif $PRIKEY`
-PUBKEY=`bx wif-to-public $PRIKEYWIF`
-PUBKEYHASH=`bx sha256 $PUBKEY | bx ripemd160`
-ADDRESS=`bx ec-to-address $PUBKEY`
-URL=`bx uri-encode $ADDRESS`
-QRCODE=`bx qrcode -p $ADDRESS`
-echo 私钥: $PRIKEY &&
-echo 私钥WIF: $PRIKEYWIF &&
-echo 公钥: $PUBKEY  &&
-echo 公钥hash: $PUBKEYHASH &&
-echo 地址: $ADDRESS &&
-echo URL: $URL
+<a id="markdown-3-libbitcoin梳理p2sh地址的关系" name="3-libbitcoin梳理p2sh地址的关系"></a>
+# 3. libbitcoin梳理P2SH地址的关系
 
-# 生成二维码
-echo $QRCODE > /tmp/1.png
+```bash
+echo "dup hash160 [e0a9980de27a65fc49069fce46fefbff9d6990ce] equalverify checksig" |  bx script-encode  | bx sha256 | bx ripemd160 | bx base58check-encode --version 5
 ```
 
-<a id="markdown-2-参考资料" name="2-参考资料"></a>
-# 2. 参考资料
+<a id="markdown-4-参考资料" name="4-参考资料"></a>
+# 4. 参考资料
 
-* https://www.bitaddress.org/ (地址生成)
-* https://en.bitcoin.it/wiki/List_of_address_prefixes (prefix)
+上文命令行参考:  
+
 * https://github.com/libbitcoin/libbitcoin-explorer (libbitcoin-explorer)
 * https://github.com/libbitcoin/libbitcoin-explorer/wiki/Wallet-Commands (libbitcoin-explorer command)
+
+地址生成工具:  
+
+* https://www.bitaddress.org/ (web地址生成)
+
+原理解释:  
+
+* https://en.bitcoin.it/wiki/Wallet_import_format (私钥->wif, wif->私钥)
+* https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses (生成比特币地址)
+
+便捷查询:  
+
+* https://en.bitcoin.it/wiki/List_of_address_prefixes (prefix)
+
+书籍参考:  
+
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ch04.html (精通比特币第四章)
