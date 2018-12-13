@@ -10,7 +10,9 @@ categories: [business, bitcoin]
 - [2. libbitcoin梳理P2PKH地址的关系](#2-libbitcoin梳理p2pkh地址的关系)
 - [3. libbitcoin梳理P2SH地址的关系](#3-libbitcoin梳理p2sh地址的关系)
 - [4. BIP38 私钥加密](#4-bip38-私钥加密)
-- [5. 参考资料](#5-参考资料)
+- [5. BIP39 助记词](#5-bip39-助记词)
+- [6. BIP32 & BIP43 & BIP44 分层确定钱包](#6-bip32--bip43--bip44-分层确定钱包)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
@@ -172,6 +174,11 @@ export PATH=/home/yq/libbitcoin-build/bin:\$PATH
 EOF
 ```
 
+提供以下shell脚本方便日常使用:  
+
+* encryptkey 加密私钥
+* decryptkey 解密私钥
+
 ```bash
 # 私钥,对称密钥 -> 加密私钥
 encryptkey() {
@@ -187,14 +194,59 @@ decryptkey() {
     bx ek-to-ec $PASSPHRASE $ENCRYPTED_PRIKEY
 }
 
-# 实验
+# 实验 (加密后的私钥前缀为6p)
 encryptkey 1801f9286f5a71eb77534f26804b37a24abe54ea3dc0933a3568e89076dd9d4d abc123456
 
 decryptkey 6PYWxXWVyd4xBdcgSEpcXL378fg49FnvSmgbQZwr8EEKKKng62qwVBzawd abc123456
 ```
 
-<a id="markdown-5-参考资料" name="5-参考资料"></a>
-# 5. 参考资料
+<a id="markdown-5-bip39-助记词" name="5-bip39-助记词"></a>
+# 5. BIP39 助记词
+
+BIP39的目的是`使得熵变得方便记忆`,具体过程如下:
+
+首先生成128~256位随机bit,映射成单词:
+
+1. 生成 128,160,192,224,256 (bit)的随机数字
+2. 加上4,5,6,7,8长度的checksum
+3. 每11bit(0~2047)映射一个单词,映射成长度为12,15,18,21,24的单词组.
+
+然后使用密钥延伸函数PBKDF2,将助记词表示的长度为128至256位的熵导出长度为`512位的种子`
+
+1. 将助记词作为PBKDF2密钥延伸函数的参数一
+2. 将字符串"mnemonic"与`可选`的用户提供的`密码串`表示"盐"作为PBKDF2密钥延伸函数的参数二
+3. PBKDF2密钥延伸函数使用HMAC-SHA512,使用`2048次`哈系,产生一个`512位的值`作为最终输出
+
+```bash
+# 生成助记词
+bx seed -b 128 | bx mnemonic-new
+
+# 助记词转换为熵
+seed=`bx mnemonic-to-seed --language en hunt donkey measure alert circle someone opinion south diagram video figure atom`
+echo $seed
+```
+
+<a id="markdown-6-bip32--bip43--bip44-分层确定钱包" name="6-bip32--bip43--bip44-分层确定钱包"></a>
+# 6. BIP32 & BIP43 & BIP44 分层确定钱包
+
+Hierarchical Deterministic (HD) Wallets (分层决定性钱包)
+
+HD 钱包的目的是`使用一个seed可以扩展生成无限个私钥/公钥`,具体过程如下:
+
+将126,256,512 bits 的seed通过HMAC-SHA512算法得到`主密钥(256bit)=>主公钥(256bit)`和`主链代码(256bit)`
+
+
+```bash
+# hd私钥前缀为xprv
+hd_prv=`bx hd-new $seed`
+
+# hd公钥前缀为xpub
+hd_pub=`bx hd-to-public $hd_prv`
+
+```
+
+<a id="markdown-7-参考资料" name="7-参考资料"></a>
+# 7. 参考资料
 
 上文命令行参考:  
 
@@ -203,9 +255,10 @@ decryptkey 6PYWxXWVyd4xBdcgSEpcXL378fg49FnvSmgbQZwr8EEKKKng62qwVBzawd abc123456
 
 地址生成工具:  
 
-* https://www.bitaddress.org/ (web地址生成)
+* https://www.bitaddress.org/ (bitaddress)
+* https://www.mobilefish.com/services/cryptocurrency/cryptocurrency.html (地址生成 & 原理解释)
 
-原理解释:  
+地址原理解释:  
 
 * https://en.bitcoin.it/wiki/Wallet_import_format (私钥->wif, wif->私钥)
 * https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses (生成比特币地址)
@@ -214,6 +267,21 @@ decryptkey 6PYWxXWVyd4xBdcgSEpcXL378fg49FnvSmgbQZwr8EEKKKng62qwVBzawd abc123456
 
 * https://en.bitcoin.it/wiki/List_of_address_prefixes (prefix)
 
+
+BIP39:
+
+* https://iancoleman.io/bip39/ (bip39生成)
+* https://www.mobilefish.com/download/ethereum/bip39.html (bip39生成 & 原理解释)
+* https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt (bip39英语单词映射)
+* https://www.youtube.com/watch?v=hRXcY_tIlrw&t=1s (youtube原理解释)
+
+BIP32 & BIP43 & BIP44:
+
+* https://www.mobilefish.com/download/ethereum/hd_wallet.html (bip32,44生成 & 原理解释)
+* https://www.youtube.com/watch?v=2HrMlVr1QX8 (youtube原理解释)
+
 书籍参考:  
 
 * http://book.8btc.com/books/6/masterbitcoin2cn/_book/ch04.html (精通比特币第四章)
+* http://book.8btc.com/books/6/masterbitcoin2cn/_book/ch05.html (精通比特币第五章)
+
