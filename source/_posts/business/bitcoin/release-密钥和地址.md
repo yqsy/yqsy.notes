@@ -9,7 +9,8 @@ categories: [business, bitcoin]
 - [1. 说明](#1-说明)
 - [2. libbitcoin梳理P2PKH地址的关系](#2-libbitcoin梳理p2pkh地址的关系)
 - [3. libbitcoin梳理P2SH地址的关系](#3-libbitcoin梳理p2sh地址的关系)
-- [4. 参考资料](#4-参考资料)
+- [4. BIP38 私钥加密](#4-bip38-私钥加密)
+- [5. 参考资料](#5-参考资料)
 
 <!-- /TOC -->
 
@@ -150,8 +151,50 @@ parse_privkey `bx seed | bx ec-new`
 echo "dup hash160 [e0a9980de27a65fc49069fce46fefbff9d6990ce] equalverify checksig" |  bx script-encode  | bx sha256 | bx ripemd160 | bx base58check-encode --version 5
 ```
 
-<a id="markdown-4-参考资料" name="4-参考资料"></a>
-# 4. 参考资料
+<a id="markdown-4-bip38-私钥加密" name="4-bip38-私钥加密"></a>
+# 4. BIP38 私钥加密
+
+上文直接下载的bx二进制在这里失去了作用,所以我们要从源码编译bx,加上开启`icu`的选项
+```bash
+wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
+
+mkdir /home/yq/libbitcoin-build
+chmod +x install.sh
+./install.sh --with-icu --with-png --with-qrencode --build-icu --build-zlib --build-png --build-qrencode --build-boost --build-zmq --prefix=/home/yq/libbitcoin-build
+
+# 把之前的删除
+sudo rm -rf /usr/local/bin/bx
+
+# 环境变量添加
+cat >> ~/.profile << EOF
+# bx
+export PATH=/home/yq/libbitcoin-build/bin:\$PATH
+EOF
+```
+
+```bash
+# 私钥,对称密钥 -> 加密私钥
+encryptkey() {
+    PRIKEY=$1
+    PASSPHRASE=$2
+    bx ec-to-ek $PASSPHRASE $PRIKEY
+}
+
+# 加密私钥,对称密钥 -> 私钥
+decryptkey() {
+    ENCRYPTED_PRIKEY=$1
+    PASSPHRASE=$2
+    bx ek-to-ec $PASSPHRASE $ENCRYPTED_PRIKEY
+}
+
+# 实验
+encryptkey 1801f9286f5a71eb77534f26804b37a24abe54ea3dc0933a3568e89076dd9d4d abc123456
+
+decryptkey 6PYWxXWVyd4xBdcgSEpcXL378fg49FnvSmgbQZwr8EEKKKng62qwVBzawd abc123456
+```
+
+<a id="markdown-5-参考资料" name="5-参考资料"></a>
+# 5. 参考资料
 
 上文命令行参考:  
 
