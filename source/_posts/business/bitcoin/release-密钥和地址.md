@@ -11,7 +11,7 @@ categories: [business, bitcoin]
 - [3. libbitcoin梳理P2SH地址的关系](#3-libbitcoin梳理p2sh地址的关系)
 - [4. BIP38 私钥加密](#4-bip38-私钥加密)
 - [5. BIP39 助记词](#5-bip39-助记词)
-- [6. BIP32 & BIP43 & BIP44 分层确定钱包](#6-bip32--bip43--bip44-分层确定钱包)
+- [6. BIP32 & BIP44 分层确定钱包](#6-bip32--bip44-分层确定钱包)
 - [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
@@ -217,6 +217,7 @@ BIP39的目的是`使得熵变得方便记忆`,具体过程如下:
 2. 将字符串"mnemonic"与`可选`的用户提供的`密码串`表示"盐"作为PBKDF2密钥延伸函数的参数二
 3. PBKDF2密钥延伸函数使用HMAC-SHA512,使用`2048次`哈系,产生一个`512位的值`作为最终输出
 
+
 ```bash
 # 生成助记词
 bx seed -b 128 | bx mnemonic-new
@@ -226,15 +227,22 @@ seed=`bx mnemonic-to-seed --language en hunt donkey measure alert circle someone
 echo $seed
 ```
 
-<a id="markdown-6-bip32--bip43--bip44-分层确定钱包" name="6-bip32--bip43--bip44-分层确定钱包"></a>
-# 6. BIP32 & BIP43 & BIP44 分层确定钱包
+<a id="markdown-6-bip32--bip44-分层确定钱包" name="6-bip32--bip44-分层确定钱包"></a>
+# 6. BIP32 & BIP44 分层确定钱包
 
 Hierarchical Deterministic (HD) Wallets (分层决定性钱包)
 
 HD 钱包的目的是`使用一个seed可以扩展生成无限个私钥/公钥`,具体过程如下:
 
-将126,256,512 bits 的seed通过HMAC-SHA512算法得到`主密钥(256bit)=>主公钥(256bit)`和`主链代码(256bit)`
+* 使用HMAC-SHA512 hash `root seed` 生成 1. 256bit的 `私钥` (可生成`公钥`) 2. 256bit的`链码` 
+* 两种扩展密钥方式: 1.`私钥+链码+序号`扩展下一层私钥 2.`公钥+链码+序号`扩展下一层公钥. xprv包含私钥+链码,xpub包含公钥+链码
+* 搭配上硬化/非硬化的逻辑:
+  * `xprv 私钥+链码+序号`扩展下一层`私钥`(`硬化`使用`私钥`扩展,`非硬化`使用私钥生成的`公钥`扩展)
+  * `xpub 公钥+链码+序号`扩展下一层`公钥`(只能`非硬化`使用`公钥`扩展)
 
+非硬化地址的安全问题: 母xpub (包含公钥+链码)  + 子私钥可以`推断出母私钥`,通过母私钥可以推断出所有的`子密钥`
+
+BIP44: (m / purpose' / coin_type' / account' / change / address_index)
 
 ```bash
 # hd私钥前缀为xprv
@@ -243,6 +251,16 @@ hd_prv=`bx hd-new $seed`
 # hd公钥前缀为xpub
 hd_pub=`bx hd-to-public $hd_prv`
 
+# m/44'/60'/0'/0 的扩展密钥
+
+change_prv=`echo $hd_prv | bx hd-private -d -i 44 | bx hd-private -d -i 60 | bx hd-private -d -i 0 | bx hd-private -i 0`
+change_pub=`bx hd-to-public $change_prv`
+
+# m/44'/60'/0'/0/0
+parse_privkey  `echo $change_prv | bx hd-private -i 0 | bx hd-to-ec`
+
+# m/44'/60'/0'/0/9
+parse_privkey  `echo $change_prv | bx hd-private -i 9 | bx hd-to-ec`
 ```
 
 <a id="markdown-7-参考资料" name="7-参考资料"></a>
@@ -275,13 +293,11 @@ BIP39:
 * https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt (bip39英语单词映射)
 * https://www.youtube.com/watch?v=hRXcY_tIlrw&t=1s (youtube原理解释)
 
-BIP32 & BIP43 & BIP44:
+BIP32 & BIP44:
 
 * https://www.mobilefish.com/download/ethereum/hd_wallet.html (bip32,44生成 & 原理解释)
 * https://www.youtube.com/watch?v=2HrMlVr1QX8 (youtube原理解释)
 
 书籍参考:  
 
-* http://book.8btc.com/books/6/masterbitcoin2cn/_book/ch04.html (精通比特币第四章)
-* http://book.8btc.com/books/6/masterbitcoin2cn/_book/ch05.html (精通比特币第五章)
-
+* https://bitcoinbook.info/wp-content/translations/cmn/book.pdf (精通比特币第四章/第五章)
