@@ -277,11 +277,12 @@ parse_privkey  `echo $change_prv | bx hd-private -i 9 | bx hd-to-ec`
 # 7. 将命令行放到zshrc
 
 ```bash
+wget -O ~/.bitcoinaddress.rc https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/bitcoinaddress.rc
 
-
-
+cat >> ~/.zshrc << EOF
+source ~/.bitcoinaddress.rc
+EOF
 ```
-
 
 <a id="markdown-8-参考资料" name="8-参考资料"></a>
 # 8. 参考资料
