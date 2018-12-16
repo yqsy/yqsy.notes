@@ -133,7 +133,7 @@ parse_pubkeyhash() {
     PUBKEYHASH=$1
     P2PKHADDRESS=`bx address-encode -v 0 $PUBKEYHASH`
     URI=`bx uri-encode $P2PKHADDRESS`
-    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
     echo URI: $URI &&
@@ -145,7 +145,7 @@ parse_address() {
     P2PKHADDRESS=$1
     PUBKEYHASH=`bx address-decode  $P2PKHADDRESS`
     URI=`bx uri-encode $P2PKHADDRESS`
-    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
     echo URI: $URI &&
