@@ -88,7 +88,7 @@ parse_pubkeyhash() {
 # 钱包地址 -> 公钥哈系
 parse_address() {
     P2PKHADDRESS=$1
-    PUBKEYHASH=`bx address-decode  $P2PKHADDRESS`
+    PUBKEYHASH=`bx address-decode  $P2PKHADDRESS | sed -n 4p | awk '{print $2}' `
     URI=`bx uri-encode $P2PKHADDRESS`
     P2SH_P2WPKH=`echo "0 [$PUBKEYHASH]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo 公钥hash: $PUBKEYHASH &&
