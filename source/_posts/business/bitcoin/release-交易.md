@@ -10,7 +10,8 @@ categories: [business, bitcoin]
 - [2. pay to public key (P2PK)](#2-pay-to-public-key-p2pk)
 - [3. pay to public key hash(P2PKH)](#3-pay-to-public-key-hashp2pkh)
 - [4. pay to script hash (P2SH)](#4-pay-to-script-hash-p2sh)
-- [5. 参考资料](#5-参考资料)
+- [5. 交易数据](#5-交易数据)
+- [6. 参考资料](#6-参考资料)
 
 <!-- /TOC -->
 
@@ -62,7 +63,7 @@ OP_CHECKSIG
 <sig>
 ```
 
-注意:
+注意:  
 
 挖矿产生的奖励只在100个区块后才可以被使用
 ```c++
@@ -111,7 +112,6 @@ RAWTX=`bitcoin-cli createrawtransaction '''
 '''
 `
 
-
 # 从钱包中获得第一个区块奖励的私钥
 PRE_ADDRESS=`bbasetx 1 | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["addresses"][0])' `
 PRE_PRIKEYWIF=`bitcoin-cli dumpprivkey $PRE_ADDRESS`
@@ -143,7 +143,6 @@ bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
 # 查询这一笔交易
 bhtx 102 1
 ```
-
 
 <a id="markdown-3-pay-to-public-key-hashp2pkh" name="3-pay-to-public-key-hashp2pkh"></a>
 # 3. pay to public key hash(P2PKH)
@@ -337,8 +336,15 @@ bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
 bhtx 102 1
 ```
 
-<a id="markdown-5-参考资料" name="5-参考资料"></a>
-# 5. 参考资料
+<a id="markdown-5-交易数据" name="5-交易数据"></a>
+# 5. 交易数据
+
+* https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2PK  (P2Pk)
+* https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2PKH (P2PKH)
+* https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2SH (P2SH)
+
+<a id="markdown-6-参考资料" name="6-参考资料"></a>
+# 6. 参考资料
 
 * https://en.bitcoin.it/wiki/Transaction (常见交易为P2PKH,P2SH)
 * https://bitcoin.org/en/developer-examples (examples)
