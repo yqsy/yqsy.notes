@@ -13,27 +13,6 @@ categories: [business, bitcoin]
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
 
-P2K P2PKH P2WPKH P2SH P2WSH ...
-
-* https://en.bitcoin.it/wiki/Script (opcode)
-* https://siminchen.github.io/bitcoinIDE/build/editor.html (脚本编辑调试)
-* https://bitcoin-script-debugger.visvirial.com/ (常见交易种类)
-* https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/descriptors.md (列表)
-
----
-* scriptPubKey (加锁)
-* scriptSig (解锁)
-
-P2K
-
-```bash
-# scriptPubKey (prev out)
-OP_CHECKSIG
-<pubKey>
-
-# scriptSig (in)
-<sig>
-```
 
 P2PKH
 

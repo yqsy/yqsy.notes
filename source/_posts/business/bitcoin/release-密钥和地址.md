@@ -12,7 +12,8 @@ categories: [business, bitcoin]
 - [4. BIP38 私钥加密](#4-bip38-私钥加密)
 - [5. BIP39 助记词](#5-bip39-助记词)
 - [6. BIP32 & BIP44 分层确定钱包](#6-bip32--bip44-分层确定钱包)
-- [7. 参考资料](#7-参考资料)
+- [7. 将命令行放到zshrc](#7-将命令行放到zshrc)
+- [8. 参考资料](#8-参考资料)
 
 <!-- /TOC -->
 
@@ -79,13 +80,16 @@ parse_privkey() {
     URI_COMPRESSED=`bx uri-encode $P2PKHADDRESS_COMPRESSED`
     QRCODE_COMPRESSED=`bx qrcode -p $P2PKHADDRESS_COMPRESSED`
 
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    
     echo "[压缩]" &&
     echo 私钥: $PRIKEY &&
     echo 私钥WIF: $PRIKEY_WIF_COMPRESSED &&
     echo 公钥: $PUBKEY_COMPRESSED &&
     echo 公钥hash: $PUBKEYHASH_COMPRESSED &&
     echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
-    echo URI: $URI_COMPRESSED 
+    echo URI: $URI_COMPRESSED &&
+    echo P2SH-P2WPKH: $P2SH_P2WPKH
 
     echo $QRCODE_COMPRESSED > /tmp/compressed.png
 } 
@@ -115,11 +119,13 @@ parse_pubkey_compressed() {
     PUBKEYHASH_COMPRESSED=`bx sha256 $PUBKEY_COMPRESSED | bx ripemd160`
     P2PKHADDRESS_COMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_COMPRESSED`
     URI_COMPRESSED=`bx uri-encode $P2PKHADDRESS_COMPRESSED`
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo "[压缩]" &&
     echo 公钥: $PUBKEY_COMPRESSED &&
     echo 公钥hash: $PUBKEYHASH_COMPRESSED &&
     echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
-    echo URI: $URI_COMPRESSED 
+    echo URI: $URI_COMPRESSED  &&
+    echo P2SH-P2WPKH: $P2SH_P2WPKH
 }
 
 # 公钥哈系 -> 钱包地址
@@ -127,9 +133,11 @@ parse_pubkeyhash() {
     PUBKEYHASH=$1
     P2PKHADDRESS=`bx address-encode -v 0 $PUBKEYHASH`
     URI=`bx uri-encode $P2PKHADDRESS`
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
-    echo URI: $URI 
+    echo URI: $URI &&
+    echo P2SH-P2WPKH: $P2SH_P2WPKH
 }
 
 # 钱包地址 -> 公钥哈系
@@ -137,9 +145,11 @@ parse_address() {
     P2PKHADDRESS=$1
     PUBKEYHASH=`bx address-decode  $P2PKHADDRESS`
     URI=`bx uri-encode $P2PKHADDRESS`
+    P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
-    echo URI: $URI 
+    echo URI: $URI &&
+    echo P2SH-P2WPKH: $P2SH_P2WPKH
 }
 
 # 创建新私钥
@@ -263,8 +273,18 @@ parse_privkey  `echo $change_prv | bx hd-private -i 0 | bx hd-to-ec`
 parse_privkey  `echo $change_prv | bx hd-private -i 9 | bx hd-to-ec`
 ```
 
-<a id="markdown-7-参考资料" name="7-参考资料"></a>
-# 7. 参考资料
+<a id="markdown-7-将命令行放到zshrc" name="7-将命令行放到zshrc"></a>
+# 7. 将命令行放到zshrc
+
+```bash
+
+
+
+```
+
+
+<a id="markdown-8-参考资料" name="8-参考资料"></a>
+# 8. 参考资料
 
 上文命令行参考:  
 
