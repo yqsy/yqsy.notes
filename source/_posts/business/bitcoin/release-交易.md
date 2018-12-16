@@ -57,7 +57,7 @@ OP_CHECKSIG
 使用指令来创建:
 
 ```bash
-bg 1
+
 ```
 
 
