@@ -14,20 +14,6 @@ categories: [business, bitcoin]
 # 1. 说明
 
 
-P2PKH
-
-```bash
-# scriptPubKey (prev out)
-OP_CHECKSIG
-OP_EQUALVERIFY
-<pubkeyHash>
-OP_HASH160
-OP_DUP
-
-# scriptSig (in)
-<pubKey>
-<sig>
-```
 
 P2SH (BIP13 16)
 

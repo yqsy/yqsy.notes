@@ -25,6 +25,7 @@ categories: [business, bitcoin]
 * `解锁交易` - 使用私钥进行签名解锁,随即可以生成新的锁定交易,将货币的所属权交给新的身份(公钥/公钥hash)
 
 
+**请注意,以下示例每一次启动前都会删除所有的历史数据!**
 
 <a id="markdown-2-pay-to-public-key-p2pk" name="2-pay-to-public-key-p2pk"></a>
 # 2. pay to public key (P2PK)
@@ -40,10 +41,12 @@ rpc指令generate出块奖励的`锁定脚本`:
 ```bash
 generate -> CWallet::GetScriptForMining
 
-script->reserveScript = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
+script->reserveScr
+ipt = CScript() << ToByteVector(pubkey) << OP_CHECKSIG;
 ```
 
 解锁交易时的`签名`:
+
 ```bash
 signrawtransactionwithkey -> SignTransaction -> ProduceSignature -> SignStep -> CreateSig -> MutableTransactionSignatureCreator::CreateSig -> CKey::Sign
 ```
@@ -59,8 +62,6 @@ OP_CHECKSIG
 <sig>
 ```
 
-通过挖矿奖励获得P2PK的`锁定交易`:
-
 注意:
 
 挖矿产生的奖励只在100个区块后才可以被使用
@@ -69,22 +70,272 @@ OP_CHECKSIG
 static const int COINBASE_MATURITY = 100;
 ```
 
+通过挖矿奖励获得P2PK的`锁定交易`:
+
 ```bash
 bg 101
+
+# 查锁定交易
 bbasetx 1
 
-
+# 查询余额
+bitcoin-cli getbalance
 
 ```
 
+对该比挖矿奖励进行`解锁交易`,引用到该笔交易的地址,并使用私钥进行签名:
+
+```bash
+PRE_TXID=`_bbasehash 1`
+PRE_VOUT=0
+
+# 获得新的地址
+NEWEC=`bx seed | bx ec-new`
+NEWADDRESS_INFO=`parse_privkey $NEWEC`
+
+# 提取P2PKH地址
+NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+# 1) 创建交易
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$PRE_TXID'",
+        "vout": '$PRE_VOUT'
+    }
+]
+''' '''
+{
+    "'$NEWP2PkHADDR'": 49.9999
+}
+'''
+`
+
+
+# 从钱包中获得第一个区块奖励的私钥
+PRE_ADDRESS=`bbasetx 1 | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["addresses"][0])' `
+PRE_PRIKEYWIF=`bitcoin-cli dumpprivkey $PRE_ADDRESS`
+
+# 2) 签名交易
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$PRE_PRIKEYWIF'"
+]
+'''`
+
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3) 发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4) 生成区块打包区块
+bg 1
+
+# 查询新地址信息
+echo $NEWADDRESS_INFO
+
+# 导入新地址到钱包
+bitcoin-cli importaddress $NEWP2PkHADDR
+
+# 查询新地址接受到的金额# pay to wit
+bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
+
+# 查询这一笔交易
+bhtx 102 1
+```
+
+
 <a id="markdown-3-pay-to-public-key-hashp2pkh" name="3-pay-to-public-key-hashp2pkh"></a>
 # 3. pay to public key hash(P2PKH)
+
+加锁与解锁的堆栈:
+
+```bash
+# scriptPubKey (prev out)
+OP_CHECKSIG
+OP_EQUALVERIFY
+<pubkeyHash>
+OP_HASH160
+OP_DUP
+
+# scriptSig (in)
+<pubKey>
+<sig>
+```
+
+通过挖矿奖励获得P2PKH的`锁定交易`:
+
+```bash
+# 获得coinbase的地址
+COINBASEEC=`bx seed | bx ec-new`
+COINBASEECADDRESS_INFO=`parse_privkey $COINBASEEC`
+
+# 提取P2PKH地址
+COINBASECP2PKHADDR=`echo $COINBASEECADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+bitcoin-cli generatetoaddress 101 $COINBASECP2PKHADDR
+
+# 查询锁定脚本
+bbasetx 1
+
+# 提取私钥并导入到钱包
+COINBASEPRIKEYWIF=`echo $COINBASEECADDRESS_INFO | sed -n 10p | awk '{print $2}'`
+bitcoin-cli importprivkey $COINBASEPRIKEYWIF
+
+# 查询余额
+bitcoin-cli getbalance
+```
+
+对该比挖矿奖励进行`解锁交易`,引用到该笔交易的地址,并使用私钥进行签名:
+
+```bash
+PRE_TXID=`_bbasehash 1`
+PRE_VOUT=0
+
+# 获得新的地址
+NEWEC=`bx seed | bx ec-new`
+NEWADDRESS_INFO=`parse_privkey $NEWEC`
+
+# 提取P2PKH地址
+NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+# 1) 创建交易
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$PRE_TXID'",
+        "vout": '$PRE_VOUT'
+    }
+]
+''' '''
+{
+    "'$NEWP2PkHADDR'": 49.9999
+}
+'''`
+
+# 2) 签名交易
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$COINBASEPRIKEYWIF'"
+]
+'''`
+
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3)发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4) 生成打包区块
+bg 1
+
+# 查询新地址信息
+echo $NEWADDRESS_INFO
+
+# 导入新地址到钱包
+bitcoin-cli importaddress $NEWP2PkHADDR
+
+# 查询新地址接受到的金额
+bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
+
+# 查询这一笔交易
+bhtx 102 1
+```
 
 
 <a id="markdown-4-pay-to-script-hash-p2sh" name="4-pay-to-script-hash-p2sh"></a>
 # 4. pay to script hash (P2SH)
 
+加锁与解锁的堆栈:
 
+```bash
+# scriptPubKey (prev COINBASEP2SHADDRut)
+OP_EQUAL
+[20-byte-hash of {[pubkey] OP_CHECKSIG} ]
+OP_HASH160
+
+# scriptSig (in)
+{[pubkey] OP_CHECKSIG}
+[signature]
+```
+
+通过挖矿奖励获得P2SH的`锁定交易`:
+
+
+```bash
+# 获得coinbase的地址
+COINBASEEC=`bx seed | bx ec-new`
+COINBASEECADDRESS_INFO=`parse_privkey $COINBASEEC`
+
+# 提取P2SH地址
+COINBASECP2SHADDR=`echo $COINBASEECADDRESS_INFO | sed -n 15p | awk '{print $2}'`
+
+bitcoin-cli generatetoaddress 101 $COINBASECP2SHADDR
+
+# 查询锁定脚本
+bbasetx 1
+
+# 导入私钥到钱包
+COINBASEPRIKEYWIF=`echo $COINBASEECADDRESS_INFO | sed -n 10p | awk '{print $2}'`
+bitcoin-cli importprivkey $COINBASEPRIKEYWIF
+
+# 查询余额
+bitcoin-cli getbalance
+```
+
+对该比挖矿奖励进行`解锁交易`,引用到该笔交易的地址,并使用私钥进行签名:
+
+```bash
+PRE_TXID=`_bbasehash 1`
+PRE_VOUT=0
+
+# 获得新的地址
+NEWEC=`bx seed | bx ec-new`
+NEWADDRESS_INFO=`parse_privkey $NEWEC`
+
+# 提取P2PKH地址
+NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+# 1) 创建交易
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$PRE_TXID'",
+        "vout": '$PRE_VOUT'
+    }
+]
+''' '''
+{
+    "'$NEWP2PkHADDR'": 49.9999
+}
+'''`
+
+# 2) 签名交易
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$COINBASEPRIKEYWIF'"
+]
+'''`
+
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3)发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4) 生成打包区块
+bg 1
+
+# 查询新地址信息
+echo $NEWADDRESS_INFO
+
+# 导入新地址到钱包
+bitcoin-cli importaddress $NEWP2PkHADDR
+
+# 查询新地址接受到的金额
+bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
+
+# 查询这一笔交易
+bhtx 102 1
+```
 
 <a id="markdown-5-参考资料" name="5-参考资料"></a>
 # 5. 参考资料
