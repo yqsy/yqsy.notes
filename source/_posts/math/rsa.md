@@ -12,10 +12,8 @@ categories: [math]
 <!-- /TOC -->
 
 
-
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
-
 
 
 <a id="markdown-2-参考资料" name="2-参考资料"></a>
@@ -23,4 +21,4 @@ categories: [math]
 
 * http://code.activestate.com/recipes/578838-rsa-a-simple-and-easy-to-read-implementation/
 * https://www.youtube.com/watch?v=D_kMadCtKp8
-
+* https://www.zhihu.com/question/25038691/answer/81565068

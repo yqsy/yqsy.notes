@@ -1,5 +1,5 @@
 ---
-title: 指令
+title: 快捷指令
 date: 2018-02-01 13:29:12
 categories: [business, bitcoin]
 ---
