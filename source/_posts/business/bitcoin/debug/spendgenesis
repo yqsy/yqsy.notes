@@ -34,9 +34,16 @@ RAWTX=`bitcoin-cli createrawtransaction '''
 
 # 2) 签名交易
 
-bitcoin-cli signrawtransactionwithkey $RAWTX '''
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
 [
     "Ky55LF1jUgtqBfHRXqmq8Jo51597dPvGzAgSyTnwkSqPKxhN3drk"
 ]
-'''
+'''`
 
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3)发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4) 生成打包区块
+bg 1

@@ -1,5 +1,5 @@
 ---
-title: 修改代码花费创世奖励
+title: 创世奖励无法被花费
 date: 2018-02-01 13:29:12
 categories: [business, bitcoin]
 ---
@@ -29,7 +29,22 @@ URI: bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
 查看交易:  
 https://www.blockchain.com/btc/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
 
+这一笔创世奖励无法被花费的原因是1. 没有加入到交易缓冲池  2. 没有写到leveldb数据库.  在尝试签名交易 (signrawtransactionwithkey) 时会产生寻找不到prevout而签名失败.
 
+通过调试源码发现其关键位置如下:
+
+```c++
+// CChainState::ConnectBlock <- CChainState::ConnectTip <- CChainState::ActivateBestChainStep <- CChainState::ActivateBestChain <- ActivateBestChain <- ThreadImport
+
+// Special case for the genesis block, skipping connection of its transactions
+// (its coinbase is unspendable)
+if (block.GetHash() == chainparams.GetConsensus().hashGenesisBlock) {
+    if (!fJustCheck)
+        view.SetBestBlock(pindex->GetBlockHash());
+    return true;
+}
+
+```
 <a id="markdown-2-参考资料" name="2-参考资料"></a>
 # 2. 参考资料
 

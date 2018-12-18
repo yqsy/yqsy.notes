@@ -49,16 +49,6 @@ m
 OP_0
 ```
 
-OP_RETURN (存数据)
-```bash
-# scriptPubKey (prev out)
-<data2>
-<data1>
-OP_RETURN
-
-# scriptSig (in)
-# 空
-```
 
 Anyone-Can-Spend (不在p2p网络上传播)
 

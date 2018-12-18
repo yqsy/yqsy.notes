@@ -10,8 +10,9 @@ categories: [business, bitcoin]
 - [2. pay to public key (P2PK)](#2-pay-to-public-key-p2pk)
 - [3. pay to public key hash(P2PKH)](#3-pay-to-public-key-hashp2pkh)
 - [4. pay to script hash (P2SH)](#4-pay-to-script-hash-p2sh)
-- [5. 交易数据](#5-交易数据)
-- [6. 参考资料](#6-参考资料)
+- [5. OP_RETURN](#5-op_return)
+- [6. 交易数据](#6-交易数据)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
@@ -81,7 +82,6 @@ bbasetx 1
 
 # 查询余额
 bitcoin-cli getbalance
-
 ```
 
 对该比挖矿奖励进行`解锁交易`,引用到该笔交易的地址,并使用私钥进行签名:
@@ -336,15 +336,100 @@ bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
 bhtx 102 1
 ```
 
-<a id="markdown-5-交易数据" name="5-交易数据"></a>
-# 5. 交易数据
+<a id="markdown-5-op_return" name="5-op_return"></a>
+# 5. OP_RETURN
+
+加锁与解锁的堆栈:
+
+```bash
+# scriptPubKey (prev out)
+<data2>
+<data1>
+OP_RETURN
+
+# scriptSig (in)
+# 空
+```
+
+获得一笔输出作为资金源:
+
+```bash
+# 获得coinbase的地址
+COINBASEEC=`bx seed | bx ec-new`
+COINBASEECADDRESS_INFO=`parse_privkey $COINBASEEC`
+
+# 提取P2PKH地址
+COINBASECP2PKHADDR=`echo $COINBASEECADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+bitcoin-cli generatetoaddress 101 $COINBASECP2PKHADDR
+
+# 查询锁定脚本
+bbasetx 1
+
+# 提取私钥并导入到钱包
+COINBASEPRIKEYWIF=`echo $COINBASEECADDRESS_INFO | sed -n 10p | awk '{print $2}'`
+bitcoin-cli importprivkey $COINBASEPRIKEYWIF
+
+# 查询余额
+bitcoin-cli getbalance
+```
+
+`解锁资金源`,引用到该比交易的地址,并使用私钥进行签名
+```bash
+
+PRE_TXID=`_bbasehash 1`
+PRE_VOUT=0
+
+# 1) 创建交易
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$PRE_TXID'",
+        "vout": '$PRE_VOUT'
+    }
+]
+''' '''
+[
+    {
+        "'$COINBASECP2PKHADDR'": 49.9999
+    },
+    {
+        "data": "'$HEX'"
+    }
+]
+'''
+`
+
+# 2) 签名交易
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$COINBASEPRIKEYWIF'"
+]
+'''`
+
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3)发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4) 生成区块打包区块
+bg 1
+
+# 查询这一笔交易
+bhtx 102 1
+```
+
+<a id="markdown-6-交易数据" name="6-交易数据"></a>
+# 6. 交易数据
 
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2PK  (P2Pk)
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2PKH (P2PKH)
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/P2SH (P2SH)
+* https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/RETURN (RETURN)
 
-<a id="markdown-6-参考资料" name="6-参考资料"></a>
-# 6. 参考资料
+
+<a id="markdown-7-参考资料" name="7-参考资料"></a>
+# 7. 参考资料
 
 * https://en.bitcoin.it/wiki/Transaction (常见交易为P2PKH,P2SH)
 * https://bitcoin.org/en/developer-examples (examples)
