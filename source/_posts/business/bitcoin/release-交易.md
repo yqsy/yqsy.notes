@@ -380,6 +380,8 @@ bitcoin-cli getbalance
 PRE_TXID=`_bbasehash 1`
 PRE_VOUT=0
 
+HEX=`bx base16-encode "Get busy living, Or get busy dying"`
+
 # 1) 创建交易
 RAWTX=`bitcoin-cli createrawtransaction '''
 [

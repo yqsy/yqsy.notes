@@ -12,8 +12,10 @@ categories: [math]
 - [3. 互质](#3-互质)
 - [4. 积性函数](#4-积性函数)
 - [5. 欧拉函数](#5-欧拉函数)
-- [6. 模逆元](#6-模逆元)
-- [7. 参考资料](#7-参考资料)
+- [6. 同余](#6-同余)
+- [7. 欧拉定理](#7-欧拉定理)
+- [8. 模逆元](#8-模逆元)
+- [9. 参考资料](#9-参考资料)
 
 <!-- /TOC -->
 
@@ -38,6 +40,11 @@ RSA的过程:
 
 解密原理:
 
+c^d ≡ (m^ed) (mod N)
+
+已知: ed ≡ 1 (mod φ(N)) , 即 ed = 1 + h*φ(N). 由欧拉定理: a ^ φ(n) ≡ 1 (mod n) 得到:
+
+m^ed = m ^ (1 + h*φ(N)) = m * (m^φ(N))^h ≡ m(1)^h (mod N) ≡ m (mod N)
 
 <a id="markdown-2-质数" name="2-质数"></a>
 # 2. 质数
@@ -98,13 +105,24 @@ gcd(8,10)
 
 所以: `φ(p)φ(q) = (p - 1)(q - 1).`
 
-<a id="markdown-6-模逆元" name="6-模逆元"></a>
-# 6. 模逆元
+
+<a id="markdown-6-同余" name="6-同余"></a>
+# 6. 同余
+
+> 在数论中.同余是一种等价关系.当两个整数处以同一个正整数,获得相同余数,则二整数同余.
+
+<a id="markdown-7-欧拉定理" name="7-欧拉定理"></a>
+# 7. 欧拉定理
+
+> 若n,a为正整数,且n,a互质数(即gcd(a,n)=1),则 a ^ φ(n) ≡ 1 (mod n)
+
+<a id="markdown-8-模逆元" name="8-模逆元"></a>
+# 8. 模逆元
 
 > 一整数a对同余n之模逆元是指满足以下公式的整数b:  a^-1 ≡ b (mod n) 也可写作 ab ≡ 1 (mod n)
 
-<a id="markdown-7-参考资料" name="7-参考资料"></a>
-# 7. 参考资料
+<a id="markdown-9-参考资料" name="9-参考资料"></a>
+# 9. 参考资料
 
 * http://code.activestate.com/recipes/578838-rsa-a-simple-and-easy-to-read-implementation/ (python example)
 * https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95 (RSA维基百科)
