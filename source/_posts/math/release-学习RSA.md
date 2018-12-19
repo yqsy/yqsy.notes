@@ -42,9 +42,9 @@ RSA的过程:
 
 c^d ≡ (m^ed) (mod N)
 
-已知: ed ≡ 1 (mod φ(N)) , 即 ed = 1 + h*φ(N). 由欧拉定理: a ^ φ(n) ≡ 1 (mod n) 得到:
-
-m^ed = m ^ (1 + h*φ(N)) = m * (m^φ(N))^h ≡ m(1)^h (mod N) ≡ m (mod N)
+已知: ed ≡ 1 (mod φ(N)) , 即 ed = 1 + h*φ(N). 由欧拉定理: a ^ φ(n) ≡ 1 (mod n) 得到:   
+m^ed = m ^ (1 + h*φ(N)) = m * (m^φ(N))^h ≡ m(1)^h (mod N) ≡ m (mod N)  
+m^ed ≡ m (mod N)  
 
 <a id="markdown-2-质数" name="2-质数"></a>
 # 2. 质数
