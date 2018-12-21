@@ -151,7 +151,7 @@ class Out:
 
 def main():
     if len(sys.argv) < 2:
-        print("usage: loadblock.py")
+        print("usage: loadblock.py *.blk")
         exit(0)
 
     with open(sys.argv[1], 'rb') as stream:
