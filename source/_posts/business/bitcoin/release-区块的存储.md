@@ -265,7 +265,7 @@ if __name__ == "__main__":
 ```
 
 源码:
-* 
+* https://github.com/yqsy/yqsy.notes/blob/master/source/_posts/business/bitcoin/py/loadblock.py
 
 <a id="markdown-4-参考资料" name="4-参考资料"></a>
 # 4. 参考资料
