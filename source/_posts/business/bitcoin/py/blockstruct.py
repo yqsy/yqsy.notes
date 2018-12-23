@@ -2,6 +2,7 @@ from datetime import datetime
 from serialize import *
 from script import *
 
+
 # 区块结构体解析
 
 class BlockHeader:
@@ -40,10 +41,10 @@ class Block:
             self.vtx.append(Tx(stream))
 
     def isMagicNoValid(self):
-        if self.magicno == 0xD9B4BEF9:
-            return True
-        else:
-            return False
+        return self.magicno == 0xD9B4BEF9
+
+    def isMagicZero(self):
+        return self.magicno == 0x0
 
     def __str__(self):
         str = "blocksize: {0}\n".format(self.blockSize)
@@ -53,26 +54,36 @@ class Block:
 
 class Tx:
     def __init__(self, stream):
-        self.nVersion = uint4(stream)
-        self.dummy = peekuint1(stream)
-        self.flags = peekuint1(stream)
+        self.witness = False
 
-        if self.dummy == 0x00 and self.flags == 1:
-            # 隔离见证 (不能读取vin 0 vout 1 flag = 0)
-            uint1(stream) and uint1(stream)
-            self.readVin(stream)
-            self.readVout(stream)
-            for i in range(0, len(self.vin)):
-                self.vin[i].scriptWitnesslen = varint(stream)
-                self.vin[i].scriptWitness = stream.read(self.vin[i].scriptWitnesslen)
-            self.nLockTime = uint4(stream)
-        if self.dummy == 0x00 and self.flags != 1:
-            raise Exception("error")
+        self.nVersion = uint4(stream)
+        self.flags = 0
+        self.readVin(stream)
+
+        if len(self.vin) == 0:
+            self.flags = uint1(stream)
+
+            if self.flags != 0:
+                self.readVin(stream)
+                self.readVout(stream)
         else:
-            # 普通读取
-            self.readVin(stream)
             self.readVout(stream)
-            self.nLockTime = uint4(stream)
+
+        if self.flags & 1:
+            self.flags ^= 1
+
+            self.witness = True
+
+            for i in range(0, len(self.vin)):
+                self.vin[i].scriptWitnessCount = varint(stream)
+                for j in range(0, self.vin[i].scriptWitnessCount):
+                    witnessLen = varint(stream)
+                    self.vin[i].scriptWitness.append(stream.read(witnessLen))
+
+        if self.flags:
+            raise Exception("error")
+
+        self.nLockTime = uint4(stream)
 
     def readVin(self, stream):
         self.vinCount = varint(stream)
@@ -87,7 +98,7 @@ class Tx:
             self.vout.append(Out(stream))
 
     def isWitness(self):
-        return self.dummy == 0x00 and self.flags == 1
+        return self.witness
 
     def __str__(self):
         str = "nVersion: 0x{0:x}\n".format(self.nVersion)
@@ -105,15 +116,25 @@ class In:
         self.scriptSiglen = varint(stream)
         self.scriptSig = stream.read(self.scriptSiglen)
         self.nSequence = uint4(stream)
-        self.scriptWitnesslen = None
-        self.scriptWitness = None
+        self.scriptWitnessCount = 0
+        self.scriptWitness = []
 
     def __str__(self):
         str = "prevout 0x{0} {1}\n".format(hashStr(self.prevouthash), self.preoutn)
         str = str + "scriptSiglen: {0}\n".format(self.scriptSiglen)
         str = str + "scriptSig: {0}\n".format(scriptToAsmStr(self.scriptSig))
         str = str + "nSequence: 0x{0:x}\n".format(self.nSequence)
-        str = str + "scriptWitnesslen: {0}".format(self.scriptWitnesslen)
+        str = str + "scriptWitnesslen: {0}".format(self.scriptWitnessCount)
+
+        if self.scriptWitnessCount != 0:
+            str += "\n"
+
+        for i in range(0, self.scriptWitnessCount):
+            str = str + "witness[{0}]: {1}".format(i, self.scriptWitness[i].hex())
+
+            if i != self.scriptWitnessCount - 1:
+                str = str + "\n"
+
         return str
 
 

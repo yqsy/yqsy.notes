@@ -347,6 +347,8 @@ def scriptToAsmStr(script):
             else:
                 str += pvch.hex()
         else:
-            str += OPCODE_NAMES[opcode]
-
+            try:
+                str += OPCODE_NAMES[opcode]
+            except KeyError:
+                str += "OP_UNKNOWN"
     return str

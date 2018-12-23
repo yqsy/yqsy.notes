@@ -1,11 +1,7 @@
 import struct
 
+
 # 基础类型反序列化
-
-def peekuint1(stream):
-    # bytes to int
-    return ord(stream.peek(1)[:1])
-
 
 def uint1(stream):
     # bytes to int

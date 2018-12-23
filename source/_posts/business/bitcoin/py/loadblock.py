@@ -17,26 +17,29 @@ def main():
 
             block = Block(stream)
 
-            if not block.isMagicNoValid():
+            if block.isMagicZero():
                 break
 
+            if not block.isMagicNoValid():
+                raise Exception("error")
+
+            print("\n===block===")
             print(block)
             print(block.blockHeader)
-            print("")
 
+            print("\n==transactions===")
             for i in range(len(block.vtx)):
                 tx = block.vtx[i]
+                print("\n===transaction[{0}]===".format(i))
                 print(tx)
 
-                print("")
                 for k in range(len(tx.vin)):
+                    print("\n===vin[{0}]===".format(k))
                     print(tx.vin[k])
-                    print("")
 
-                print("")
                 for j in range(len(tx.vout)):
+                    print("\n===vout[{0}]===".format(j))
                     print(tx.vout[j])
-                    print("")
 
             print("")
 
