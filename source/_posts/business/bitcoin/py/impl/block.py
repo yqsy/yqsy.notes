@@ -1,9 +1,5 @@
 from datetime import datetime
-from serialize import *
-from script import *
-
-
-# 区块结构体解析
+from impl.script import *
 
 class BlockHeader:
     def __init__(self, stream):
