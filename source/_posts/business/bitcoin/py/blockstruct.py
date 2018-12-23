@@ -1,5 +1,6 @@
 from datetime import datetime
 from serialize import *
+from script import *
 
 # 区块结构体解析
 
@@ -110,6 +111,7 @@ class In:
     def __str__(self):
         str = "prevout 0x{0} {1}\n".format(hashStr(self.prevouthash), self.preoutn)
         str = str + "scriptSiglen: {0}\n".format(self.scriptSiglen)
+        str = str + "scriptSig: {0}\n".format(scriptToAsmStr(self.scriptSig))
         str = str + "nSequence: 0x{0:x}\n".format(self.nSequence)
         str = str + "scriptWitnesslen: {0}".format(self.scriptWitnesslen)
         return str
@@ -131,5 +133,6 @@ class Out:
 
     def __str__(self):
         str = "nValue {0}\n".format(self.valueFromAmount(self.nValue))
-        str = str + "scriptPubkeylen {0}".format(self.scriptPubkeylen)
+        str = str + "scriptPubkeylen: {0}\n".format(self.scriptPubkeylen)
+        str = str + "scriptPubkey: {0}".format(scriptToAsmStr(self.scriptPubkey))
         return str

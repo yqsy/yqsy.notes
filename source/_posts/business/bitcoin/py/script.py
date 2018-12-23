@@ -1,3 +1,7 @@
+import struct
+
+from serialize import *
+
 # 脚本解析
 
 # push value
@@ -268,35 +272,81 @@ OPCODE_NAMES = {
 }
 
 
-# 传入slice
-def getScriptOp(script):
+# 传出1.pc 迭代指针 2. opcodeRet 操作符号 3. pvchRet (如果是数据流,则返回相应数据) 4. True,False
+def getScriptOp(pc, script):
     opcodeRet = OP_INVALIDOPCODE
     pvchRet = b''
 
-    if len(script) < 1:
-        return opcodeRet, pvchRet
+    end = len(script)
 
-    # 取首操作符号
-    pc = 0
+    if pc >= end:
+        return pc, opcodeRet, pvchRet, False
+
     opcode = script[pc]
     pc += 1
 
     if opcode <= OP_PUSHDATA4:
-        nSize= 0
-
+        nSize = 0
         if opcode < OP_PUSHDATA1:
             nSize = opcode
         elif opcode == OP_PUSHDATA1:
-            pass
+            # 1byte
+            if end - pc < 1:
+                return pc, opcodeRet, pvchRet, False
+            nSize = script[pc]
+            pc += 1
         elif opcode == OP_PUSHDATA2:
-            pass
+            # 2byte
+            if end - pc < 2:
+                return pc, opcodeRet, pvchRet, False
+            nSize = struct.unpack('H', script[pc: pc + 2])[0]
+            pc += 2
+
         elif opcode == OP_PUSHDATA4:
-            pass
+            # 4byte
+            if end - pc < 4:
+                return pc, opcodeRet, pvchRet, False
+            nSize = struct.unpack('I', script[pc:pc + 4])[0]
+            pc += 4
+
+        if end - pc < 0 or (end - pc) < nSize:
+            return pc, opcodeRet, pvchRet, False
+
+        pvchRet = script[pc:pc + nSize]
+        pc += nSize
+
+    opcodeRet = opcode
+    return pc, opcodeRet, pvchRet, True
 
 
 def scriptToAsmStr(script):
     str = ""
 
-    for i in range(len(script)):
-        if len(str) > 0:
+    pc = 0
+
+    while pc < len(script):
+        if len(str) != 0:
             str += " "
+
+        pc, opcode, pvch, ok = getScriptOp(pc, script)
+
+        if not ok:
+            str += "[error]"
+            return str
+
+        if 0 <= opcode and opcode <= OP_PUSHDATA4:
+            if len(pvch) <= 4:
+                d = 0
+                if len(pvch) == 1:
+                    d = ord(pvch)
+                elif len(pvch) == 2:
+                    d = struct.unpack('H', pvch)[0]
+                elif len(pvch) == 4:
+                    d = struct.unpack('I', pvch)[0]
+                str += "{0}".format(d)
+            else:
+                str += pvch.hex()
+        else:
+            str += OPCODE_NAMES[opcode]
+
+    return str
