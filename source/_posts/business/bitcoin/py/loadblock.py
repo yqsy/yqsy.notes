@@ -1,7 +1,7 @@
 import os
 import sys
 
-from blockstruct import *
+from impl.block import *
 
 
 def main():

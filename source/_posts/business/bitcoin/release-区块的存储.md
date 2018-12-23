@@ -113,6 +113,12 @@ class BlockHeader:
 
 * https://github.com/yqsy/yqsy.notes/blob/master/source/_posts/business/bitcoin/py/loadblock.py
 
+
+```bash
+# leveldb 依赖库安装
+sudo pip3 install plyvel
+```
+
 <a id="markdown-4-参考资料" name="4-参考资料"></a>
 # 4. 参考资料
 
@@ -120,6 +126,7 @@ class BlockHeader:
 * https://github.com/bitcoin/bitcoin/blob/0.17/doc/files.md (bitcoin源码文件说明)
 * https://github.com/tenthirtyone/blocktools  (python源码)
 * https://www.ccn.com/block-parser-how-read-bitcoin-block-chain/ (python源码文章介绍)
+* https://github.com/alecalve/python-bitcoin-blockchain-parser (解析leveldb索引的源码)
 
 数据结构:
 

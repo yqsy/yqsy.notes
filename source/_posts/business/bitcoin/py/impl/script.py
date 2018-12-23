@@ -1,8 +1,4 @@
-import struct
-
-from serialize import *
-
-# 脚本解析
+from impl.serialize import *
 
 # push value
 OP_0 = 0x00

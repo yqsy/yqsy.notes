@@ -1,8 +1,6 @@
 import struct
 
 
-# 基础类型反序列化
-
 def uint1(stream):
     # bytes to int
     return ord(stream.read(1))
