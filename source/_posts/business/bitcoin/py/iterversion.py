@@ -1,7 +1,5 @@
-import os
 import sys
 
-from impl.block import *
 from impl.index import *
 
 

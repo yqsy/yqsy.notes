@@ -63,8 +63,6 @@ UniValue SoftForkMajorityDesc
 `升级的目的,关键代码:`
 
 ```c++
-// ContextualCheckBlock
-
 // ContextualCheckBlock <- CChainState::AcceptBlock <- ProcessNewBlock <- ProcessMessage(3 usages)
 
 if (nHeight >= consensusParams.BIP34Height)
@@ -85,12 +83,54 @@ if (nHeight >= consensusParams.BIP34Height)
 * 75%规则: 如果最后1000个区块的750个是版本2或更高,则`A.版本2在coinbase中必须包含块高度`, `B.版本1仍被网络接受`. 此时新旧版本规则共存
 * 95%规则: 如果最后1000个区块的950个是版本2或更高,则 `版本1不再视为有效`
 
+
+
 <a id="markdown-22-bip66" name="22-bip66"></a>
 ## 2.2. BIP66
+
+`升级的目的,关键代码:`
+
+```bash
+# GetBlockScriptFlags <- CChainState::ConnectBlock <- CChainState::ConnectTip <- CChainState::ActivateBestChainStep <- CChainState::ActivateBestChain <- ProcessNewBlock <- ProcessMessage(3 usages)
+
+# 给区块的flag置上检查位
+if (pindex->nHeight >= consensusparams.BIP66Height) {
+    flags |= SCRIPT_VERIFY_DERSIG;
+}
+
+# CheckSignatureEncoding <- EvalScript(2 usages) <- VerifyScript(3 usages)
+# 检查签名的格式,符合DER编码
+if ((flags & (SCRIPT_VERIFY_DERSIG | SCRIPT_VERIFY_LOW_S | SCRIPT_VERIFY_STRICTENC)) != 0 && !IsValidSignatureEncoding(vchSig)) {
+    return set_error(serror, SCRIPT_ERR_SIG_DER);
+```
+
+分析以上代码得知,在达到BIP66的版本的高度的时候,会检查签名是否符合DER编码的规则.
 
 
 <a id="markdown-23-bip65" name="23-bip65"></a>
 ## 2.3. BIP65
+
+`升级的目的,关键代码:`
+
+```bash
+# GetBlockScriptFlags <- CChainState::ConnectBlock <- CChainState::ConnectTip <- CChainState::ActivateBestChainStep <- CChainState::ActivateBestChain <- ProcessNewBlock <- ProcessMessage(3 usages)
+
+# 给区块的flag置上检查位
+if (pindex->nHeight >= consensusparams.BIP65Height) {
+    flags |= SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY;
+}
+
+# EvalScript <- VerifyScript(3 usages)
+# 开启OP_CHECKLOCKTIMEVERIFY
+case OP_CHECKLOCKTIMEVERIFY:
+{
+    if (!(flags & SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY)) {
+        // not enabled; treat as a NOP2
+        break;
+    }
+```
+
+分析以上代码得知,在达到BIP65版本的高度的时候,使得`SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY`生效.
 
 
 
@@ -100,4 +140,3 @@ if (nHeight >= consensusParams.BIP34Height)
 * https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki (BIP34)
 * https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki (BIP66)
 * https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki (BIP65)
-
