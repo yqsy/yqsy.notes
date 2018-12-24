@@ -38,10 +38,10 @@ uint32_t nNonce;
 通过之前的<区块的存储>文章介绍的知识,下载一份比特币的全量数据,编写脚本来得知区块版本的迁移,数据如下:
 
 ```bash
-version: 1 num: 215047 firstHeight:       0 lastHeight:  227835
-version: 2 num: 140752 firstHeight:  189565 lastHeight:  363689
-version: 3 num:  29304 firstHeight:  341942 lastHeight:  388319
-version: 4 num:  27212 firstHeight:  381993 lastHeight:  471390
+version: 1 num: 215047 firstHeight:       0 lastHeight:  227835 
+version: 2 num: 140752 firstHeight:  189565 lastHeight:  363689 (BIP34)
+version: 3 num:  29304 firstHeight:  341942 lastHeight:  388319 (BIP66)
+version: 4 num:  27212 firstHeight:  381993 lastHeight:  471390 (BIP65)
 ```
 
 根据代码得知不同的版本对应着不同的BIP协议:
