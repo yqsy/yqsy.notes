@@ -28,7 +28,7 @@ def time(stream):
     return time
 
 
-def varint(stream):
+def compactSize(stream):
     size = uint1(stream)
 
     if size < 0xfd:
@@ -41,6 +41,16 @@ def varint(stream):
         return uint8(stream)
     return -1
 
+
+def varInt(stream):
+    n = 0
+    while True:
+        chData = uint1(stream)
+        n = (n << 7) | (chData & 0x7F)
+        if chData & 0x80:
+            n += 1
+        else:
+            return n
 
 def hashStr(bytebuffer):
     return ''.join(('%02x' % a) for a in bytebuffer)

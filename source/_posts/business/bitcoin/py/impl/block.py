@@ -30,7 +30,7 @@ class Block:
         self.blockSize = uint4(stream)
         self.blockHeader = BlockHeader(stream)
 
-        self.txcount = varint(stream)
+        self.txcount = compactSize(stream)
         self.vtx = []
 
         for i in range(0, self.txcount):
@@ -71,9 +71,9 @@ class Tx:
             self.witness = True
 
             for i in range(0, len(self.vin)):
-                self.vin[i].scriptWitnessCount = varint(stream)
+                self.vin[i].scriptWitnessCount = compactSize(stream)
                 for j in range(0, self.vin[i].scriptWitnessCount):
-                    witnessLen = varint(stream)
+                    witnessLen = compactSize(stream)
                     self.vin[i].scriptWitness.append(stream.read(witnessLen))
 
         if self.flags:
@@ -82,13 +82,13 @@ class Tx:
         self.nLockTime = uint4(stream)
 
     def readVin(self, stream):
-        self.vinCount = varint(stream)
+        self.vinCount = compactSize(stream)
         self.vin = []
         for i in range(0, self.vinCount):
             self.vin.append(In(stream))
 
     def readVout(self, stream):
-        self.voutCount = varint(stream)
+        self.voutCount = compactSize(stream)
         self.vout = []
         for i in range(0, self.voutCount):
             self.vout.append(Out(stream))
@@ -109,7 +109,7 @@ class In:
     def __init__(self, stream):
         self.prevouthash = hash32(stream)
         self.preoutn = uint4(stream)
-        self.scriptSiglen = varint(stream)
+        self.scriptSiglen = compactSize(stream)
         self.scriptSig = stream.read(self.scriptSiglen)
         self.nSequence = uint4(stream)
         self.scriptWitnessCount = 0
@@ -137,7 +137,7 @@ class In:
 class Out:
     def __init__(self, stream):
         self.nValue = uint8(stream)
-        self.scriptPubkeylen = varint(stream)
+        self.scriptPubkeylen = compactSize(stream)
         self.scriptPubkey = stream.read(self.scriptPubkeylen)
 
     def valueFromAmount(self, amount):

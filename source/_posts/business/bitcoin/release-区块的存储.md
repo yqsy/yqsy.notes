@@ -8,8 +8,9 @@ categories: [business, bitcoin]
 
 - [1. 说明](#1-说明)
 - [2. 区块的存储](#2-区块的存储)
-- [3. 使用python读取区块数据](#3-使用python读取区块数据)
-- [4. 参考资料](#4-参考资料)
+- [3. 基础概念](#3-基础概念)
+- [4. python读取](#4-python读取)
+- [5. 参考资料](#5-参考资料)
 
 <!-- /TOC -->
 
@@ -56,10 +57,19 @@ SaveBlockToDisk
 
 ![](./pic/bitcoinsaveblock.png)
 
-<a id="markdown-3-使用python读取区块数据" name="3-使用python读取区块数据"></a>
-# 3. 使用python读取区块数据
 
-摘要:
+`核心存储leveldb索引的逻辑:`
+```bash
+FlushStateToDisk -> pblocktree->WriteBatchSync
+
+# 存储如下key:value
+# f + 文件号 : CBlockFileInfo 文件描述
+# l : 上一个存储的文件序号
+# b + 区块hash : CDiskBlockIndex
+```
+
+<a id="markdown-3-基础概念" name="3-基础概念"></a>
+# 3. 基础概念
 
 1) 字节序
 
@@ -74,14 +84,23 @@ SaveBlockToDisk
 
 代码中以`uint8_t data[WIDTH];`,小端方式实现了大数字运算,所以默认是`小端输出`
 
-2) varint
+2) compactSize
 
 * 参考源码: https://github.com/bitcoin/bitcoin/blob/0.17/src/serialize.h#L253 
 * 参考文档: https://bitcoin.org/en/developer-reference#compactsize-unsigned-integers
-* 参考文档(建议): http://learnmeabitcoin.com/glossary/varint
+* 参考文档(注意这里应该是compactSize而不是varint): http://learnmeabitcoin.com/glossary/varint
 
-在比特币中输出数组序列化对象时,会使用`varint`的技术,将数组的大小以不定长(1,3,5,9)的方式输出在数组前面.
+在比特币中输出数组序列化对象时,会使用`compactSize`的技术,将数组的大小以不定长(1,3,5,9)的方式输出在数组前面.
 
+3) varInt
+
+* 参考源码: https://github.com/bitcoin/bitcoin/blob/0.17/src/serialize.h#L372
+* 参考文档: https://bitcoin.stackexchange.com/questions/51620/cvarint-serialization-format 
+
+部分结构体使用到了`varInt`可变长数字的技术,使整数存储空间变得更小.具体待展开.
+
+<a id="markdown-4-python读取" name="4-python读取"></a>
+# 4. python读取
 
 辅助代码,从流中读取基础数据类型(小端)
 ```py
@@ -113,14 +132,14 @@ class BlockHeader:
 
 * https://github.com/yqsy/yqsy.notes/blob/master/source/_posts/business/bitcoin/py/loadblock.py
 
-
+因为索引是存储在leveldb中的,所以需要安装`pyvel支持库`
 ```bash
 # leveldb 依赖库安装
 sudo pip3 install plyvel
 ```
 
-<a id="markdown-4-参考资料" name="4-参考资料"></a>
-# 4. 参考资料
+<a id="markdown-5-参考资料" name="5-参考资料"></a>
+# 5. 参考资料
 
 * https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage  (wiki中的说明)
 * https://github.com/bitcoin/bitcoin/blob/0.17/doc/files.md (bitcoin源码文件说明)

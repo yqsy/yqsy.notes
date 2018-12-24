@@ -2,38 +2,29 @@ import os
 import sys
 
 from impl.block import *
+from impl.index import *
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("usage: iterversion.py {basedirectory}")
+    if len(sys.argv) < 3:
+        print("usage: iterversion.py {basedirectory} {indexdirectory}")
         exit(0)
 
-    nVersions = []
+    versionHeightsMap = {}
 
-    for i in range(2000):
-        fileName = "{0}/blk{1:05d}.dat".format(sys.argv[1], i)
+    blockIndexs = getblockIndexs(sys.argv[2])
 
-        try:
-            with open(fileName, 'rb') as stream:
-                while True:
-                    if stream.tell() == os.fstat(stream.fileno()).st_size:
-                        break
+    for blockIndex in blockIndexs:
+        if blockIndex.nVersion not in versionHeightsMap:
+            heights = []
+            heights.append(blockIndex.nHeight)
+            versionHeightsMap[blockIndex.nVersion] = heights
+        else:
+            versionHeightsMap[blockIndex.nVersion].append(blockIndex.nHeight)
 
-                    block = Block(stream)
-
-                    if block.isMagicZero():
-                        break
-                    if not block.isMagicNoValid():
-                        raise Exception("error")
-
-                    if block.blockHeader.nVersion not in nVersions:
-                        nVersions.append(block.blockHeader.nVersion)
-
-            print("{0} => {1}".format(fileName, nVersions))
-
-        except IOError:
-            break
+    for k, v in versionHeightsMap.items():
+        print("version: {0:12x} num: {1:8d} firstHeight: {2:8d} lastHeight: {3:8d}".format(k, len(v), v[0],
+                                                                                           v[len(v) - 1]))
 
 
 if __name__ == "__main__":
