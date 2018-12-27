@@ -15,8 +15,8 @@ categories: [business, bitcoin]
 - [3. 新升级方式BIP-9](#3-新升级方式bip-9)
     - [3.1. BIP68 112 113](#31-bip68-112-113)
     - [3.2. BIP141 143 147](#32-bip141-143-147)
-    - [3.3. 总结](#33-总结)
-- [4. 参考资料](#4-参考资料)
+- [4. 总结](#4-总结)
+- [5. 参考资料](#5-参考资料)
 
 <!-- /TOC -->
 
@@ -67,7 +67,7 @@ UniValue SoftForkMajorityDesc
 ## 2.1. BIP34
 
 
-`升级的目的,关键代码:`
+升级的目的,关键代码:
 
 ```c++
 // ContextualCheckBlock <- CChainState::AcceptBlock <- ProcessNewBlock <- ProcessMessage(3 usages)
@@ -95,7 +95,7 @@ if (nHeight >= consensusParams.BIP34Height)
 <a id="markdown-22-bip66" name="22-bip66"></a>
 ## 2.2. BIP66
 
-`升级的目的,关键代码:`
+升级的目的,关键代码:
 
 ```bash
 # GetBlockScriptFlags <- CChainState::ConnectBlock <- CChainState::ConnectTip <- CChainState::ActivateBestChainStep <- CChainState::ActivateBestChain <- ProcessNewBlock <- ProcessMessage(3 usages)
@@ -119,7 +119,7 @@ BIP66沿用BIP34的升级规则.
 <a id="markdown-23-bip65" name="23-bip65"></a>
 ## 2.3. BIP65
 
-`升级的目的,关键代码:`
+升级的目的,关键代码:
 
 ```bash
 # GetBlockScriptFlags <- CChainState::ConnectBlock <- CChainState::ConnectTip <- CChainState::ActivateBestChainStep <- CChainState::ActivateBestChain <- ProcessNewBlock <- ProcessMessage(3 usages)
@@ -162,7 +162,7 @@ BIP34,66,65的升级方式可以概括为3个阶段:
 
 由于比特币网络的共识规则是"最长链优先",故孤块并不是什么问题: 因为产生孤块的矿工竞争不过最长链,所以会对已经产生的区块(为了得到奖励花费大量电力)视为沉默成本,并参与到最长链的挖掘中去.
 
-`思考一个向前兼容 & 向后兼容的问题`:
+`思考一个向前兼容 & 向后兼容的问题:`
 
 向前兼容:  
 * A. 增加限制 (coinbase见证放高度 / 签名符合DER编码) - 前面的版本可以兼容后面的版本产生的数据
@@ -175,48 +175,32 @@ BIP34,66,65的升级方式可以概括为3个阶段:
 
 新版本中做调整后可以是`向后兼容`的,在判断多少区块高度之前数据不支持某种功能(coinbase见证放高度 / 签名符合DER编码 / 支持新的操作符) 
 
+`思考BIP34升级方式的问题:`
 
-<a id="markdown-3-新升级方式bip-9" namconsensus.vDeploymentse="3-新升级方式bip-9"></a>
+* 一次只能升级一个版本或者多个版本打包在一起升级(更高的版本号).
+* 不能在时间的维度做升级的规划,不能永久的拒绝某个升级.
+* nVersion为有符号数,负数不能被利用 (代码中以 >= 2来判断).
+
+
 <a id="markdown-3-新升级方式bip-9" name="3-新升级方式bip-9"></a>
 # 3. 新升级方式BIP-9
 
-旧式升级方式在升级了3个版本(nVersion=2,3,4)之后就被BIP-9替换了.
+旧式升级方式在升级了3个版本(nVersion=2,3,4)之后就被BIP-9替换了. 传统的升级方式的特点是生成区块的区块头部的`nVersion`代表了该区块的所处版本.但是在BIP-9中,我们在区块链浏览器中观察最新出的区块很有可能是`0x20000000`,`0x20000000`的含义是BIP-9的初始值,不包含任何`已有`的版本的信息,这和以往的认知观念不同.BIP-9方式下的当前区块版本是由历史区块数据进行遍历决定的 --- 在某一个时间范围内,以2016区块(两周)作为跨度,并用状态机的方式遍历每一个区间来切换状态,当赞成比例到达95%时就视为升级成功.
 
-再次通过脚本来得知区块版本的迁移,数据如下:
+如果没有发出软分叉时,矿工将版本字段设置为`0x20000000`,二进制如下:  
+```bash
+00100000000000000000000000000000
+```
+
+顶部的`001`表示支持两个不同机制的未来升级方式`(010,011)`. 最顶部的`0`表示符号位,因为nVersion被解释为有符号数.实际的版本升级字段一共有29bit,代表29个功能. 使用集合表示为 {0,...,28}.
+
+
+`再次通过脚本来得知区块版本的迁移,数据如下:`
 
 ```bash
-version:     20000007 num:       41 firstHeight:   370434 lastHeight:   414018
-version:     30000000 num:     2058 firstHeight:   398364 lastHeight:   476482
-version:     20000000 num:   113998 firstHeight:   407021 lastHeight:   553026
-version:     20000001 num:     4976 firstHeight:   411264 lastHeight:   455393
-version:     30000001 num:      114 firstHeight:   416276 lastHeight:   419307
-version:      8000004 num:       39 firstHeight:   416832 lastHeight:   455757
-version:     20000002 num:    15833 firstHeight:   438914 lastHeight:   530699
-version:     30000007 num:        4 firstHeight:   459811 lastHeight:   459841
-version:     20000004 num:      212 firstHeight:   459962 lastHeight:   461916
-version:     20000012 num:     1217 firstHeight:   472127 lastHeight:   544102
-version:     20000010 num:      304 firstHeight:   476194 lastHeight:   477092
-version:     20fff000 num:       24 firstHeight:   513424 lastHeight:   536440
-version:     20ffff00 num:       22 firstHeight:   514882 lastHeight:   536598
-version:     20000f00 num:       26 firstHeight:   515079 lastHeight:   536816
-version:     2000e000 num:      372 firstHeight:   521726 lastHeight:   553003
-version:     2000000f num:        3 firstHeight:   522798 lastHeight:   526156
-version:     3fffffff num:        9 firstHeight:   522883 lastHeight:   528916
-version:     3fff0000 num:      356 firstHeight:   523161 lastHeight:   552975
-version:     3fffe000 num:      363 firstHeight:   523434 lastHeight:   552986
-version:     3ffffff0 num:        3 firstHeight:   525665 lastHeight:   532741
-version:     60000000 num:        5 firstHeight:   544085 lastHeight:   548023
-version:     20400000 num:      229 firstHeight:   545759 lastHeight:   552998
-version:     20800000 num:      235 firstHeight:   545856 lastHeight:   553024
-version:     20c00000 num:      232 firstHeight:   546590 lastHeight:   553017
-version:     211cc000 num:        1 firstHeight:   548471 lastHeight:   548471
-version:     2fff4000 num:       13 firstHeight:   549842 lastHeight:   552628
-version:     2fffc000 num:        9 firstHeight:   549920 lastHeight:   552871
-version:     6a6ba000 num:        1 firstHeight:   549961 lastHeight:   549961
-version:     2fff8000 num:       10 firstHeight:   550538 lastHeight:   552728
-version:     60a04000 num:        1 firstHeight:   550568 lastHeight:   550568
-version:     68d64000 num:        1 firstHeight:   550577 lastHeight:   550577
-version:     66834000 num:        1 firstHeight:   552120 lastHeight:   552120
+version:     20000000 num:   113998 firstHeight:   407021 lastHeight:   553026  (预设值)
+version:     20000001 num:     4976 firstHeight:   411264 lastHeight:   455393  (CSV)
+version:     20000002 num:    15833 firstHeight:   438914 lastHeight:   530699  (SEGWIT)
 ```
 
 相关代码:
@@ -224,17 +208,14 @@ version:     66834000 num:        1 firstHeight:   552120 lastHeight:   552120
 ```c++
 // BlockAssembler::CreateNewBlock <- generateBlocks <- generate
 
-// 计算
+// 计算下一个区块的nVersion
 pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
 
-enum DeploymentPos
-{
-// 省略
-    DEPLOYMENT_CSV, // Deployment of BIP68, BIP112, and BIP113.
-    DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
-// 省略
-};
+// 判断CSV特性是否开启
+VersionBitsState(pindex->pprev, chainparams.GetConsensus(), Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE
 
+// 判断隔离见证特性是否开启
+VersionBitsState(pindexPrev, params, Consensus::DEPLOYMENT_SEGWIT, versionbitscache) == ThresholdState::ACTIVE
 
 // CMainParams 初始化函数 (省略部分)
 [Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -252,35 +233,105 @@ enum DeploymentPos
 [Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
 ```
 
-软分叉的三个参数:
+状态的变化方式:
 
-* bit 升级版本位
-* nStartTime 开启时间
-* nTimeout 超时时间 
-
-
-
-
-
-`状态的变迁:`  
+* DEFINED -> STARTED (开始时间到) -> LOCKED_IN (同意超过1916块) -> ACTIVE (激活)
+* DEFINED -> FAILED (失败,没有开始)
+* DEFINED -> STARTED (开始时间到) -> FAILED (失败,有开始)
 
 ![](https://raw.githubusercontent.com/bitcoin/bips/master/bip-0009/states.png)
+
+源码细节以图的方式展示:  
+
+![](./pic/bip9_extra.png)
 
 
 <a id="markdown-31-bip68-112-113" name="31-bip68-112-113"></a>
 ## 3.1. BIP68 112 113
 
+升级的目的 & 关键代码:
+
+* CTxIn 中nSequence的支持 (相对时间锁)
+* CHECKSEQUENCEVERIFY 指令支持
+* GetMedianTimePast 时间使用中位数
+
+BIP68:  
+
+```bash
+# CChainState::ConnectBlock
+if (VersionBitsState(pindex->pprev, chainparams.GetConsensus(), Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
+    nLockTimeFlags |= LOCKTIME_VERIFY_SEQUENCE;
+}
+
+# CalculateSequenceLocks 
+# 支持 CTxIn 中的 nSequence
+```
+
+BIP112:  
+
+```bash
+# ContextualCheckBlock
+if (VersionBitsState(pindex->pprev, consensusparams, Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
+    flags |= SCRIPT_VERIFY_CHECKSEQUENCEVERIFY;
+}
+
+# EvalScript <- VerifyScript(3 usages)
+# 开启OP_CHECKSEQUENCEVERIFY
+if (!(flags & SCRIPT_VERIFY_CHECKSEQUENCEVERIFY)) {
+    // not enabled; treat as a NOP3
+    break;
+}
+```
+
+BIP113:  
+
+```bash
+# GetBlockScriptFlags
+if (VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
+    nLockTimeFlags |= LOCKTIME_MEDIAN_TIME_PAST;
+}
+
+# CheckFinalTx / ContextualCheckBlock / CreateNewBlock
+# 把原始取时间的方式换成区过去11个区块的中位数
+```
 
 <a id="markdown-32-bip141-143-147" name="32-bip141-143-147"></a>
 ## 3.2. BIP141 143 147
 
 
-<a id="markdown-33-总结" name="33-总结"></a>
-## 3.3. 总结
+升级的目的 & 关键代码:
+
+* 隔离见证的支持 
+* 新事务摘要算法
+* 修复OP_CHECKMULTISIG,OP_CHECKMULTISIGVERIFY
 
 
-<a id="markdown-4-参考资料" name="4-参考资料"></a>
-# 4. 参考资料
+BIP141:
+
+```bash
+
+```
+
+BIP143:
+
+```bash
+
+```
+
+BIP147:
+
+```bash
+
+```
+
+
+<a id="markdown-4-总结" name="4-总结"></a>
+# 4. 总结
+
+
+
+<a id="markdown-5-参考资料" name="5-参考资料"></a>
+# 5. 参考资料
 
 * https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki (BIP34)
 * https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki (BIP66)
@@ -292,4 +343,9 @@ enum DeploymentPos
 
 * https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki (BIP9)
 * https://bitcoincore.org/en/2016/06/08/version-bits-miners-faq/#when-should-miners-set-bits (BI9-官方文档)
-* 
+* https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki (BIP68)
+* https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki (BIP112)
+* https://github.com/bitcoin/bips/blob/master/bip-0113.mediawiki (BIP113)
+* https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki (BIP141)
+* https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki (BIP143)
+* https://github.com/bitcoin/bips/blob/master/bip-0147.mediawiki (BIP147)

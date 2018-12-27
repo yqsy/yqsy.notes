@@ -15,26 +15,6 @@ categories: [business, bitcoin]
 
 
 
-P2SH (BIP13 16)
-
-```bash
-# 单一签名
-# scriptPubKey (prev out)
-OP_EQUAL
-[20-byte-hash of {[pubkey] OP_CHECKSIG} ]
-OP_HASH160
-
-# scriptSig (in)
-{[pubkey] OP_CHECKSIG}
-[signature]
-
-# 3个签名
-{2 [pubkey1] [pubkey2] [pubkey3] 3 OP_CHECKMULTISIG}
- 
-# 22个签名?
-{OP_CHECKSIG OP_IF OP_CHECKSIGVERIFY OP_ELSE OP_CHECKMULTISIGVERIFY OP_ENDIF}
-```
-
 Multisig outputs (BIP 11)
 
 ```bash
