@@ -253,7 +253,9 @@ OP_HASH160
 
 # scriptSig (in)
 {2 [pubkey1] [pubkey2] [pubkey3] 3 OP_CHECKMULTISIG}
-[signature]
+[signature2]
+[signature1]
+0
 ```
 
 获得一笔输出作为资金源:

@@ -8,8 +8,8 @@ categories: [business, bitcoin]
 
 - [1. 说明](#1-说明)
 - [2. P2WPKH](#2-p2wpkh)
-- [3. P2SH-P2WPKH](#3-p2sh-p2wpkh)
-- [4. P2WSH](#4-p2wsh)
+- [3. P2WSH](#3-p2wsh)
+- [4. P2SH-P2WPKH](#4-p2sh-p2wpkh)
 - [5. P2SH-P2WSH](#5-p2sh-p2wsh)
 - [6. 参考资料](#6-参考资料)
 
@@ -33,8 +33,22 @@ witness:      <signature> <pubkey>
 scriptSig:    (empty)
 ```
 
-<a id="markdown-3-p2sh-p2wpkh" name="3-p2sh-p2wpkh"></a>
-# 3. P2SH-P2WPKH
+<a id="markdown-3-p2wsh" name="3-p2wsh"></a>
+# 3. P2WSH
+
+加锁与解锁的堆栈:
+
+```bash
+# scriptPubKey (prev out)
+scriptPubKey: 0 <32-byte-hash>
+
+# scriptSig (in)
+witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
+scriptSig:    (empty)
+```
+
+<a id="markdown-4-p2sh-p2wpkh" name="4-p2sh-p2wpkh"></a>
+# 4. P2SH-P2WPKH
 
 
 加锁与解锁的堆栈:
@@ -48,19 +62,6 @@ witness:      <signature> <pubkey>
 scriptSig:    <0 <20-byte-key-hash>>
 ```
 
-<a id="markdown-4-p2wsh" name="4-p2wsh"></a>
-# 4. P2WSH
-
-加锁与解锁的堆栈:
-
-```bash
-# scriptPubKey (prev out)
-scriptPubKey: 0 <32-byte-hash>
-
-# scriptSig (in)
-witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
-scriptSig:    (empty)
-```
 
 <a id="markdown-5-p2sh-p2wsh" name="5-p2sh-p2wsh"></a>
 # 5. P2SH-P2WSH
