@@ -26,7 +26,6 @@ categories: [business, bitcoin]
 * `锁定交易` - 表示所属权身份(公钥/公钥hash),只有使用私钥进行签名才可以解锁
 * `解锁交易` - 使用私钥进行签名解锁,随即可以生成新的锁定交易,将货币的所属权交给新的身份(公钥/公钥hash)
 
-
 **请注意,以下示例每一次启动前都会删除所有的历史数据!**
 
 <a id="markdown-2-pay-to-public-key-p2pk" name="2-pay-to-public-key-p2pk"></a>
@@ -257,7 +256,7 @@ OP_HASH160
 [signature]
 ```
 
-通过挖矿奖励获得P2SH的`锁定交易`:
+获得一笔输出作为资金源:
 
 ```bash
 # 获得coinbase的地址
@@ -280,6 +279,115 @@ bitcoin-cli importprivkey $COINBASEPRIKEYWIF
 bitcoin-cli getbalance
 ```
 
+获得P2SH的`锁定交易`, 2-of-3:
+
+```bash
+MULTIADDR1_EC=`bx seed | bx ec-new`
+MULTIADDR1_INFO=`parse_privkey $MULTIADDR1_EC`
+MULTIADDR1_ADDRESS=`echo $MULTIADDR1_INFO | sed -n 13p | awk '{print $2}'`
+MULTIADDR1_PUBKEY=`echo $MULTIADDR1_INFO | sed -n 11p | awk '{print $2}'`
+MULTIADDR1_PRVKEY_WIF=`echo $MULTIADDR1_INFO | sed -n 10p | awk '{print $2}'`
+
+MULTIADDR2_EC=`bx seed | bx ec-new`
+MULTIADDR2_INFO=`parse_privkey $MULTIADDR2_EC`
+MULTIADDR2_ADDRESS=`echo $MULTIADDR2_INFO | sed -n 13p | awk '{print $2}'`
+MULTIADDR2_PUBKEY=`echo $MULTIADDR2_INFO | sed -n 11p | awk '{print $2}'`
+MULTIADDR2_PRVKEY_WIF=`echo $MULTIADDR2_INFO | sed -n 10p | awk '{print $2}'`
+
+MULTIADDR3_EC=`bx seed | bx ec-new`
+MULTIADDR3_INFO=`parse_privkey $MULTIADDR3_EC`
+MULTIADDR3_ADDRESS=`echo $MULTIADDR3_INFO | sed -n 13p | awk '{print $2}'`
+MULTIADDR3_PUBKEY=`echo $MULTIADDR3_INFO | sed -n 11p | awk '{print $2}'`
+MULTIADDR3_PRVKEY_WIF=`echo $MULTIADDR3_INFO | sed -n 10p | awk '{print $2}'`
+
+# 1. 创建P2SH多重签名地址 (不能丢失)
+MULTISIG_JSON=`bitcoin-cli createmultisig 2 '''
+[
+    "'$MULTIADDR1_PUBKEY'",
+    "'$MULTIADDR2_PUBKEY'",
+    "'$MULTIADDR3_PUBKEY'"
+]'''`
+
+# 脚本地址
+MUTISIG_ADDRESS=`echo $MULTISIG_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["address"])'`
+
+# 赎回脚本
+MUTISIG_REDEEMSCRIPT=`echo $MULTISIG_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["redeemScript"])'`
+
+# 2. 向多重签名地址转账
+UTXOID=`bitcoin-cli sendtoaddress $MUTISIG_ADDRESS 50.00 "" "" true`
+
+# 查询该比P2SH锁定交易的脚本 (未打包上链)
+RAWTRANSACTION_JSON=`bitcoin-cli getrawtransaction $UTXOID 1`
+echo $RAWTRANSACTION_JSON
+```
+
+对该比P2SH输出进行`解锁交易`, 用任意的两个私钥进行签名:
+
+```bash
+UTXO_VOUT=0
+UTXO_OUTPUT_SCRIPT=` echo $RAWTRANSACTION_JSON | 
+python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["hex"])' `
+
+
+# 创建新的输出地址
+NEWOUTADDR_EC=`bx seed | bx ec-new`
+NEWOUTADDR_INFO=`parse_privkey $NEWOUTADDR_EC`
+NEWOUTADDR_ADDRESS=`echo $NEWOUTADDR_INFO | sed -n 13p | awk '{print $2}'`
+
+
+# 1. 创建交易
+
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$UTXOID'",
+        "vout": '$UTXO_VOUT'
+    }
+]
+''' '''
+{
+    "'$NEWOUTADDR_ADDRESS'": 49.9999
+}
+'''`
+
+# 2. 签名交易 (需要使用 1. P2SH地址 2. 赎回脚本(这个很关键))
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$MULTIADDR1_PRVKEY_WIF'",
+    "'$MULTIADDR2_PRVKEY_WIF'"
+]''' '''
+[
+    {
+        "txid": "'$UTXOID'",
+        "vout": '$UTXO_VOUT',
+        "scriptPubKey": "'$UTXO_OUTPUT_SCRIPT'",
+        "redeemScript": "'$MUTISIG_REDEEMSCRIPT'"
+    }
+]
+''' `
+
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+# 3. 发送交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 4. 生成打包区块
+bg 1 
+
+
+# 查询新地址信息
+echo $NEWOUTADDR_INFO
+
+# 导入新地址到钱包
+bitcoin-cli importaddress $NEWOUTADDR_ADDRESS
+
+# 查询新地址接受到的金额
+bitcoin-cli getreceivedbyaddress $NEWOUTADDR_ADDRESS 0
+
+# 查询这一笔交易
+bhtx 102 2
+```
 
 <a id="markdown-5-op_return" name="5-op_return"></a>
 # 5. OP_RETURN
@@ -363,7 +471,7 @@ bitcoin-cli sendrawtransaction $SIGNED_RAWTX
 bg 1
 
 # 查询这一笔交易
-bhtx 102 1
+bhtx 102 2
 ```
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
