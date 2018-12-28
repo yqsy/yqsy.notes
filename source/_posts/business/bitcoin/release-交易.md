@@ -247,14 +247,39 @@ bhtx 102 1
 加锁与解锁的堆栈:
 
 ```bash
+# scriptPubKey (prev out)
+OP_EQUAL
+[20-byte-hash of {[pubkey] OP_CHECKSIG} ]
+OP_HASH160
 
+# scriptSig (in)
+{[pubkey] OP_CHECKSIG}
+[signature]
 ```
 
 通过挖矿奖励获得P2SH的`锁定交易`:
 
 ```bash
+# 获得coinbase的地址
+COINBASEEC=`bx seed | bx ec-new`
+COINBASEECADDRESS_INFO=`parse_privkey $COINBASEEC`
 
+# 提取P2PKH地址
+COINBASECP2PKHADDR=`echo $COINBASEECADDRESS_INFO | sed -n 13p | awk '{print $2}'`
+
+bitcoin-cli generatetoaddress 101 $COINBASECP2PKHADDR
+
+# 查询锁定脚本
+bbasetx 1
+
+# 提取私钥并导入到钱包
+COINBASEPRIKEYWIF=`echo $COINBASEECADDRESS_INFO | sed -n 10p | awk '{print $2}'`
+bitcoin-cli importprivkey $COINBASEPRIKEYWIF
+
+# 查询余额
+bitcoin-cli getbalance
 ```
+
 
 <a id="markdown-5-op_return" name="5-op_return"></a>
 # 5. OP_RETURN
