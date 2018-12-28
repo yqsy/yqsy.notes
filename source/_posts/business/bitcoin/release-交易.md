@@ -248,11 +248,11 @@ bhtx 102 1
 ```bash
 # scriptPubKey (prev out)
 OP_EQUAL
-[20-byte-hash of {[pubkey] OP_CHECKSIG} ]
+[20-byte-hash of {2 [pubkey1] [pubkey2] [pubkey3] 3 OP_CHECKMULTISIG} ]
 OP_HASH160
 
 # scriptSig (in)
-{[pubkey] OP_CHECKSIG}
+{2 [pubkey1] [pubkey2] [pubkey3] 3 OP_CHECKMULTISIG}
 [signature]
 ```
 
