@@ -13,7 +13,8 @@ categories: [business, bitcoin]
 - [5. BIP39 助记词](#5-bip39-助记词)
 - [6. BIP32 & BIP44 分层确定钱包](#6-bip32--bip44-分层确定钱包)
 - [7. 将命令行放到zshrc](#7-将命令行放到zshrc)
-- [8. 参考资料](#8-参考资料)
+- [8. bitcoin-cli获取地址](#8-bitcoin-cli获取地址)
+- [9. 参考资料](#9-参考资料)
 
 <!-- /TOC -->
 
@@ -284,8 +285,42 @@ source ~/.bitcoinaddress.rc
 EOF
 ```
 
-<a id="markdown-8-参考资料" name="8-参考资料"></a>
-# 8. 参考资料
+<a id="markdown-8-bitcoin-cli获取地址" name="8-bitcoin-cli获取地址"></a>
+# 8. bitcoin-cli获取地址
+
+源码:  
+```c++
+// P2PKH 地址
+base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
+// P2SH 地址
+base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
+// 私钥WIF 地址
+base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,128);
+// BIP32 pubkey
+base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+// BIP32 private key
+base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
+// 隔离见证地址前缀
+bech32_hrp = "bc";
+
+// P2PKH P2SH encode 源码位置
+DestinationEncoder
+```
+
+实践:  
+```bash
+# P2PKH地址 (1JHzZxUHgGL2L2otywxWAMTXfcqGzogupE)
+bitcoin-cli getnewaddress "" legacy
+
+# P2WPKH地址 (bc1q62zwwkge4xxgcvmmg709r6qdkf4znzjpj54cn0)
+bitcoin-cli getnewaddress "" bech32
+
+# P2SH-P2WPKH地址 (35zgCXB4GNrAzAGGzxcKKbcRx9KPcuBTvh)
+bitcoin-cli getnewaddress "" p2sh-segwit
+```
+
+<a id="markdown-9-参考资料" name="9-参考资料"></a>
+# 9. 参考资料
 
 上文命令行参考:  
 
