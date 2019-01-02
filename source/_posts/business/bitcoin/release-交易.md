@@ -136,7 +136,7 @@ echo $NEWADDRESS_INFO
 # 导入新地址到钱包
 bitcoin-cli importaddress $NEWP2PkHADDR
 
-# 查询新地址接受到的金额# pay to wit
+# 查询新地址接受到的金额
 bitcoin-cli getreceivedbyaddress $NEWP2PkHADDR 0
 
 # 查询这一笔交易
