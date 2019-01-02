@@ -88,7 +88,8 @@ parse_privkey() {
     QRCODE_COMPRESSED=`bx qrcode -p $P2PKHADDRESS_COMPRESSED`
 
     P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
-    
+    P2WPKH=`getsegwitaddr $PUBKEYHASH_COMPRESSED`
+
     echo "[压缩]" &&
     echo 私钥: $PRIKEY &&
     echo 私钥WIF: $PRIKEY_WIF_COMPRESSED &&
@@ -97,6 +98,7 @@ parse_privkey() {
     echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
     echo URI: $URI_COMPRESSED &&
     echo P2SH-P2WPKH: $P2SH_P2WPKH
+    echo P2WPKH: $P2WPKH
 
     echo $QRCODE_COMPRESSED > /tmp/compressed.png
 } 
@@ -127,12 +129,14 @@ parse_pubkey_compressed() {
     P2PKHADDRESS_COMPRESSED=`bx address-encode -v 0 $PUBKEYHASH_COMPRESSED`
     URI_COMPRESSED=`bx uri-encode $P2PKHADDRESS_COMPRESSED`
     P2SH_P2WPKH=`echo "0 [$PUBKEYHASH_COMPRESSED]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    P2WPKH=`getsegwitaddr $PUBKEYHASH_COMPRESSED`
     echo "[压缩]" &&
     echo 公钥: $PUBKEY_COMPRESSED &&
     echo 公钥hash: $PUBKEYHASH_COMPRESSED &&
     echo P2PKH地址: $P2PKHADDRESS_COMPRESSED &&
     echo URI: $URI_COMPRESSED  &&
     echo P2SH-P2WPKH: $P2SH_P2WPKH
+    echo P2WPKH: $P2WPKH
 }
 
 # 公钥哈系 -> 钱包地址
@@ -141,10 +145,12 @@ parse_pubkeyhash() {
     P2PKHADDRESS=`bx address-encode -v 0 $PUBKEYHASH`
     URI=`bx uri-encode $P2PKHADDRESS`
     P2SH_P2WPKH=`echo "0 [$PUBKEYHASH]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    P2WPKH=`getsegwitaddr $PUBKEYHASH`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
     echo URI: $URI &&
     echo P2SH-P2WPKH: $P2SH_P2WPKH
+    echo P2WPKH: $P2WPKH
 }
 
 # 钱包地址 -> 公钥哈系
@@ -153,10 +159,12 @@ parse_address() {
     PUBKEYHASH=`bx address-decode  $P2PKHADDRESS | sed -n 4p | awk '{print $2}' `
     URI=`bx uri-encode $P2PKHADDRESS`
     P2SH_P2WPKH=`echo "0 [$PUBKEYHASH]" | bx script-encode | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+    P2WPKH=`getsegwitaddr $PUBKEYHASH`
     echo 公钥hash: $PUBKEYHASH &&
     echo P2PKH地址: $P2PKHADDRESS &&
     echo URI: $URI &&
     echo P2SH-P2WPKH: $P2SH_P2WPKH
+    echo P2WPKH: $P2WPKH
 }
 
 # 创建新私钥
@@ -313,7 +321,7 @@ bech32_hrp = "bc";
 DestinationEncoder
 ```
 
-实践:  
+同样这也是常用的地址,实践:  
 ```bash
 # P2PKH地址 (1JHzZxUHgGL2L2otywxWAMTXfcqGzogupE)
 bitcoin-cli getnewaddress "" legacy
@@ -321,7 +329,7 @@ bitcoin-cli getnewaddress "" legacy
 # P2WPKH地址 (bc1q62zwwkge4xxgcvmmg709r6qdkf4znzjpj54cn0)
 bitcoin-cli getnewaddress "" bech32
 
-# P2SH-P2WPKH地址 (35zgCXB4GNrAzAGGzxcKKbcRx9KPcuBTvh)
+# P2SH-P2WPKH地址 (35zgCXB4GNrAzAGGzxcKKbcRx9KPcuBTvh) 
 bitcoin-cli getnewaddress "" p2sh-segwit
 ```
 
