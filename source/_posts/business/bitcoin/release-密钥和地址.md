@@ -46,7 +46,7 @@ chmod +x /usr/local/bin/bx
 
 从源码中剥离得到生成segwit地址的python脚本:
 ```bash
-sudo wget https://github.com/yqsy/yqsy.notes/blob/master/source/_posts/business/bitcoin/script/getsegwitaddr -O /usr/local/bin/getsegwitaddr
+sudo wget https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/getsegwitaddr -O /usr/local/bin/getsegwitaddr
 sudo chmod +x /usr/local/bin/getsegwitaddr
 ```
 
