@@ -46,10 +46,9 @@ chmod +x /usr/local/bin/bx
 
 从源码中剥离得到生成segwit地址的python脚本:
 ```bash
-wget 
-
+sudo wget https://github.com/yqsy/yqsy.notes/blob/master/source/_posts/business/bitcoin/script/getsegwitaddr -O /usr/local/bin/getsegwitaddr
+sudo chmod +x /usr/local/bin/getsegwitaddr
 ```
-
 
 提供以下shell脚本方便日常使用:  
 

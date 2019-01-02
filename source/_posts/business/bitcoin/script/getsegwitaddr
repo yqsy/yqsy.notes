@@ -1,5 +1,9 @@
-# copy from
+#!/usr/bin/python3
 
+# copy from bitcoin
+
+
+import sys
 from binascii import hexlify, unhexlify
 
 CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
@@ -111,5 +115,12 @@ def program_to_witness(version, program, main = False):
     return encode("bc" if main else "bcrt", version, program)
 
 
+def main():
+    if len(sys.argv) < 2:
+        print("usage: getsegwitaddr {pubkeyhash}")
+        exit(0)
+
+    print(program_to_witness(0, sys.argv[1], True))
+
 if __name__ == "__main__":
-    print(program_to_witness(0, "f02a003c7cb8899e39f749180df50e79f38b3ae2", True))
+    main()
