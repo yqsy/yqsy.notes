@@ -50,7 +50,6 @@ scriptSig:    (empty)
 <a id="markdown-4-p2sh-p2wpkh" name="4-p2sh-p2wpkh"></a>
 # 4. P2SH-P2WPKH
 
-
 加锁与解锁的堆栈:
 
 ```bash

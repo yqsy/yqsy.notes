@@ -44,6 +44,13 @@ sudo mv bx-linux-x64-qrcode /usr/local/bin/bx
 chmod +x /usr/local/bin/bx
 ```
 
+从源码中剥离得到生成segwit地址的python脚本:
+```bash
+wget 
+
+```
+
+
 提供以下shell脚本方便日常使用:  
 
 * parse_privkey 解析私钥
@@ -332,6 +339,10 @@ bitcoin-cli getnewaddress "" p2sh-segwit
 * https://www.bitaddress.org/ (bitaddress)
 * https://www.mobilefish.com/services/cryptocurrency/cryptocurrency.html (地址生成 & 原理解释)
 
+地址生成源码:
+
+* https://github.com/bitcoin/bitcoin/blob/master/test/functional/test_framework/address.py 
+
 地址原理解释:  
 
 * https://en.bitcoin.it/wiki/Wallet_import_format (私钥->wif, wif->私钥)
@@ -353,6 +364,11 @@ BIP32 & BIP44:
 
 * https://www.mobilefish.com/download/ethereum/hd_wallet.html (bip32,44生成 & 原理解释)
 * https://www.youtube.com/watch?v=2HrMlVr1QX8 (youtube原理解释)
+
+BIP173(隔离见证地址):
+
+* https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
+* http://bitcoin.sipa.be/bech32/demo/demo.html (隔离见证地址转 pubkey hash & script hash)
 
 书籍参考:  
 
