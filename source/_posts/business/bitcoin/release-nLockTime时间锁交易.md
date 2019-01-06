@@ -72,12 +72,12 @@ NEWADDRESS_INFO=`parse_privkey $NEWEC`
 
 # 提取P2PKH地址
 NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
-
-# 1) 创建交易 (到达2000高度后可被打包)
-RAWTX=`bitcoin-cli createrawtransaction '''
-[
-    {
-        "txid": "'$PRE_TXID'",
+send_payment
+# 1) 创建交易 (到达2000高度send_payment后可被打包)
+RAWTX=`bitcoin-cli createrasend_paymentwtransaction '''
+[send_payment
+    {send_payment
+        "txid": "'$PRE_TXIDsend_payment'",
         "vout": '$PRE_VOUT'
     }
 ]
@@ -202,71 +202,6 @@ bitcoin-cli getbalance
 创建带有CheckLockTimeVerify的`锁定交易`:
 
 ```bash
-PRE_TXID=`_bbasehash 1`
-PRE_VOUT=0
-
-# 获得新的地址
-NEWEC=`bx seed | bx ec-new`
-NEWADDRESS_INFO=`parse_privkey $NEWEC`
-
-# 提取公钥
-NEWPUBKEY=`echo $NEWADDRESS_INFO | sed -n 11p | awk '{print $2}'`
-
-# 提取私钥做备用
-NEWPRVKEY=`echo $NEWADDRESS_INFO | sed -n 10p | awk '{print $2}'`
-
-# 30s后解锁
-# CURRENTTIME=`date +%s`
-# CURRENTTIME=`expr $CURRENTTIME + 10`
-# CURRENTTIME_HEX=`printf "%X" $CURRENTTIME`
-# CURRENTTIME_HEX=`echo ${CURRENTTIME_HEX:6:2}${CURRENTTIME_HEX:4:2}${CURRENTTIME_HEX:2:2}${CURRENTTIME_HEX:0:2}`
-
-# 脚本加锁 至300 区块 
-REDEEM_SCRIPT=`bx script-encode "[2C010000] checklocktimeverify drop [$NEWPUBKEY] checksig"`
-
-SCRIPT_ADDR=`echo $REDEEM_SCRIPT | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
-
-# 1) 创建交易 
-
-RAWTX=`bitcoin-cli createrawtransaction '''
-[
-    {
-        "txid": "'$PRE_TXID'",
-        "vout": '$PRE_VOUT'
-    }
-]
-''' '''
-{
-    "'$SCRIPT_ADDR'": 49.9999
-}
-'''`
-
-# 2) 签名交易
-SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
-[
-    "'$COINBASEPRIKEYWIF'"
-]
-'''`
-
-SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
-
-# 3)发送交易
-bitcoin-cli sendrawtransaction $SIGNED_RAWTX
-
-# 4) 打包
-bg 1
-
-# 查询这笔交易
-bhtx 102 1
-
-# 查询该比P2SH锁定交易的脚本
-
-UTXOID=`_bhtxhash 102 1`
-RAWTRANSACTION_JSON=`bitcoin-cli getrawtransaction $UTXOID 1`
-echo $RAWTRANSACTION_JSON
-UTXO_VOUT=0
-UTXO_OUTPUT_SCRIPT=` echo $RAWTRANSACTION_JSON | 
-python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["hex"])' `
 
 ```
 
@@ -275,7 +210,6 @@ python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["script
 ```bash
 
 ```
-
 
 <a id="markdown-4-交易数据" name="4-交易数据"></a>
 # 4. 交易数据
