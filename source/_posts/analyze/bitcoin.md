@@ -107,7 +107,7 @@ sudo apt remove bitcoin-qt bitcoind -y
 # 3. 代码组织
 ```bash
 
-# 代码文件组织 .cpp .c .h
+# 代码文件组织 .cpp .c .h  (4w行)
 ./qt                 280723     # qt *
 ./bench              126491     # bench mark
 ./test               92572      # test
