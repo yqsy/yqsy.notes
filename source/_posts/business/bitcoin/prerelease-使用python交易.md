@@ -19,8 +19,8 @@ categories: [business, bitcoin]
 ```bash
 # 拉取源代码 (应该作为库来管理,像nodejs一样指定版本,他这个有问题)
 # 问题在于:   setup.py中  packages=find_packages(),  
-mkdir -p /mnt/disk1/linux/reference/test/bitcointest
-cd /mnt/disk1/linux/reference/test/bitcointest
+mkdir -p /mnt/disk1/linux/reference/project/bitcointest
+cd /mnt/disk1/linux/reference/project/bitcointest
 mkdir lib && cd lib
 git clone https://github.com/petertodd/python-bitcoinlib
 cd ..
@@ -29,6 +29,8 @@ cd ..
 rm -rf ./lib/python-bitcoinlib/.git
 
 ln -s lib/python-bitcoinlib/bitcoin/ bitcoin
+
+git init .
 ```
 
 <a id="markdown-2-参考资料" name="2-参考资料"></a>
