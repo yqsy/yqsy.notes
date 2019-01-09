@@ -7,7 +7,6 @@ categories: [项目分析]
 <!-- TOC -->
 
 - [1. 源码编译](#1-源码编译)
-- [2. 安装](#2-安装)
 - [3. 代码组织](#3-代码组织)
 - [4. 有用的文档](#4-有用的文档)
 - [5. 源码详细](#5-源码详细)
@@ -19,89 +18,9 @@ categories: [项目分析]
 # 1. 源码编译
 
 
-v0.17.0
-
-* https://www.cnblogs.com/mfryf/p/8284790.html (bitcoin源码解析)
-* https://gist.github.com/gubatron/36784ee38e45cb4bf4c7a82ecc87b6a8 (debug编译bitcoind)
-* https://stackoverflow.com/questions/19215177/how-to-solve-ptrace-operation-not-permitted-when-trying-to-attach-gdb-to-a-pro (cmake不允许附加)
-
-```bash
-# 获取阅读源码 (基于v0.17.0)
-git clone git@github.com:yqsy/bitcoin
-git fetch origin readerbranch
-git checkout readerbranch
-
-# 获取v0.17.0源码
-cd /mnt/disk1/linux/reference/refer
-git clone https://github.com/bitcoin/bitcoin
-cd bitcoin
-git checkout tags/v0.17.0 -b readerbranch
-
-# 编译调试版本
-# ...依赖请参考 https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/build-unix.md
-
-./autogen.sh && ./configure --enable-debug
-make -j 8 && sudo make install
-
-# 开启附加调试
-echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-
-# 修改configure.ac 关闭优化,改成-O0
-252:    [-Og],
-253:    [[DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -Og"]],
-611:  CXXFLAGS="$CXXFLAGS -Og"
 
 
-# 加上我的调试帮助
-git apply debughelper.diff
-```
 
-阅读源码的CMakeFile.txt
-```
-cmake_minimum_required(VERSION 3.12)
-project(src)
-
-set(CMAKE_CXX_STANDARD 11)
-
-include_directories(${PROJECT_SOURCE_DIR}/secp256k1/include
-        ${PROJECT_SOURCE_DIR}/leveldb/include
-        ${PROJECT_SOURCE_DIR}/univalue/include
-        ${PROJECT_SOURCE_DIR}
-        )
-
-
-file(GLOB_RECURSE SRCS *.cpp *,h)
-
-add_executable(src ${SRCS})
-```
-
-```c++
-// 暂停代码
-char buf[100] = {};
-fgets(buf , 80, stdin);
-```
-
-```bash
-# 显示PID
-bitcoind -regtest -daemon & echo $! && fg
-```
-
-<a id="markdown-2-安装" name="2-安装"></a>
-# 2. 安装
-
-* https://bitcoincore.org/en/download/
-* https://bitcoin.org/en/full-node#ubuntu-1604
-* https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin
-
-```bash
-# 安装
-sudo add-apt-repository ppa:bitcoin/bitcoin
-sudo apt-get update -y
-sudo apt-get install bitcoin-qt bitcoind -y
-
-# 卸载
-sudo apt remove bitcoin-qt bitcoind -y
-```
 
 <a id="markdown-3-代码组织" name="3-代码组织"></a>
 # 3. 代码组织
