@@ -364,10 +364,13 @@ SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
         "txid": "'$UTXOID'",
         "vout": '$UTXO_VOUT',
         "scriptPubKey": "'$UTXO_OUTPUT_SCRIPT'",
-        "redeemScript": "'$MUTISIG_REDEEMSCRIPT'"
+        "redeemScript": "'$MUTISIG_REDEEMSCRIPT'",
+        "amount": "49.99996220"
     }
 ]
 ''' `
+
+# 注意上面可以省略amount, 因为传统的交易不把amount算在签名对象之内 (隔离见证会算在内)
 
 SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
 

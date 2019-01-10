@@ -8,15 +8,25 @@ categories: [business, bitcoin]
 
 - [1. 说明](#1-说明)
 - [2. nLockTime](#2-nlocktime)
-- [3. CheckLockTimeVerify](#3-checklocktimeverify)
-- [4. 交易数据](#4-交易数据)
-- [5. 参考资料](#5-参考资料)
+- [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
+- [4. 场景四 冻结资金实践](#4-场景四-冻结资金实践)
+- [5. 场景二 双因素钱包实践 (单向支付通道)](#5-场景二-双因素钱包实践-单向支付通道)
+- [6. 交易数据](#6-交易数据)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
 
 <a id="markdown-1-说明" name="1-说明"></a>
 # 1. 说明
+
+```c++
+class CTransaction    
+int32_t nVersion;
+std::vector<CTxIn> vin;
+std::vector<CTxOut> vout;
+uint32_t nLockTime;
+```
 
 设想一种功能: 锁定某一笔钱直到若干年后才能被消费. 这样的功能在传统中心化软件中无法真正做到,因为中心化系统的规则并不是真正的规则.在区块链软件中,规则一旦制定,随着时间的推移其修改的成本会变的越来越高.这里做一下时间锁相关的交易,并跟踪到相关代码来分析.
 
@@ -108,8 +118,8 @@ bitcoin-cli sendrawtransaction $SIGNED_RAWTX
 bhtx 2001 1
 ```
 
-<a id="markdown-3-checklocktimeverify" name="3-checklocktimeverify"></a>
-# 3. CheckLockTimeVerify
+<a id="markdown-3-checklocktimeverify常用场景" name="3-checklocktimeverify常用场景"></a>
+# 3. CheckLockTimeVerify常用场景
 
 (BIP65, CLTV)
 
@@ -173,8 +183,8 @@ bool GenericTransactionSignatureChecker<T>::CheckLockTime
 # 3. nSequence == 0xffffffff, 不可上链 (禁用nLockTime)
 ```
 
-
-我们这里实践一下场景四, 冻结资金: 
+<a id="markdown-4-场景四-冻结资金实践" name="4-场景四-冻结资金实践"></a>
+# 4. 场景四 冻结资金实践
 
 通过挖矿奖励得资金源:
 
@@ -211,16 +221,23 @@ bitcoin-cli getbalance
 
 ```
 
-<a id="markdown-4-交易数据" name="4-交易数据"></a>
-# 4. 交易数据
+<a id="markdown-5-场景二-双因素钱包实践-单向支付通道" name="5-场景二-双因素钱包实践-单向支付通道"></a>
+# 5. 场景二 双因素钱包实践 (单向支付通道) 
+
+
+
+
+<a id="markdown-6-交易数据" name="6-交易数据"></a>
+# 6. 交易数据
 
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/nLockTime (nLockTime)
 
-<a id="markdown-5-参考资料" name="5-参考资料"></a>
-# 5. 参考资料
+
+<a id="markdown-7-参考资料" name="7-参考资料"></a>
+# 7. 参考资料
 
 * https://en.bitcoin.it/wiki/Timelock (百科)
 * https://coinb.in/#newTimeLocked (在线生成锁定脚本)
 * https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki (BIP65)
-* https://github.com/petertodd/checklocktimeverify-demos (BIP65 demo - python)
+* https://github.com/petertodd/checklocktimeverify-demos (BIP65 demo - python 单向支付通道)
 * https://github.com/mruddy/bip65-demos (BIP65 demo - nodejs)
