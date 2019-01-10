@@ -29,13 +29,6 @@ m
 OP_0
 ```
 
-
-Anyone-Can-Spend (不在p2p网络上传播)
-
-```bash
-OP_TRUE
-```
-
 Transaction Puzzle (猜谜吗)
 
 ```bash

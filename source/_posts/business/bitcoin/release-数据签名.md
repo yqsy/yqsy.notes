@@ -173,14 +173,15 @@ SIGHASH_NONE:
 
 SIGHASH_SINGLE:
 
-如下图所示,不关心其他比特币的去向. (这个也是过度设计,不合理的. 不关心其他比特币的去向?其他的也可能是我的!来源于不同的out但是相同的地址)
+如下图所示,不关心其他比特币的去向. (让其他比特币的去向由其他拥有者来填写)
 
 ![](./pic/sighash_single.png)
 
-ANYONECANPAY:
+SIGHASH_ANYONECANPAY:
 
-输入vin调整为1. 只关心比特币的第一笔来源  (也就是第一笔之后的来源都是可以修改的,不合理)
+如下图所示, 不关心其他比特币的来源. (让其他比特币的来源由其他拥有者来填写)
 
+![](./pic/sighash_anyonecanpay.png)
 
 <a id="markdown-7-总结" name="7-总结"></a>
 # 7. 总结
