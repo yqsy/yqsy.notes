@@ -319,7 +319,7 @@ MUTISIG_REDEEMSCRIPT=`echo $MULTISIG_JSON | python -c 'import json,sys;obj=json.
 # 2. 向多重签名地址转账
 UTXOID=`bitcoin-cli sendtoaddress $MUTISIG_ADDRESS 50.00 "" "" true`
 
-# 查询该比P2SH锁定交易的脚本 (未打包上链)
+# 查询该比P2SH锁定交易的脚本
 RAWTRANSACTION_JSON=`bitcoin-cli getrawtransaction $UTXOID 1`
 echo $RAWTRANSACTION_JSON
 ```
