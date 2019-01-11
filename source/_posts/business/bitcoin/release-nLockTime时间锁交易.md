@@ -9,9 +9,10 @@ categories: [business, bitcoin]
 - [1. 说明](#1-说明)
 - [2. nLockTime](#2-nlocktime)
 - [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
-- [4. 场景四 冻结资金实践](#4-场景四-冻结资金实践)
-- [5. 交易数据](#5-交易数据)
-- [6. 参考资料](#6-参考资料)
+- [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
+- [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
+- [6. 交易数据](#6-交易数据)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
@@ -184,8 +185,8 @@ bool GenericTransactionSignatureChecker<T>::CheckLockTime
 # 3. nSequence == 0xffffffff, 不可上链 (禁用nLockTime)
 ```
 
-<a id="markdown-4-场景四-冻结资金实践" name="4-场景四-冻结资金实践"></a>
-# 4. 场景四 冻结资金实践
+<a id="markdown-4-场景四-冻结资金实践-失败的尝试" name="4-场景四-冻结资金实践-失败的尝试"></a>
+# 4. 场景四 冻结资金实践 (失败的尝试)
 
 通过挖矿奖励得资金源:
 
@@ -284,17 +285,26 @@ SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
 ]
 ''' `
 
+# 这时候我们发现签名会失败,是因为:
 
+# 自定制的交易(P2SH)无法使用createrawtransaction,signrawtransactionwithkey等接口. 因为在signrawtransactionwithkey中只会签名指定的交易格式.函数调用堆栈如下:
+
+# Solver <- SignStep <- ProduceSignature <- SignTransaction <- signrawtransactionwithkey
 ```
 
-<a id="markdown-5-交易数据" name="5-交易数据"></a>
-# 5. 交易数据
+<a id="markdown-5-场景四-冻结资金实践-使用python脚本做交易" name="5-场景四-冻结资金实践-使用python脚本做交易"></a>
+# 5. 场景四 冻结资金实践 (使用python脚本做交易)
+
+
+
+<a id="markdown-6-交易数据" name="6-交易数据"></a>
+# 6. 交易数据
 
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/nLockTime (nLockTime)
 
 
-<a id="markdown-6-参考资料" name="6-参考资料"></a>
-# 6. 参考资料
+<a id="markdown-7-参考资料" name="7-参考资料"></a>
+# 7. 参考资料
 
 * https://en.bitcoin.it/wiki/Timelock (百科)
 * https://coinb.in/#newTimeLocked (在线生成锁定脚本)
