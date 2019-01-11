@@ -10,9 +10,8 @@ categories: [business, bitcoin]
 - [2. nLockTime](#2-nlocktime)
 - [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
 - [4. 场景四 冻结资金实践](#4-场景四-冻结资金实践)
-- [5. 场景二 双因素钱包实践 (单向支付通道)](#5-场景二-双因素钱包实践-单向支付通道)
-- [6. 交易数据](#6-交易数据)
-- [7. 参考资料](#7-参考资料)
+- [5. 交易数据](#5-交易数据)
+- [6. 参考资料](#6-参考资料)
 
 <!-- /TOC -->
 
@@ -82,12 +81,12 @@ NEWADDRESS_INFO=`parse_privkey $NEWEC`
 
 # 提取P2PKH地址
 NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
-send_payment
-# 1) 创建交易 (到达2000高度send_payment后可被打包)
-RAWTX=`bitcoin-cli createrasend_paymentwtransaction '''
-[send_payment
-    {send_payment
-        "txid": "'$PRE_TXIDsend_payment'",
+
+# 1) 创建交易 (到达2000高度后可被打包)
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$PRE_TXID'",
         "vout": '$PRE_VOUT'
     }
 ]
@@ -113,6 +112,8 @@ bg 1899
 
 # 2000个区块后可被打包
 bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+bg 1
 
 # 查询交易
 bhtx 2001 1
@@ -211,30 +212,89 @@ bitcoin-cli getbalance
 
 创建带有CheckLockTimeVerify的`锁定交易`:
 
+
 ```bash
+# 锁定脚本:
+<expiry time> CHECKLOCKTIMEVERIFY DROP DUP HASH160 <pubKeyHash> EQUALVERIFY CHECKSIG
+
+# 获得新的地址
+NEWEC=`bx seed | bx ec-new`
+NEWADDRESS_INFO=`parse_privkey $NEWEC`
+
+# 提取公钥
+NEWPUBKEY=`echo $NEWADDRESS_INFO | sed -n 11p | awk '{print $2}'`
+
+# 提取私钥做备用
+NEWPRVKEYWIF=`echo $NEWADDRESS_INFO | sed -n 10p | awk '{print $2}'`
+
+# 脚本加锁 至300 区块 (请注意4字节数字需要以小端法输入,但是公钥不需要 参考:ScriptToAsmStr)
+REDEEM_SCRIPT=`bx script-encode "[2C010000] checklocktimeverify drop [$NEWPUBKEY] checksig"`
+
+SCRIPT_ADDR=`echo $REDEEM_SCRIPT | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
+
+# 1. 向脚本转账
+UTXOID=`bitcoin-cli sendtoaddress $SCRIPT_ADDR 50.0 "" "" true`
+
+# 2. 生成区块打包交易
+bg 1
+
+# 查看锁定交易
+bhtx 102 1
+
+UTXO_OUTPUT_SCRIPT=`bhtx 102 1 | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["hex"])'`
 
 ```
 
 对该比脚本输出进行`解锁交易`,引用到该笔交易的地址,并使用私钥进行签名
 
 ```bash
+# 创建新的输出地址
+NEWOUTADDR_EC=`bx seed | bx ec-new`
+NEWOUTADDR_INFO=`parse_privkey $NEWOUTADDR_EC`
+NEWOUTADDR_ADDRESS=`echo $NEWOUTADDR_INFO | sed -n 13p | awk '{print $2}'`
+
+UTXO_VOUT=0
+
+# 1. 创建交易
+RAWTX=`bitcoin-cli createrawtransaction '''
+[
+    {
+        "txid": "'$UTXOID'",
+        "vout": '$UTXO_VOUT'
+    }
+]
+''' '''
+{
+    "'$NEWOUTADDR_ADDRESS'": 49.9998
+}
+'''`
+
+# 2. 签名交易
+SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
+[
+    "'$NEWPRVKEYWIF'"
+]''' '''
+[
+    {
+        "txid": "'$UTXOID'",
+        "vout": '$UTXO_VOUT',
+        "scriptPubKey": "'$UTXO_OUTPUT_SCRIPT'",
+        "redeemScript": "'$REDEEM_SCRIPT'"
+    }
+]
+''' `
+
 
 ```
 
-<a id="markdown-5-场景二-双因素钱包实践-单向支付通道" name="5-场景二-双因素钱包实践-单向支付通道"></a>
-# 5. 场景二 双因素钱包实践 (单向支付通道) 
-
-
-
-
-<a id="markdown-6-交易数据" name="6-交易数据"></a>
-# 6. 交易数据
+<a id="markdown-5-交易数据" name="5-交易数据"></a>
+# 5. 交易数据
 
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/nLockTime (nLockTime)
 
 
-<a id="markdown-7-参考资料" name="7-参考资料"></a>
-# 7. 参考资料
+<a id="markdown-6-参考资料" name="6-参考资料"></a>
+# 6. 参考资料
 
 * https://en.bitcoin.it/wiki/Timelock (百科)
 * https://coinb.in/#newTimeLocked (在线生成锁定脚本)

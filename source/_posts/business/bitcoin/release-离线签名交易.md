@@ -1,5 +1,5 @@
 ---
-title: 一个区块可以容纳两笔相关联的utxo
+title: 离线签名交易
 date: 2018-02-01 13:29:12
 categories: [business, bitcoin]
 ---
@@ -111,9 +111,9 @@ NEWOUTADDR_EC=`bx seed | bx ec-new`
 NEWOUTADDR_INFO=`parse_privkey $NEWOUTADDR_EC`
 NEWOUTADDR_ADDRESS=`echo $NEWOUTADDR_INFO | sed -n 13p | awk '{print $2}'`
 
-UTXOID=`bitcoin-cli decoderawtransaction $SIGNED_RAWTX | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["txid"])'`
+UTXOID=`bitcoin-cli decoderawtransaction $PRE_SIGNED_RAWTX | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["txid"])'`
 UTXO_VOUT=0
-UTXO_OUTPUT_SCRIPT=`bitcoin-cli decoderawtransaction $SIGNED_RAWTX | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["hex"])'`
+UTXO_OUTPUT_SCRIPT=`bitcoin-cli decoderawtransaction $PRE_SIGNED_RAWTX | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["vout"][0]["scriptPubKey"]["hex"])'`
 
 # 1. 创建交易
 RAWTX=`bitcoin-cli createrawtransaction '''
@@ -142,8 +142,29 @@ SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
     }
 ]
 ''' `
-```
 
+SIGNED_RAWTX=`echo $SIGNED_RAWTX_JSON | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["hex"])'`
+
+#  发送交易会失败
+# 提示: Missing inputs
+# bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 发送前置交易
+bitcoin-cli sendrawtransaction $PRE_SIGNED_RAWTX
+
+# 发送当前交易
+bitcoin-cli sendrawtransaction $SIGNED_RAWTX
+
+# 查看内存池的两笔交易
+bitcoin-cli getrawmempool
+
+# 生成打包区块
+bg 1
+
+# 查看这两比交易
+bhtx 102 1
+bhtx 102 2
+```
 
 <a id="markdown-3-参考资料" name="3-参考资料"></a>
 # 3. 参考资料

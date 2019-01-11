@@ -476,7 +476,7 @@ bitcoin-cli sendrawtransaction $SIGNED_RAWTX
 bg 1
 
 # 查询这一笔交易
-bhtx 102 2
+bhtx 102 1
 ```
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
