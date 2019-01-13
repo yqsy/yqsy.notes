@@ -7,9 +7,10 @@ categories: [business, bitcoin]
 
 <!-- TOC -->
 
-- [1. 说明](#1-说明)
-- [2. 代码组织](#2-代码组织)
-- [3. 参考资料](#3-参考资料)
+1. [1. 说明](#1-说明)
+2. [2. arch环境](#2-arch环境)
+3. [3. 代码组织](#3-代码组织)
+4. [4. 参考资料](#4-参考资料)
 
 <!-- /TOC -->
 
@@ -25,6 +26,25 @@ cd /mnt/disk1/linux/reference/refer
 git clone https://github.com/bitcoin/bitcoin
 cd bitcoin
 git checkout tags/v0.17.0 -b readerbranch
+
+# 依赖
+sudo add-apt-repository universe
+sudo apt-get update
+
+sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev -y
+
+sudo apt-get install software-properties-common -y 
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install libdb4.8-dev libdb4.8++-dev -y 
+
+sudo apt-get install libminiupnpc-dev -y
+
+sudo apt-get install libzmq3-dev -y 
+
+sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler -y
+
+sudo apt-get install libqrencode-dev -y 
 
 # 修改configure.ac 关闭优化,改成-O0
 252:    [-Og],
@@ -59,8 +79,17 @@ file(GLOB_RECURSE SRCS *.cpp *,h)
 add_executable(src ${SRCS})
 ```
 
-<a id="markdown-2-代码组织" name="2-代码组织"></a>
-# 2. 代码组织
+<a id="markdown-2-arch环境" name="2-arch环境"></a>
+# 2. arch环境
+
+```bash
+
+
+```
+
+
+<a id="markdown-3-代码组织" name="3-代码组织"></a>
+# 3. 代码组织
 
 统计源码指令: 
 ```bash
@@ -107,7 +136,7 @@ find ./ -maxdepth 1  -regex '.*\.\(cpp\|c\|h\)' -type f -print0 | xargs -0 wc -l
 # 去除 qt,benchmark,单元测试  以及引用的外部库. 源码大概在8w行左右.
 ```
 
-<a id="markdown-3-参考资料" name="3-参考资料"></a>
-# 3. 参考资料
+<a id="markdown-4-参考资料" name="4-参考资料"></a>
+# 4. 参考资料
 
 * https://github.com/bitcoin/bitcoin/blob/v0.17.0/doc/build-unix.md
