@@ -6,13 +6,13 @@ categories: [business, bitcoin]
 
 <!-- TOC -->
 
-- [1. 说明](#1-说明)
-- [2. nLockTime](#2-nlocktime)
-- [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
-- [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
-- [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
-- [6. 交易数据](#6-交易数据)
-- [7. 参考资料](#7-参考资料)
+1. [1. 说明](#1-说明)
+2. [2. nLockTime](#2-nlocktime)
+3. [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
+4. [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
+5. [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
+6. [6. 交易数据](#6-交易数据)
+7. [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
@@ -180,10 +180,10 @@ bool GenericTransactionSignatureChecker<T>::CheckLockTime
 # 交易nLockTime < 50 亿 && 脚本锁定时间 < 50亿 (高度)
 # 交易nLockTime >= 50亿 && 脚本锁定时间 > 50亿 (时间)
 
-# 2. 脚本锁定时间 > 交易的nLockTime , 不可上链??? (脚本锁定时间必须在交易的nLockTime之内)
+# 2scalaockTime , 不可上链??? (脚本锁定时间必须在交易的nLockTime之内)
 
-# 3. nSequence == 0xffffffff, 不可上链 (禁用nLockTime)
-```
+# 3scala, 不可上链 (禁用nLockTime)
+```scala
 
 <a id="markdown-4-场景四-冻结资金实践-失败的尝试" name="4-场景四-冻结资金实践-失败的尝试"></a>
 # 4. 场景四 冻结资金实践 (失败的尝试)
@@ -211,7 +211,11 @@ bitcoin-cli importprivkey $COINBASEPRIKEYWIF
 bitcoin-cli getbalance
 ```
 
-创建带有CheckLockTimeVerify的`锁定交易`:
+
+
+ify的`锁定交易`:
+
+
 
 
 ```bash
@@ -225,10 +229,15 @@ NEWADDRESS_INFO=`parse_privkey $NEWEC`
 # 提取公钥
 NEWPUBKEY=`echo $NEWADDRESS_INFO | sed -n 11p | awk '{print $2}'`
 
+
 # 提取私钥做备用
+
 NEWPRVKEYWIF=`echo $NEWADDRESS_INFO | sed -n 10p | awk '{print $2}'`
 
+
 # 脚本加锁 至300 区块 (请注意4字节数字需要以小端法输入,但是公钥不需要 参考:ScriptToAsmStr)
+
+
 REDEEM_SCRIPT=`bx script-encode "[2C010000] checklocktimeverify drop [$NEWPUBKEY] checksig"`
 
 SCRIPT_ADDR=`echo $REDEEM_SCRIPT | bx sha256 | bx ripemd160 | bx base58check-encode --version 5`
@@ -295,6 +304,67 @@ SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
 <a id="markdown-5-场景四-冻结资金实践-使用python脚本做交易" name="5-场景四-冻结资金实践-使用python脚本做交易"></a>
 # 5. 场景四 冻结资金实践 (使用python脚本做交易)
 
+```bash
+# [压缩]
+# 私钥: f1a80f81857decd896b1c51ede9460e445013ec8386bf8d778c523b60802b12e
+# 私钥WIF: L5KTc49MiBTpueR8Ed5etFXRE9ZiZhqrYxudYWru6KetGkVAgzZW
+# 公钥: 023908ead084840b8a67307025837548d44e65a59fb528263c263d1fa5e1782a4d
+# 公钥hash: fa4d6873e5203075dcf32f8594f67125bf57e9b6
+# P2PKH地址: 1PpUfMwTE4sSEsCWko3eUDPjHb98htX9HK
+# URI: bitcoin:1PpUfMwTE4sSEsCWko3eUDPjHb98htX9HK
+# P2SH-P2WPKH: 32TuMaeEVhdwPhohBrZRcDzmrRmYEs4Px9
+# P2WPKH: bc1qlfxksul9yqc8th8n97zefan3ykl406dk52fw62
+
+COINBASECP2PKHADDR=1PpUfMwTE4sSEsCWko3eUDPjHb98htX9HK
+
+bitcoin-cli generatetoaddress 101 $COINBASECP2PKHADDR
+
+# 查询锁定脚本
+bbasetx 1
+
+# 提取私钥并导入到钱包
+COINBASEPRIKEYWIF=L5KTc49MiBTpueR8Ed5etFXRE9ZiZhqrYxudYWru6KetGkVAgzZW
+bitcoin-cli importprivkey $COINBASEPRIKEYWIF
+
+# 查询余额
+bitcoin-cli getbalance
+```
+
+
+使用python脚本(可以直接使用命令行)，生成新的锁定交易，到新的地址： 
+```bash
+# [压缩]
+
+# 私钥: 9e93d1702f131626916f693592fd1cfddfe15b1e88c363c756dfceedecd850c3
+# 私钥WIF: L2XxuM4B7GiVFwWhtriLugfWxMAB8AAn63dpygovyczESzBK6p4o
+# 公钥: 030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58e
+# 公钥hash: 600682ebd83c160b24d908752dbe52d1b2413b5c
+# P2PKH地址: 19kjfqWzcujpK4SgyuSv6Lk9SfVwrV4hDt
+# URI: bitcoin:19kjfqWzcujpK4SgyuSv6Lk9SfVwrV4hDt
+# P2SH-P2WPKH: 3Km2LMyYzekRzH9DFComM7M8bqyfwg2bzh
+# P2WPKH: bc1qvqrg967c8stqkfxepp6jm0jj6xeyzw6u7kkxc3
+
+# 地址
+SCRIPT_ADDR=3DcVCexv7WKCkG3G358RCbgbnMYGRYsn9H
+
+UTXOID=`bitcoin-cli sendtoaddress $SCRIPT_ADDR 50.0 "" "" true`
+
+# 打包交易至区块
+bg 1
+```
+
+使用python脚本，把P2SH的币转到其他的地址
+```bash
+# [压缩]
+# 私钥: 28f97e1aabce0cd8c7d166f25c18fa522dfa758ace160592bd93ef9dd38b90b7
+# 私钥WIF: KxbMqfhaN8NFXPCmHE4ZupJfBYRDj46iT1YxNqHrJcrpmaKMiL6C
+# 公钥: 03aa9f9253b5e8ce3f23bef805e035c9268a1157ba3d52ca0468ca3ebae3a5aea3
+# 公钥hash: 4b482b072b3937ae2e987b9ad2194f22d6d9fcdb
+# P2PKH地址: 17s48iNQ6ys4CWRvFn6wYT6rExfoJXyxzA
+# URI: bitcoin:17s48iNQ6ys4CWRvFn6wYT6rExfoJXyxzA
+# P2SH-P2WPKH: 3K9GUYjRznoXBugGj6DxaFcGPdUek1nNMP
+# P2WPKH: bc1qfdyzkpet8ym6ut5c0wddyx20yttdnlxmf7sj2w
+```
 
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>

@@ -83,17 +83,24 @@ add_executable(src ${SRCS})
 # 2. arch环境
 
 ```bash
+sudo pacman -S git base-devel boost libevent python
+yaourt -S --noconfirm db4.8
 
+cd /mnt/disk1/linux/reference/refer/bitcoin
 
+./autogen.sh && ./configure --enable-debug  --without-gui --without-miniupnpc
+
+# --disable-wallet
+
+make -j 8 && sudo make install
 ```
-
 
 <a id="markdown-3-代码组织" name="3-代码组织"></a>
 # 3. 代码组织
 
 统计源码指令: 
 ```bash
-cd /mnt/disk1/linux/reference/refer/bitcoin-reader/src
+cd /mnt/disk1/linux/reference/refer/bitcoin
 
 # 目录内的源码统计
 echo "" > /tmp/1.txt
