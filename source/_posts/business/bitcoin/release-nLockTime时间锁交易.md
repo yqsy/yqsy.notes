@@ -6,13 +6,13 @@ categories: [business, bitcoin]
 
 <!-- TOC -->
 
-1. [1. 说明](#1-说明)
-2. [2. nLockTime](#2-nlocktime)
-3. [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
-4. [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
-5. [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
-6. [6. 交易数据](#6-交易数据)
-7. [7. 参考资料](#7-参考资料)
+- [1. 说明](#1-说明)
+- [2. nLockTime](#2-nlocktime)
+- [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
+- [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
+- [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
+- [6. 交易数据](#6-交易数据)
+- [7. 参考资料](#7-参考资料)
 
 <!-- /TOC -->
 
@@ -183,7 +183,7 @@ bool GenericTransactionSignatureChecker<T>::CheckLockTime
 # 2scalaockTime , 不可上链??? (脚本锁定时间必须在交易的nLockTime之内)
 
 # 3scala, 不可上链 (禁用nLockTime)
-```scala
+```
 
 <a id="markdown-4-场景四-冻结资金实践-失败的尝试" name="4-场景四-冻结资金实践-失败的尝试"></a>
 # 4. 场景四 冻结资金实践 (失败的尝试)
@@ -210,12 +210,6 @@ bitcoin-cli importprivkey $COINBASEPRIKEYWIF
 # 查询余额
 bitcoin-cli getbalance
 ```
-
-
-
-ify的`锁定交易`:
-
-
 
 
 ```bash
@@ -365,7 +359,6 @@ bg 1
 # P2SH-P2WPKH: 3K9GUYjRznoXBugGj6DxaFcGPdUek1nNMP
 # P2WPKH: bc1qfdyzkpet8ym6ut5c0wddyx20yttdnlxmf7sj2w
 ```
-
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
 # 6. 交易数据
