@@ -102,7 +102,7 @@ https://github.com/yqsy/yqsy.notes/tree/master/source/_posts/business/bitcoin/de
 
 https://github.com/yqsy/yqsy.notes/tree/master/source/_posts/business/bitcoin/debug/spendsegwitheight1
 
-![](./pic/p2wpkh_sign)
+![](./pic/p2wpkh_sign.png)
 
 
 与旧的交易的签名数据的差异:
