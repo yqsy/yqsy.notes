@@ -7,16 +7,16 @@ categories: [business, bitcoin]
 <!-- TOC -->
 
 - [1. 说明](#1-说明)
-- [2. 普通交易的签名数据](#2-普通交易的签名数据)
-- [3. 2比引用2比输出交易的签名数据](#3-2比引用2比输出交易的签名数据)
-- [5. 隔离见证交易的签名数据](#5-隔离见证交易的签名数据)
-- [4. 签名 & 公钥在脚本中的运用](#4-签名--公钥在脚本中的运用)
-- [6. hash类型](#6-hash类型)
-- [7. 总结](#7-总结)
-- [8. 参考资料](#8-参考资料)
+- [2. P2PKH交易的签名数据](#2-p2pkh交易的签名数据)
+- [3. 复杂P2PKH交易的签名数据](#3-复杂p2pkh交易的签名数据)
+- [4. P2WPKH(隔离见证)交易的签名数据](#4-p2wpkh隔离见证交易的签名数据)
+- [5. 签名 & 公钥在脚本中的运用](#5-签名--公钥在脚本中的运用)
+- [6. 见证脚本的生成](#6-见证脚本的生成)
+- [7. hash类型](#7-hash类型)
+- [8. 总结](#8-总结)
+- [9. 参考资料](#9-参考资料)
 
 <!-- /TOC -->
-
 
 
 <a id="markdown-1-说明" name="1-说明"></a>
@@ -44,8 +44,8 @@ categories: [business, bitcoin]
 
 我们通过代码来研究这几个问题.
 
-<a id="markdown-2-普通交易的签名数据" name="2-普通交易的签名数据"></a>
-# 2. 普通交易的签名数据
+<a id="markdown-2-p2pkh交易的签名数据" name="2-p2pkh交易的签名数据"></a>
+# 2. P2PKH交易的签名数据
 
 以下为做交易时断点下来:
 
@@ -74,35 +74,35 @@ ss << txTmp << nHashType;
 return ss.GetHash();
 ```
 
-![](./pic/sign1.png)
+![](./pic/p2pkh_sign.png)
 
 通过上图我们发现,签名的的数据即是交易数据,代码中的结构体为`CTransaction`.`唯一`做的修改是将见证脚本中的数据(没有签名时为空)修改成`区块1的锁定脚本`. 
 
 签名交易为什么要关注前向的锁定脚本呢? (我并没有思考出来一个合理的解释) 因为即使没有前向的锁定脚本,也能通过hash & n 定位到前向的输出交易. 而且一旦作恶修改前向锁定脚本,相应的交易hash也会修改.
 
-<a id="markdown-3-2比引用2比输出交易的签名数据" name="3-2比引用2比输出交易的签名数据"></a>
-# 3. 2比引用2比输出交易的签名数据
+<a id="markdown-3-复杂p2pkh交易的签名数据" name="3-复杂p2pkh交易的签名数据"></a>
+# 3. 复杂P2PKH交易的签名数据
 
 我们尝试做一笔引用2笔输出的交易,`花费区块1 & 2的奖励,在103块区块中输出到新的地址,并且有找零`:
 
 https://github.com/yqsy/yqsy.notes/tree/master/source/_posts/business/bitcoin/debug/spendheight2
 
 
-![](./pic/sign2.png)
+![](./pic/p2pkh_2in_sign.png)
 
-![](./pic/sign3.png)
+![](./pic/p2pkh_2in_sign2.png)
 
 通过上图我们发现,当有多比vin的前提下,针对一笔in的签名会对其他的in置为空.这是为了去除变化的干扰数据(其他签名).
 
 
-<a id="markdown-5-隔离见证交易的签名数据" name="5-隔离见证交易的签名数据"></a>
-# 5. 隔离见证交易的签名数据
+<a id="markdown-4-p2wpkh隔离见证交易的签名数据" name="4-p2wpkh隔离见证交易的签名数据"></a>
+# 4. P2WPKH(隔离见证)交易的签名数据
 
 我们尝试做一笔引用一笔隔离见证输出的交易,花费区块1的见面管理,在101区块中输出到新的地址:
 
 https://github.com/yqsy/yqsy.notes/tree/master/source/_posts/business/bitcoin/debug/spendsegwitheight1
 
-![](./pic/sign4.png)
+![](./pic/p2wpkh_sign)
 
 
 与旧的交易的签名数据的差异:
@@ -112,8 +112,8 @@ https://github.com/yqsy/yqsy.notes/tree/master/source/_posts/business/bitcoin/de
 
 参考: https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki
 
-<a id="markdown-4-签名--公钥在脚本中的运用" name="4-签名--公钥在脚本中的运用"></a>
-# 4. 签名 & 公钥在脚本中的运用
+<a id="markdown-5-签名--公钥在脚本中的运用" name="5-签名--公钥在脚本中的运用"></a>
+# 5. 签名 & 公钥在脚本中的运用
 
 P2PKH加锁与解锁的堆栈:
 ```bash
@@ -129,7 +129,7 @@ OP_DUP
 <sig>
 ```
 
-相关的源码:
+相关验证的源码:
 ```c++
 EvalScript
 
@@ -139,9 +139,23 @@ case OP_CHECKSIGVERIFY:
 
 通过当比交易以及引用输出的锁定脚本恢复得到被签名的数据,然后对其hash. 与见证脚本中的公钥解锁签名得到的hash值进行对比,相等就说明交易签名者拥有私钥,是交易的发起人.
 
+<a id="markdown-6-见证脚本的生成" name="6-见证脚本的生成"></a>
+# 6. 见证脚本的生成
 
-<a id="markdown-6-hash类型" name="6-hash类型"></a>
-# 6. hash类型
+```bash
+# 相关源码
+SignStep
+ProduceSignature
+```
+
+这一文我们主要讲述P2Pk,P2PKH,P2WPKH的交易对于什么数据进行签名,我们再关注一下见证脚本生成的细节.
+
+* P2Pk: 见证脚本只要放入签名即可
+* P2PKH: 见证脚本需要放入签名和公钥
+* P2WPKH: 见证脚本为空,隔离见证(交易后面的数据块)放入签名和公钥
+
+<a id="markdown-7-hash类型" name="7-hash类型"></a>
+# 7. hash类型
 
 当我们使用`signrawtransactionwithkey` rpc接口时,有一个参数会让用户输入签名的方式,我们来分析一下各个参数都是派什么用场的:
 
@@ -165,7 +179,7 @@ SIGHASH_NONE:
 ![](./pic/sighash_none.png)
 
 SIGHASH_SINGLE:
-
+ 
 如下图所示,不关心其他比特币的去向. (让其他比特币的去向由其他拥有者来填写)
 
 ![](./pic/sighash_single.png)
@@ -176,8 +190,8 @@ SIGHASH_ANYONECANPAY:
 
 ![](./pic/sighash_anyonecanpay.png)
 
-<a id="markdown-7-总结" name="7-总结"></a>
-# 7. 总结
+<a id="markdown-8-总结" name="8-总结"></a>
+# 8. 总结
 
 通过对源码的阅读,我们对了上述的三个问题有了不同的解答:
 
@@ -186,7 +200,7 @@ SIGHASH_ANYONECANPAY:
 * (3) 中间人攻击,签名数据不变,将转账地址修改到别的地址? 怎么检测到? ==> `签名的数据中包含了要转账到哪里,而只有私钥才可以签名`
 
 
-<a id="markdown-8-参考资料" name="8-参考资料"></a>
-# 8. 参考资料
+<a id="markdown-9-参考资料" name="9-参考资料"></a>
+# 9. 参考资料
 
 * https://en.bitcoin.it/wiki/OP_CHECKSIG

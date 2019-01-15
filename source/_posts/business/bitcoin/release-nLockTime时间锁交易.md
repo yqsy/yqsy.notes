@@ -164,6 +164,9 @@ ENDIF
 
 ```bash
 <expiry time> CHECKLOCKTIMEVERIFY DROP DUP HASH160 <pubKeyHash> EQUALVERIFY CHECKSIG
+
+# 或(在锁定脚本中放入公钥,见证脚本中放入签名即可)
+<expiry time> CHECKLOCKTIMEVERIFY DROP <pubKey> CHECKSIG
 ```
 
 
@@ -225,7 +228,6 @@ NEWPUBKEY=`echo $NEWADDRESS_INFO | sed -n 11p | awk '{print $2}'`
 
 
 # 提取私钥做备用
-
 NEWPRVKEYWIF=`echo $NEWADDRESS_INFO | sed -n 10p | awk '{print $2}'`
 
 
@@ -338,13 +340,19 @@ bitcoin-cli getbalance
 # P2SH-P2WPKH: 3Km2LMyYzekRzH9DFComM7M8bqyfwg2bzh
 # P2WPKH: bc1qvqrg967c8stqkfxepp6jm0jj6xeyzw6u7kkxc3
 
+# 脚本: 022c01b17521030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58eac
+
 # 地址
-SCRIPT_ADDR=3DcVCexv7WKCkG3G358RCbgbnMYGRYsn9H
+SCRIPT_ADDR=33zz8hWy52y2V2dJhVpt2EPWUpqM9ynQUx
 
 UTXOID=`bitcoin-cli sendtoaddress $SCRIPT_ADDR 50.0 "" "" true`
 
 # 打包交易至区块
 bg 1
+
+# 打印交易哈希
+echo $UTXOID
+074a7c0f3a232849276688a9a232e32873ba6eca6c6bd30bd95d15283ce30e21
 ```
 
 使用python脚本，把P2SH的币转到其他的地址
@@ -358,6 +366,7 @@ bg 1
 # URI: bitcoin:17s48iNQ6ys4CWRvFn6wYT6rExfoJXyxzA
 # P2SH-P2WPKH: 3K9GUYjRznoXBugGj6DxaFcGPdUek1nNMP
 # P2WPKH: bc1qfdyzkpet8ym6ut5c0wddyx20yttdnlxmf7sj2w
+
 ```
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
