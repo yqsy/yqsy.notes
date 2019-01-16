@@ -10,7 +10,7 @@ categories: [business, bitcoin]
 - [2. nLockTime](#2-nlocktime)
 - [3. CheckLockTimeVerify常用场景](#3-checklocktimeverify常用场景)
 - [4. 场景四 冻结资金实践 (失败的尝试)](#4-场景四-冻结资金实践-失败的尝试)
-- [5. 场景四 冻结资金实践 (使用python脚本做交易)](#5-场景四-冻结资金实践-使用python脚本做交易)
+- [5. 场景四 冻结资金实践 (使用python脚本做签名)](#5-场景四-冻结资金实践-使用python脚本做签名)
 - [6. 交易数据](#6-交易数据)
 - [7. 参考资料](#7-参考资料)
 
@@ -292,14 +292,35 @@ SIGNED_RAWTX_JSON=`bitcoin-cli signrawtransactionwithkey $RAWTX '''
 
 # 这时候我们发现签名会失败,是因为:
 
-# 自定制的交易(P2SH)无法使用createrawtransaction,signrawtransactionwithkey等接口. 因为在signrawtransactionwithkey中只会签名指定的交易格式.函数调用堆栈如下:
+# 自定制的交易(P2SH-XXX)的赎回脚本无法使用signrawtransactionwithkey等接口. 因为在signrawtransactionwithkey中只会签名指定的交易格式.函数调用堆栈如下:
 
 # Solver <- SignStep <- ProduceSignature <- SignTransaction <- signrawtransactionwithkey
+
+# 其根本的原因是自定制的脚本对于比特币来说无法识别出应该push到见证脚本内什么数据(比如多个签名+公钥)
 ```
 
-<a id="markdown-5-场景四-冻结资金实践-使用python脚本做交易" name="5-场景四-冻结资金实践-使用python脚本做交易"></a>
-# 5. 场景四 冻结资金实践 (使用python脚本做交易)
+<a id="markdown-5-场景四-冻结资金实践-使用python脚本做签名" name="5-场景四-冻结资金实践-使用python脚本做签名"></a>
+# 5. 场景四 冻结资金实践 (使用python脚本做签名)
 
+加锁与解锁的堆栈:
+```bash
+# scriptPubKey (prev out)
+OP_EQUAL
+<20-byte-hash of script>
+OP_HASH160
+
+# redeemScript
+CHECKSIG
+<pubKey>
+DROP
+CHECKLOCKTIMEVERIFY
+<expiry time>
+
+# scriptSig (in)
+<sig>
+```
+
+得到一笔资金:  
 ```bash
 # [压缩]
 # 私钥: f1a80f81857decd896b1c51ede9460e445013ec8386bf8d778c523b60802b12e
@@ -340,7 +361,9 @@ bitcoin-cli getbalance
 # P2SH-P2WPKH: 3Km2LMyYzekRzH9DFComM7M8bqyfwg2bzh
 # P2WPKH: bc1qvqrg967c8stqkfxepp6jm0jj6xeyzw6u7kkxc3
 
-# 脚本: 022c01b17521030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58eac
+# 脚本: 
+# [time/block] checklocktimeverify drop [publickey] checksig
+# 022c01b17521030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58eac
 
 # 地址
 SCRIPT_ADDR=33zz8hWy52y2V2dJhVpt2EPWUpqM9ynQUx
@@ -350,9 +373,8 @@ UTXOID=`bitcoin-cli sendtoaddress $SCRIPT_ADDR 50.0 "" "" true`
 # 打包交易至区块
 bg 1
 
-# 打印交易哈希
+# 打印交易哈希 (动态会变)
 echo $UTXOID
-074a7c0f3a232849276688a9a232e32873ba6eca6c6bd30bd95d15283ce30e21
 ```
 
 使用python脚本，把P2SH的币转到其他的地址
@@ -367,7 +389,10 @@ echo $UTXOID
 # P2SH-P2WPKH: 3K9GUYjRznoXBugGj6DxaFcGPdUek1nNMP
 # P2WPKH: bc1qfdyzkpet8ym6ut5c0wddyx20yttdnlxmf7sj2w
 
+
+
 ```
+
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
 # 6. 交易数据
