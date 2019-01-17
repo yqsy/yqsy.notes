@@ -35,7 +35,7 @@ uint32_t nLockTime;
 
 代码:
 ```bash
-# nLockTime在500000000 以内表示高度. 
+# nLockTime在500000000 以内表示高度. 超过表示时间.
 
 # 1. nLockTime 为零时 可上链
 # 2. nLockTime 已成为过去式 可上链
@@ -83,7 +83,7 @@ NEWADDRESS_INFO=`parse_privkey $NEWEC`
 # 提取P2PKH地址
 NEWP2PkHADDR=`echo $NEWADDRESS_INFO | sed -n 13p | awk '{print $2}'`
 
-# 1) 创建交易 (到达2000高度后可被打包)
+# 1) 创建交易
 RAWTX=`bitcoin-cli createrawtransaction '''
 [
     {
@@ -111,7 +111,7 @@ bitcoin-cli sendrawtransaction $SIGNED_RAWTX
 
 bg 1899
 
-# 2000个区块后可被打包
+# 2000个区块后,交易可被节点接受
 bitcoin-cli sendrawtransaction $SIGNED_RAWTX
 
 bg 1
@@ -183,9 +183,23 @@ bool GenericTransactionSignatureChecker<T>::CheckLockTime
 # 交易nLockTime < 50 亿 && 脚本锁定时间 < 50亿 (高度)
 # 交易nLockTime >= 50亿 && 脚本锁定时间 > 50亿 (时间)
 
-# 2scalaockTime , 不可上链??? (脚本锁定时间必须在交易的nLockTime之内)
+# 2. 必须符合规则: 脚本锁定时间 <= 交易nLockTime (脚本锁定时间是链上已确定,无法修改的,)
 
-# 3scala, 不可上链 (禁用nLockTime)
+# 3. 必须符合规则: 所有见证脚本的nSequence不为0xFFFFFFFF(不能禁用nLockTime)
+
+```
+
+我们来举个例子思考:
+
+```bash
+
+# 如下图, tx1为将币锁定到时间锁脚本上, tx2花费时间锁脚本的币. 
+
+[in out(p2sh) 锁定300块后可被花费]   [in 证明自己已经过了300个区块  out]
+          tx1                           tx2
+
+# 问题的核心关键是,如何在tx2中证明自己过了300个区块? 可以使用交易nLockTime! 因为其含义是: nLockTime时间/区块后,交易才可以上链. 如果nLockTime 为300, 并且交易可以通过上链检测. 那么说明此时的区块已经过去了300个.
+
 ```
 
 <a id="markdown-4-场景四-冻结资金实践-失败的尝试" name="4-场景四-冻结资金实践-失败的尝试"></a>
@@ -377,7 +391,7 @@ bg 1
 echo $UTXOID
 ```
 
-使用python脚本，把P2SH的币转到其他的地址
+使用python脚本，把P2SH的币转到其他的地址. (把上面的UTXOID粘贴到,python脚本中(因为会动态变化),来生成新的交易)
 ```bash
 # [压缩]
 # 私钥: 28f97e1aabce0cd8c7d166f25c18fa522dfa758ace160592bd93ef9dd38b90b7
@@ -389,16 +403,26 @@ echo $UTXOID
 # P2SH-P2WPKH: 3K9GUYjRznoXBugGj6DxaFcGPdUek1nNMP
 # P2WPKH: bc1qfdyzkpet8ym6ut5c0wddyx20yttdnlxmf7sj2w
 
+bg 197
 
+# 无法打包交易,因为nLockTime时间点未到
+# bitcoin-cli sendrawtransaction $python脚本打印的交易数据
 
+bg 1
+
+# 成功见证了时间锁锁定
+bitcoin-cli sendrawtransaction $python脚本打印的交易数据
+
+bg 1
+
+bhtx 301 1
 ```
-
 
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
 # 6. 交易数据
 
 * https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/nLockTime (nLockTime)
-
+* https://raw.githubusercontent.com/yqsy/yqsy.notes/master/source/_posts/business/bitcoin/script/cltv_freezefund  (场景四 冻结资金实践)
 
 <a id="markdown-7-参考资料" name="7-参考资料"></a>
 # 7. 参考资料
