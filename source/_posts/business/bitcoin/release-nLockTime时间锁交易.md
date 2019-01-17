@@ -418,6 +418,10 @@ bg 1
 bhtx 301 1
 ```
 
+python脚本:
+
+* https://github.com/yqsy/bitcointest/blob/master/cltv_freezefund.py
+
 <a id="markdown-6-交易数据" name="6-交易数据"></a>
 # 6. 交易数据
 
@@ -430,5 +434,4 @@ bhtx 301 1
 * https://en.bitcoin.it/wiki/Timelock (百科)
 * https://coinb.in/#newTimeLocked (在线生成锁定脚本)
 * https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki (BIP65)
-* https://github.com/petertodd/checklocktimeverify-demos (BIP65 demo - python 单向支付通道)
-* https://github.com/mruddy/bip65-demos (BIP65 demo - nodejs)
+
