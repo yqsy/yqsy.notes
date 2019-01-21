@@ -324,10 +324,10 @@ OP_EQUAL
 OP_HASH160
 
 # redeemScript
-CHECKSIG
+OP_CHECKSIG
 <pubKey>
-DROP
-CHECKLOCKTIMEVERIFY
+OP_DROP
+OP_CHECKLOCKTIMEVERIFY
 <expiry time>
 
 # scriptSig (in)
@@ -365,7 +365,6 @@ bitcoin-cli getbalance
 使用python脚本(可以直接使用命令行)，生成新的锁定交易，到新的地址： 
 ```bash
 # [压缩]
-
 # 私钥: 9e93d1702f131626916f693592fd1cfddfe15b1e88c363c756dfceedecd850c3
 # 私钥WIF: L2XxuM4B7GiVFwWhtriLugfWxMAB8AAn63dpygovyczESzBK6p4o
 # 公钥: 030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58e
