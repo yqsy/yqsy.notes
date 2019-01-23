@@ -41,23 +41,6 @@ OP_HASH256
 <data> ?
 ```
 
-Freezing funds until a time in the future (锁定一段时间)
-
-```bash
-# scriptPubKey (prev out)
-OP_CHECKSIG
-OP_EQUALVERIFY
-<pubKeyHash>
-OP_HASH160
-OP_DUP
-OP_DROP
-OP_CHECKLOCKTIMEVERIFY
-<expiry time>
-
-# scriptSig (in)
-<pubKey>
-<sig>
-```
 
 Incentivized finding of hash collisions
 
