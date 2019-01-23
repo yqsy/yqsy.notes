@@ -77,10 +77,10 @@
 
 # 解析一下见证脚本
 
-<sig>
-
 checksig
 [030c080a2e82c342172d5e8845877e8a576cfd5ce2117e78bb15574a39dd00e58e] 
 drop 
 checklocktimeverify 
 [2c01] 
+
+<sig>
