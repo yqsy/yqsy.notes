@@ -277,7 +277,7 @@ if (VersionBitsState(pindex->pprev, chainparams.GetConsensus(), Consensus::DEPLO
 BIP112:  
 
 ```bash
-# ContextualCheckBlock
+# GetBlockScriptFlags
 if (VersionBitsState(pindex->pprev, consensusparams, Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
     flags |= SCRIPT_VERIFY_CHECKSEQUENCEVERIFY;
 }
@@ -293,7 +293,7 @@ if (!(flags & SCRIPT_VERIFY_CHECKSEQUENCEVERIFY)) {
 BIP113:  
 
 ```bash
-# GetBlockScriptFlags
+# ContextualCheckBlock
 if (VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
     nLockTimeFlags |= LOCKTIME_MEDIAN_TIME_PAST;
 }
