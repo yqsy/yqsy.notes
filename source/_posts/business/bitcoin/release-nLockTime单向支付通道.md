@@ -251,4 +251,4 @@ bhtx 292 1
 
 * https://github.com/petertodd/checklocktimeverify-demos (BIP65 demo - python 单向支付通道)
 * https://github.com/mruddy/bip65-demos (BIP65 demo - nodejs)
-* https://github.com/tianmingyun/MasterBitcoin2CN/blob/master/ch12.md (精通比特币,应用章节-简单支付通道示例)
+* https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch12.asciidoc (精通比特币,应用章节-简单支付通道示例)

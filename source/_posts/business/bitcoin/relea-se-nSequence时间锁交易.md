@@ -131,13 +131,12 @@ bg 1
 bhtx 301 1
 ```
 
-
 <a id="markdown-3-checksequenceverify-常用场景" name="3-checksequenceverify-常用场景"></a>
 # 3. CHECKSEQUENCEVERIFY 常用场景
 
 (BIP112)
 
-场景一: 超时托管(Escrow with Timeout ). Alice,Bob,Escrow 创建2-3多重签名. 在超时时间后Alice可以单独凭借签名取出来.
+场景一: 超时托管(Escrow with Timeout ). Alice,Bob,Escrow 创建2-3多重签名. 在超时时间后Alice可以单独凭借签名取出来. (上链后再计算超时时间)
 
 ```bash
 IF
@@ -148,7 +147,11 @@ ELSE
 ENDIF
 ```
 
-场景二: 可撤销承诺交易 (revocable commitment transactions).
+场景二: 可撤销承诺交易 (revocable commitment transactions). 
+
+![](./pic/revocable1.png)
+
+逻辑: A <- B. 1. A领取币需要24小时 2. A证明自己不会作恶,将半个赎回密钥给B. B可以通过赎回密钥惩罚
 
 ```bash
 HASH160 <revokehash> EQUAL
@@ -161,9 +164,14 @@ ENDIF
 CHECKSIG
 ```
 
-场景三: 哈系时间锁定合同 (Hash Time-Locked Contracts)
+场景三: 哈系时间锁定合同 (Hash Time-Locked Contracts). 
 
-Alice:
+![](./pic/revocable2.png)
+
+为什么要有R-HASH 和 R? 在这个例子中没有用,因为有了<Alice's pubkey>了 ? 是这样吗?
+
+逻辑: A <- B 1. A领取币需要24小时 2. 在绝对时间后,A广播了交易,B可以不通过赎回密钥领取币
+
 ```bash
 HASH160 DUP <R-HASH> EQUAL
 IF
@@ -180,7 +188,8 @@ ENDIF
 CHECKSIG
 ```
 
-Bob:
+逻辑: A -> B. 1. B 领取币要绝对+相对24小时 2. B证明自己不会作恶,将半个赎回密钥给A,A可以通过赎回密钥惩罚
+
 ```bash
 HASH160 DUP <R-HASH> EQUAL
 SWAP <Commit-Revocation-Hash> EQUAL ADD
@@ -198,6 +207,8 @@ CHECKSIG
 
 场景四: 双向挂钩侧链 (2-Way Pegged Sidechains)
 
+猜想: 当币从第二层区块链回来的时候,通过新增加的符号REORGPROOFVERIFY证明,比特币在第二层被燃烧,然后在比特币层被解锁.具体要看源码分析.但看这个示例推理不出来细节.
+
 ```bash
 IF
     lockTxHeight <lockTxHash> nlocktxOut [<workAmount>] reorgBounty Hash160(<...>) <genesisHash> REORGPROOFVERIFY
@@ -212,3 +223,4 @@ ENDIF
 * https://en.bitcoin.it/wiki/Timelock (百科)
 * https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki (BIP68)
 * https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki (BIP112)
+* https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch12.asciidoc
