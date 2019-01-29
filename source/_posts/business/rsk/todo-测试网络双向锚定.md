@@ -63,7 +63,6 @@ RSK Private Key: dbca0a7ef597cbfed214a08d4e94ffee794edaea8d47b504c8a3dd521785d06
 RSK Address: 2340482f28897774204f40aa205497dc1be74d45
 ```
 
-
 <a id="markdown-3-rbtc-btc" name="3-rbtc-btc"></a>
 # 3. RBTC-BTC
 
