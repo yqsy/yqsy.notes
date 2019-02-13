@@ -39,15 +39,20 @@ P2PKH地址: n4k9FudCGqwAkNRYhvwKiMzD9WM84ckdNh
 * https://live.blockcypher.com/btc-testnet/address/n4k9FudCGqwAkNRYhvwKiMzD9WM84ckdNh/ (查询余额)
 
 
-(3) 在MyCrypto中获取锚定的P2SH地址,并向其打款:
+(3) 在MyCrypto中获取锚定的P2SH地址:
 
 * https://mycrypto.com/
 
 ```bash
+# 固定的P2SH锁定地址
 2N1N5mdHWmRUfv49f7GnUeFfuyLcBQK7hj2
 ```
 
-(4) 向比特币P2SH地址打款
+(4) 向比特币P2SH地址打款 (使用bitpay选择testnet网络)
+
+* https://github.com/bitpay/copay/releases
+* https://bitpay.com/wallet (snap-不行)
+* https://docs.snapcraft.io/installing-snap-on-manjaro-linux/6807 (snap-不行)
 
 ```bash
 yaourt -S --noconfirm copay
@@ -63,6 +68,11 @@ RSK Private Key: dbca0a7ef597cbfed214a08d4e94ffee794edaea8d47b504c8a3dd521785d06
 RSK Address: 2340482f28897774204f40aa205497dc1be74d45
 ```
 
+(6) 查询
+
+* https://explorer.testnet.rsk.co/ (查询rsk的余额度)
+
+
 <a id="markdown-3-rbtc-btc" name="3-rbtc-btc"></a>
 # 3. RBTC-BTC
 
@@ -74,3 +84,4 @@ RSK Address: 2340482f28897774204f40aa205497dc1be74d45
 * https://github.com/rsksmart/rskj/wiki/Whitelisting-in-RSK (白名单说明)
 * https://en.bitcoin.it/wiki/List_of_address_prefixes (比特币地址前缀)
 * https://en.bitcoin.it/wiki/Testnet (bitcoin testnet wiki)
+* https://gitter.im/rsksmart/getting-started (gitter群-求助把P2PKH地址加入到白名单)
